@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8686d13b5f66351409c05999acb481e2, type: 3}
+  m_Name: HumanoidCombat
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAnimationProfile
+  idle: {fileID: 8324860437086164814, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  walk: {fileID: -7003542030617561338, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  jog: {fileID: -8815886378510225334, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  attack: {fileID: -2807887025256620907, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  hit: {fileID: -245273357908900549, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  death: {fileID: 3532616527226485280, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  guard: {fileID: 7400000, guid: de8b91bf94a4f05479568b9fcd181bb8, type: 2}
+  parry: {fileID: 7400000, guid: f1bd6f2b2236ab140a34a2bbd29c16ab, type: 2}
+  deflected: {fileID: 7400000, guid: 5c64f482cd0bdbe43a04d469b4d84258, type: 2}
+  broken: {fileID: 7400000, guid: 1a07466cdf448a14494a68ef252d07ca, type: 2}
+  attackActiveStart: 0.25
+  attackActiveEnd: 0.38
+  blendTime: 0.07
+  walkSpeed: 1.5
+  jogSpeed: 4

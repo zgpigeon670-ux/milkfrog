@@ -1,0 +1,6 @@
+{
+  "name": "Milkfrog.CombatDemo.Editor",
+  "rootNamespace": "Milkfrog.CombatDemo.Editor",
+  "references": ["Milkfrog.CombatDemo"],
+  "includePlatforms": ["Editor"]
+}

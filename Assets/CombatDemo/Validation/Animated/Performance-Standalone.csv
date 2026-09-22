@@ -1,0 +1,7 @@
+variant,repetition,frames,average_ms,p95_ms,gc_bytes_per_frame,gc_counter_valid
+uncached,1,3584,16.7443,16.8365,260.34,True
+cached,1,3600,16.6700,16.8323,395.63,True
+uncached,2,3432,17.4844,17.0012,260.94,True
+cached,2,3595,16.6926,17.1316,390.34,True
+uncached,3,3597,16.6893,17.0799,260.20,True
+cached,3,3597,16.6862,17.0465,391.74,True

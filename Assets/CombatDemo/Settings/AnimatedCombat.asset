@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b71e59d5885e3e34fac494658d75a340, type: 3}
+  m_Name: AnimatedCombat
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatDemoSettings
+  player:
+    maxHealth: 100
+    maxPosture: 100
+    startup: 0.25
+    active: 0.1
+    recovery: 0.35
+    range: 2
+    attackHalfWidth: 0.65
+    guardAngle: 120
+    deflectWindow: 0.15
+    hitStun: 0.3
+    deflectedStun: 0.2
+    hitDamage: 10
+    hitPosture: 10
+    blockPosture: 20
+    deflectPosture: 30
+    brokenDuration: 2
+    postureRecoveryDelay: 2
+    postureRecoveryRate: 15
+  enemy:
+    maxHealth: 100
+    maxPosture: 100
+    startup: 0.45
+    active: 0.1
+    recovery: 0.45
+    range: 2
+    attackHalfWidth: 0.65
+    guardAngle: 120
+    deflectWindow: 0.15
+    hitStun: 0.3
+    deflectedStun: 0.2
+    hitDamage: 10
+    hitPosture: 10
+    blockPosture: 20
+    deflectPosture: 30
+    brokenDuration: 2
+    postureRecoveryDelay: 2
+    postureRecoveryRate: 15
+  playerSpeed: 4
+  enemySpeed: 2.5
+  enemyWait: 1.5
+  counterDelay: 0.1
+  blocksBeforeDeflect: 2
+  logEvents: 0

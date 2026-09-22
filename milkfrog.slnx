@@ -1,4 +1,8 @@
 ﻿<Solution>
+  <Project Path="Milkfrog.CombatDemo.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Milkfrog.CombatDemo.Editor.csproj" />
+  <Project Path="Milkfrog.CombatDemo.EditTests.csproj" />
+  <Project Path="Milkfrog.CombatDemo.PlayTests.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
 </Solution>

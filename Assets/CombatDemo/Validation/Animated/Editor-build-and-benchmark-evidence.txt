@@ -1,0 +1,8 @@
+[CombatDemo] Standalone development build: C:\Users\pigeon\AppData\Local\Temp\MilkfrogCombatValidation\Builds\CombatDemo\CombatDemo.exe
+[CombatBenchmark] Stage 1/6 uncached warmup 10s, sample 60s
+[CombatBenchmark] Stage 2/6 cached warmup 10s, sample 60s
+[CombatBenchmark] Stage 3/6 uncached warmup 10s, sample 60s
+[CombatBenchmark] Stage 4/6 cached warmup 10s, sample 60s
+[CombatBenchmark] Stage 5/6 uncached warmup 10s, sample 60s
+[CombatBenchmark] Stage 6/6 cached warmup 10s, sample 60s
+[CombatBenchmark] Completed: C:\Users\pigeon\AppData\Local\Temp\MilkfrogCombatValidation\Evidence\Performance-Editor.csv

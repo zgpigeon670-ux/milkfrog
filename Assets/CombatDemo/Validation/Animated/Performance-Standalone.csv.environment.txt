@@ -1,0 +1,11 @@
+UTC=2026-09-22T15:32:24.5520573Z
+Unity=6000.6.2f1
+Editor=False
+Development=True
+Resolution=1280x799
+Quality=PC
+GPU=NVIDIA GeForce RTX 4060 Laptop GPU
+CPU=AMD Ryzen 9 7940H w/ Radeon 780M Graphics 
+Frame cap=60; VSync=0 (harness only)
+Warmup=10s; sample=60s; 3 pairs; identical animated scene and deterministic 60Hz combat script.
+GC includes host/editor/rendering allocations; no attribution to combat alone.

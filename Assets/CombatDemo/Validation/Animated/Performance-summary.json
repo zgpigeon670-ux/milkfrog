@@ -1,0 +1,30 @@
+[
+  {
+    "environment": "Editor",
+    "variant": "cached",
+    "average_ms": 16.668,
+    "mean_p95_ms": 17.2266,
+    "gc_bytes": 175125.9
+  },
+  {
+    "environment": "Editor",
+    "variant": "uncached",
+    "average_ms": 16.6682,
+    "mean_p95_ms": 17.2168,
+    "gc_bytes": 177450.54
+  },
+  {
+    "environment": "Standalone",
+    "variant": "cached",
+    "average_ms": 16.6829,
+    "mean_p95_ms": 17.0035,
+    "gc_bytes": 392.57
+  },
+  {
+    "environment": "Standalone",
+    "variant": "uncached",
+    "average_ms": 16.9727,
+    "mean_p95_ms": 16.9725,
+    "gc_bytes": 260.49
+  }
+]

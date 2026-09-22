@@ -1,0 +1,6 @@
+{
+  "name": "Milkfrog.CombatDemo.EditTests",
+  "references": ["Milkfrog.CombatDemo"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

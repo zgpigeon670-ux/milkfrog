@@ -1,0 +1,5 @@
+{
+  "name": "Milkfrog.CombatDemo.PlayTests",
+  "references": ["Milkfrog.CombatDemo", "Unity.InputSystem"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}
