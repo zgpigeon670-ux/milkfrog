@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9fd5f7d9d24a51880a6c8c2a37f502, type: 3}
-  m_Name: EnemySlash
+  m_Name: PlayerFollowup
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAttackDefinition
   rules:
-    kind: 0
+    kind: 2
     response: 0
-    startup: 0.45
+    startup: 0.16
     active: 0.1
-    recovery: 0.45
-    damage: 10
-    maxDamage: 10
-    posture: 10
-    maxPosture: 10
-    block: 20
-    maxBlock: 20
+    recovery: 0.38
+    damage: 12
+    maxDamage: 12
+    posture: 14
+    maxPosture: 14
+    block: 22
+    maxBlock: 22
     deflectPosture: 30
-    cancelWindow: 0
+    cancelWindow: 0.14
   clip: {fileID: -2807887025256620907, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
   activeStart: 0.25
   activeEnd: 0.38

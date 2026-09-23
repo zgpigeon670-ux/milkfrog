@@ -50,7 +50,9 @@ namespace Milkfrog.CombatDemo
             Diamond(35, height - 63, 6, red);
             PostureBar(new Rect(width * .5f - 170, height - 75, 340, 12), Posture(session.player));
             GUI.Label(new Rect(width * .5f - 150, height - 58, 300, 22), "POSTURE", centerStyle);
-            GUI.Label(new Rect(48, height - 35, width - 96, 24), "WASD Move   SPACE Dodge   LMB Tap / Hold thrust   RMB Guard   R Restart   F1 Mode   F2 Debug", hintStyle);
+            GUI.Label(new Rect(48, height - 35, width - 96, 24), "WASD Move   TAB Lock   SPACE Dodge   LMB Combo / Hold thrust   RMB Guard   R Restart   F1 Mode   F2 Debug", hintStyle);
+            string telegraph = Telegraph();
+            if (telegraph != null) GUI.Label(new Rect(width * .5f - 220, 92, 440, 28), telegraph, centerStyle);
             if(session.player.Core.IsPreparing)
             {
                 float charge=session.player.Core.ChargeRatio;
@@ -72,6 +74,14 @@ namespace Milkfrog.CombatDemo
             GUI.matrix = matrix; GUI.color = previousColor; GUI.depth = depth;
         }
 
+        string Telegraph()
+        {
+            var attack = session.enemy.Core.ActiveAttack;
+            if (session.enemy.Core.State != CombatState.AttackStartup) return null;
+            if (attack.Kind == AttackKind.Perilous) return "PERILOUS  /  DODGE";
+            if (attack.Kind == AttackKind.Slow) return "SLOW SLASH  /  DEFLECT";
+            return null;
+        }
         GUIStyle Style(int size, TextAnchor anchor, Color color)
         {
             var style = new GUIStyle(GUI.skin.label) { fontSize = size, alignment = anchor, fontStyle = FontStyle.Bold };

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAttackDefinition
   rules:
     kind: 0
+    response: 0
     startup: 0.25
     active: 0.1
     recovery: 0.35
@@ -23,6 +24,10 @@ MonoBehaviour:
     maxPosture: 10
     block: 20
     maxBlock: 20
+    deflectPosture: 30
+    cancelWindow: 0.16
+    CanComboFrom: 1
+    comboWindow: 0.18
   clip: {fileID: -2807887025256620907, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
   activeStart: 0.25
   activeEnd: 0.38

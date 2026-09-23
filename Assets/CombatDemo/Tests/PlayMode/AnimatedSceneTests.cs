@@ -24,7 +24,7 @@ namespace Milkfrog.CombatDemo.Tests
         }
         void Advance(float duration, int fps = 60)
         { while (duration > .000001f) { float dt = Mathf.Min(duration, 1f/fps); session.Simulate(dt); duration -= dt; } }
-        void Attack() => session.SubmitInput(Vector2.zero, false, false, true);
+        void Attack() { session.SubmitInput(Vector2.zero, false, false, false); session.SubmitInput(Vector2.zero, false, false, true); }
         [UnityTest] public IEnumerator HumanoidClipsAnimateWithoutControllerOrRootDrift()
         {
             var presentation = session.playerAnimation; var animator = presentation.animator;
@@ -103,6 +103,7 @@ namespace Milkfrog.CombatDemo.Tests
             session.SetMode(EnemyMode.Duel); Advance(.01f,fps);
             Attack(); Advance(.72f,fps); Attack(); Advance(.72f,fps);
             Attack();
+            session.SubmitInput(Vector2.zero,false,false,false);
             Until(() => session.player.Core.State == CombatState.DeflectedStun, fps);
             Until(() => session.enemy.Core.State == CombatState.AttackStartup && session.enemy.Core.Remaining <= .08f, fps);
             Assert.That(session.enemy.Core.State, Is.EqualTo(CombatState.AttackStartup));
@@ -113,6 +114,7 @@ namespace Milkfrog.CombatDemo.Tests
             Until(() => session.enemy.Core.CanAct && !session.IsFrozen, fps);
             Attack(); Advance(.72f,fps); Attack(); Advance(.72f,fps);
             Assert.That(session.enemy.Core.State, Is.EqualTo(CombatState.PostureBroken));
+            Until(() => session.player.Core.CanAct, fps);
             Attack(); Assert.That(session.enemy.Core.State, Is.EqualTo(CombatState.Dead));
             Advance(3,fps);
             Assert.That(events, Is.EqualTo(new[] { HitResult.Block,HitResult.Block,HitResult.Deflect,HitResult.Deflect,HitResult.Block,HitResult.Block,HitResult.Deathblow }));

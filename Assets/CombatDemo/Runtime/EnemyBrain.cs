@@ -8,6 +8,8 @@ namespace Milkfrog.CombatDemo
         readonly CombatDemoSettings settings;
         public EnemyMode Mode { get; private set; }
         public int Blocks { get; private set; }
+        public int PatternIndex { get; private set; }
+        public AttackPattern NextPattern { get; private set; } = AttackPattern.Slash;
         public string Decision { get; private set; } = "Wait";
         public float WaitRemaining => Mathf.Max(0, settings.enemyWait - waited);
         float waited, counterRemaining = -1;
@@ -25,6 +27,8 @@ namespace Milkfrog.CombatDemo
         {
             Mode = mode;
             Blocks = 0;
+            PatternIndex = 0;
+            NextPattern = AttackPattern.Slash;
             waited = 0;
             counterRemaining = -1;
             Decision = mode.ToString();
@@ -69,7 +73,7 @@ namespace Milkfrog.CombatDemo
                 if (counterRemaining <= 0)
                 {
                     counterRemaining = -1;
-                    actor.Core.RequestAttack();
+                    BeginSelectedAttack(AttackPattern.Slash);
                     Decision = "Counterattack";
                 }
                 return;
@@ -83,14 +87,30 @@ namespace Milkfrog.CombatDemo
                 return;
             }
             actor.Core.SetGuard(Mode == EnemyMode.Duel, false);
-            Decision = Mode == EnemyMode.Duel ? (Blocks >= settings.blocksBeforeDeflect ? "Deflect ready" : "Guard / wait") : "Rhythm / wait";
+            NextPattern = ChoosePattern();
+            Decision = (Mode == EnemyMode.Duel ? (Blocks >= settings.blocksBeforeDeflect ? "Deflect ready" : "Guard / wait") : "Rhythm / wait") + " / " + NextPattern;
             waited += dt;
             if (waited >= settings.enemyWait)
             {
                 waited = 0;
-                actor.Core.RequestAttack();
-                Decision = "Attack";
+                BeginSelectedAttack(NextPattern);
+                Decision = "Attack " + actor.Core.ActiveAttack.Kind;
             }
+        }
+
+        AttackPattern ChoosePattern()
+        {
+            var pattern = settings.enemyPattern;
+            if (pattern == null || pattern.Length == 0 || Mode == EnemyMode.Duel) return AttackPattern.Slash;
+            return pattern[PatternIndex % pattern.Length];
+        }
+
+        void BeginSelectedAttack(AttackPattern pattern)
+        {
+            var definition = actor.AttackFor(pattern);
+            if (definition == null || !actor.Core.RequestDefinedAttack(definition.rules)) actor.Core.RequestAttack();
+            else if (Mode != EnemyMode.Duel && settings.enemyPattern != null && settings.enemyPattern.Length > 0)
+                PatternIndex = (PatternIndex + 1) % settings.enemyPattern.Length;
         }
     }
 }

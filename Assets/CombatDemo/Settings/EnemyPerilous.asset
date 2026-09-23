@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9fd5f7d9d24a51880a6c8c2a37f502, type: 3}
-  m_Name: EnemySlash
+  m_Name: EnemyPerilous
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAttackDefinition
   rules:
-    kind: 0
-    response: 0
-    startup: 0.45
-    active: 0.1
-    recovery: 0.45
-    damage: 10
-    maxDamage: 10
-    posture: 10
-    maxPosture: 10
-    block: 20
-    maxBlock: 20
-    deflectPosture: 30
+    kind: 4
+    response: 1
+    startup: 0.62
+    active: 0.14
+    recovery: 0.62
+    damage: 24
+    maxDamage: 24
+    posture: 36
+    maxPosture: 36
+    block: 48
+    maxBlock: 48
+    deflectPosture: 0
     cancelWindow: 0
-  clip: {fileID: -2807887025256620907, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
-  activeStart: 0.25
-  activeEnd: 0.38
-  trace: {fileID: 11400000, guid: d22377d09e8d577408d0bd4160760b60, type: 2}
+  clip: {fileID: 7400000, guid: 705f55bede31d33428f6389a93d0662b, type: 2}
+  activeStart: 0.18181817
+  activeEnd: 0.36363634
+  trace: {fileID: 11400000, guid: f49fbc48d534ab346bde7d49c1c0c116, type: 2}

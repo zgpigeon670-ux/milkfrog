@@ -2,24 +2,31 @@ using System;
 using UnityEngine;
 namespace Milkfrog.CombatDemo
 {
-    public enum AttackKind { Light, Thrust }
+    public enum AttackKind { Light, Thrust, Followup, Slow, Perilous }
+    public enum AttackResponse { Deflectable, DodgeOnly }
     [Serializable]
     public sealed class AttackParameters
     {
         public AttackKind kind;
+        public AttackResponse response;
         public float startup=.25f, active=.10f, recovery=.35f;
         public float damage=10, maxDamage=10, posture=10, maxPosture=10, block=20, maxBlock=20;
-        public AttackSnapshot Snapshot(float charge) => new AttackSnapshot(kind,startup,active,recovery,
-            Mathf.Lerp(damage,maxDamage,charge),Mathf.Lerp(posture,maxPosture,charge),Mathf.Lerp(block,maxBlock,charge));
+        public float deflectPosture=30;
+        public float cancelWindow=.16f;
+        public bool CanComboFrom;
+        public float comboWindow=.18f;
+        public AttackSnapshot Snapshot(float charge) => new AttackSnapshot(kind,response,startup,active,recovery,
+            Mathf.Lerp(damage,maxDamage,charge),Mathf.Lerp(posture,maxPosture,charge),Mathf.Lerp(block,maxBlock,charge),deflectPosture,cancelWindow);
         public static AttackParameters Thrust() => new AttackParameters {kind=AttackKind.Thrust,startup=.12f,active=.12f,recovery=.42f,maxDamage=22,maxPosture=28,maxBlock=35};
     }
     public readonly struct AttackSnapshot
     {
         public readonly AttackKind Kind;
-        public readonly float Startup,Active,Recovery,Damage,Posture,Block;
-        public AttackSnapshot(AttackKind kind,float startup,float active,float recovery,float damage,float posture,float block)
-        {Kind=kind;Startup=startup;Active=active;Recovery=recovery;Damage=damage;Posture=posture;Block=block;}
-        public static AttackSnapshot Light(CombatTuning t) => new AttackSnapshot(AttackKind.Light,t.startup,t.active,t.recovery,t.hitDamage,t.hitPosture,t.blockPosture);
+        public readonly AttackResponse Response;
+        public readonly float Startup,Active,Recovery,Damage,Posture,Block,DeflectPosture,CancelWindow;
+        public AttackSnapshot(AttackKind kind,AttackResponse response,float startup,float active,float recovery,float damage,float posture,float block,float deflectPosture,float cancelWindow)
+        {Kind=kind;Response=response;Startup=startup;Active=active;Recovery=recovery;Damage=damage;Posture=posture;Block=block;DeflectPosture=deflectPosture;CancelWindow=cancelWindow;}
+        public static AttackSnapshot Light(CombatTuning t) => new AttackSnapshot(AttackKind.Light,AttackResponse.Deflectable,t.startup,t.active,t.recovery,t.hitDamage,t.hitPosture,t.blockPosture,t.deflectPosture,.16f);
     }
     [CreateAssetMenu(menuName="Combat Demo/Attack Definition")]
     public sealed class CombatAttackDefinition : ScriptableObject

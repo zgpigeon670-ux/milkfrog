@@ -57,8 +57,8 @@ namespace Milkfrog.CombatDemo
             switch (next)
             {
                 case CombatState.Guard: color = new Color(.3f, .55f, 1); break;
-                case CombatState.AttackStartup: color = new Color(1, .72f, .15f); break;
-                case CombatState.AttackActive: color = new Color(1, .22f, .1f); break;
+                case CombatState.AttackStartup: color = actor.Core.ActiveAttack.Kind == AttackKind.Perilous ? new Color(1, .08f, .08f) : actor.Core.ActiveAttack.Kind == AttackKind.Slow ? new Color(1, .85f, .2f) : new Color(1, .72f, .15f); break;
+                case CombatState.AttackActive: color = actor.Core.ActiveAttack.Kind == AttackKind.Perilous ? new Color(.85f, 0, .05f) : new Color(1, .22f, .1f); break;
                 case CombatState.AttackRecovery: color = new Color(.6f, .42f, .2f); break;
                 case CombatState.HitStun: color = Color.magenta; break;
                 case CombatState.DeflectedStun: color = Color.white; break;

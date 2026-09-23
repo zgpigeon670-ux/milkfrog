@@ -17,8 +17,9 @@ namespace Milkfrog.CombatDemo
         public float hitDamage = 10, hitPosture = 10, blockPosture = 20, deflectPosture = 30;
         public float brokenDuration = 2, postureRecoveryDelay = 2, postureRecoveryRate = 15;
         public float dodgeDuration = .38f, dodgeMoveDuration = .24f, dodgeDistance = 1.6f;
-        public float invulnerableStart = .06f, invulnerableEnd = .18f;
+        public float invulnerableStart = .08f, invulnerableEnd = .16f;
         public float prepareThreshold = .18f, fullChargeTime = .80f;
+        public float recoveryCancel = .16f;
     }
 
     public readonly struct HitEvent
@@ -42,7 +43,7 @@ namespace Milkfrog.CombatDemo
         public float DeflectRemaining { get; private set; }
         public int AttackId { get; private set; }
         public AttackSnapshot ActiveAttack { get; private set; }
-        readonly AttackParameters lightDefinition, thrustDefinition;
+        readonly AttackParameters lightDefinition, thrustDefinition, followupDefinition;
         float chargeElapsed;
         public float ChargeElapsed => chargeElapsed;
         public float ChargeRatio => IsPreparing ? Math.Min(1,Math.Max(0,(chargeElapsed-Tuning.prepareThreshold)/Math.Max(.001f,Tuning.fullChargeTime-Tuning.prepareThreshold))) : 0;
@@ -54,6 +55,9 @@ namespace Milkfrog.CombatDemo
         public float DodgeElapsed => State == CombatState.Dodge ? StateDuration-Remaining : 0;
         public float DodgeProgress => State == CombatState.Dodge ? StateProgress : 0;
         public bool IsInvulnerable => State == CombatState.Dodge && DodgeElapsed >= Tuning.invulnerableStart-.000001f && DodgeElapsed < Tuning.invulnerableEnd-.000001f;
+        public bool CanCancelRecovery => State == CombatState.AttackRecovery && StateProgress * StateDuration <= ActiveAttack.CancelWindow + .000001f;
+        public float ComboRemaining { get; private set; }
+        public bool ComboOpen => ComboRemaining > 0;
         public event Action<CombatState, CombatState> StateChanged;
         public event Action<HitEvent> HitResolved;
         public event Action ActiveSample;
@@ -66,8 +70,8 @@ namespace Milkfrog.CombatDemo
         bool guardHeld;
         float sinceInteraction;
 
-        public CombatCore(CombatTuning tuning,AttackParameters light=null,AttackParameters thrust=null)
-        { Tuning = tuning; lightDefinition=light; thrustDefinition=thrust??AttackParameters.Thrust(); Reset(); }
+        public CombatCore(CombatTuning tuning,AttackParameters light=null,AttackParameters thrust=null,AttackParameters followup=null)
+        { Tuning = tuning; lightDefinition=light; thrustDefinition=thrust??AttackParameters.Thrust(); followupDefinition=followup; Reset(); }
 
         public void Reset()
         {
@@ -76,6 +80,7 @@ namespace Milkfrog.CombatDemo
             sinceInteraction = 0;
             AttackId = 0;
             chargeElapsed=ReleasedCharge=0;
+            ComboRemaining=0;
             ActiveAttack=lightDefinition!=null?lightDefinition.Snapshot(0):AttackSnapshot.Light(Tuning);
             hitTargets.Clear();
             Health = Tuning.maxHealth;
@@ -88,6 +93,7 @@ namespace Milkfrog.CombatDemo
             bool freshPress = pressed && !guardHeld;
             guardHeld = held;
             if (held && IsPreparing) CancelPreparation();
+            if (held) TryCancelRecovery();
             if (!CanAct) return;
             if (!held) { if (State == CombatState.Guard) Change(CombatState.Neutral); return; }
             if (State != CombatState.Guard) Change(CombatState.Guard);
@@ -98,6 +104,26 @@ namespace Milkfrog.CombatDemo
         {
             if (!CanAct) return false;
             BeginAttack(lightDefinition!=null?lightDefinition.Snapshot(0):AttackSnapshot.Light(Tuning),0);
+            return true;
+        }
+        public bool RequestFollowup()
+        {
+            if (!ComboOpen || followupDefinition == null) return false;
+            ComboRemaining = 0;
+            BeginAttack(followupDefinition.Snapshot(0),0);
+            return true;
+        }
+        public bool RequestDefinedAttack(AttackParameters definition)
+        {
+            if (!CanAct || definition == null) return false;
+            BeginAttack(definition.Snapshot(0),0);
+            return true;
+        }
+        public bool TryCancelRecovery()
+        {
+            if (!CanCancelRecovery) return false;
+            ComboRemaining = 0;
+            ReturnToReady();
             return true;
         }
         void BeginAttack(AttackSnapshot attack,float credit)
@@ -120,14 +146,15 @@ namespace Milkfrog.CombatDemo
         {
             if(!IsPreparing)return false;
             if(State==CombatState.AttackPrepare) BeginAttack(ActiveAttack,chargeElapsed);
-            else {ReleasedCharge=ChargeRatio;BeginAttack(thrustDefinition.Snapshot(ReleasedCharge),0);}
+            else {ReleasedCharge=ChargeRatio;BeginAttack((thrustDefinition??AttackParameters.Thrust()).Snapshot(ReleasedCharge),0);}
             return true;
         }
         public void CancelPreparation(){if(IsPreparing)ReturnToReady();}
 
         public bool RequestDodge()
         {
-            if (!CanAct && !IsPreparing) return false;
+            if (!CanAct && !IsPreparing && !TryCancelRecovery()) return false;
+            ComboRemaining = 0;
             Change(CombatState.Dodge,Tuning.dodgeDuration);
             return true;
         }
@@ -137,6 +164,7 @@ namespace Milkfrog.CombatDemo
             if (deltaTime < 0 || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime))
                 throw new ArgumentOutOfRangeException(nameof(deltaTime));
             if (State == CombatState.Dead) return;
+            ComboRemaining = Math.Max(0, ComboRemaining - deltaTime);
             float left = deltaTime;
             // Consume phase boundaries instead of skipping Active on a slow frame.
             for (int transitions = 0; transitions < 12; transitions++)
@@ -206,6 +234,10 @@ namespace Milkfrog.CombatDemo
             StateDuration = Remaining;
             DeflectRemaining = 0;
             if (next != CombatState.AttackActive && next != CombatState.AttackStartup) hitTargets.Clear();
+            if (previous == CombatState.AttackRecovery && (next == CombatState.Neutral || next == CombatState.Guard) && lightDefinition != null && lightDefinition.CanComboFrom && ActiveAttack.Kind == AttackKind.Light)
+                ComboRemaining = Math.Max(0, lightDefinition.comboWindow);
+            else if (next != CombatState.Neutral && next != CombatState.Guard) ComboRemaining = 0;
+            else if (previous != CombatState.AttackRecovery) ComboRemaining = 0;
             if (previous != next) StateChanged?.Invoke(previous, next);
         }
 
@@ -220,11 +252,11 @@ namespace Milkfrog.CombatDemo
         {
             sinceInteraction = defender.sinceInteraction = 0;
             HitResult result;
-            if (facing && defender.State == CombatState.Guard &&
+            if (ActiveAttack.Response != AttackResponse.DodgeOnly && facing && defender.State == CombatState.Guard &&
                 (defender.DeflectOpen || (defender.DeflectPolicy?.Invoke() ?? false)))
             {
                 result = HitResult.Deflect;
-                Posture = Math.Min(Tuning.maxPosture, Posture + Tuning.deflectPosture);
+                Posture = Math.Min(Tuning.maxPosture, Posture + ActiveAttack.DeflectPosture);
                 InterruptWithPriority(CombatState.DeflectedStun, Tuning.deflectedStun);
             }
             else if (facing && defender.State == CombatState.Guard)

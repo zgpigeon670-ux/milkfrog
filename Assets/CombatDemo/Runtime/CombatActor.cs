@@ -7,8 +7,28 @@ namespace Milkfrog.CombatDemo
     {
         public bool isPlayer;
         public CombatBladeTrace bladeTrace;
-        public CombatAttackDefinition lightAttack, thrustAttack;
-        public CombatAttackDefinition CurrentAttackDefinition => Core != null && Core.ActiveAttack.Kind==AttackKind.Thrust ? thrustAttack : lightAttack;
+        public CombatAttackDefinition lightAttack, thrustAttack, followupAttack, slowAttack, perilousAttack;
+        public CombatAttackDefinition CurrentAttackDefinition => AttackFor(Core == null ? AttackKind.Light : Core.ActiveAttack.Kind);
+        public CombatAttackDefinition AttackFor(AttackKind kind)
+        {
+            switch (kind)
+            {
+                case AttackKind.Thrust: return thrustAttack != null ? thrustAttack : lightAttack;
+                case AttackKind.Followup: return followupAttack != null ? followupAttack : lightAttack;
+                case AttackKind.Slow: return slowAttack != null ? slowAttack : lightAttack;
+                case AttackKind.Perilous: return perilousAttack != null ? perilousAttack : lightAttack;
+                default: return lightAttack;
+            }
+        }
+        public CombatAttackDefinition AttackFor(AttackPattern pattern)
+        {
+            switch (pattern)
+            {
+                case AttackPattern.Slow: return slowAttack != null ? slowAttack : lightAttack;
+                case AttackPattern.Perilous: return perilousAttack != null ? perilousAttack : lightAttack;
+                default: return lightAttack;
+            }
+        }
         CombatBladeTrace CurrentTrace => CurrentAttackDefinition != null ? CurrentAttackDefinition.trace : bladeTrace;
         public LayerMask combatMask = ~0;
         public float maxTargetHeightDifference = .9f;
@@ -30,7 +50,7 @@ namespace Milkfrog.CombatDemo
             Motor = GetComponent<CharacterController>();
             spawnPosition = transform.position;
             spawnRotation = transform.rotation;
-            Core = new CombatCore(tuning,lightAttack!=null?lightAttack.rules:null,thrustAttack!=null?thrustAttack.rules:null);
+            Core = new CombatCore(tuning,lightAttack!=null?lightAttack.rules:null,thrustAttack!=null?thrustAttack.rules:null,followupAttack!=null?followupAttack.rules:null);
             Core.ActiveSample += SampleAttack;
             Core.ActiveInterval += SweepBlade;
             Core.DodgeInterval += MoveDodge;
@@ -39,7 +59,7 @@ namespace Milkfrog.CombatDemo
             DodgeDirection = -transform.forward;
             if (bladeTrace != null && !bladeTrace.IsValid)
                 Debug.LogError("Rebake the blade trace after changing its attack clip or phase markers.", this);
-            foreach(var attack in new[]{lightAttack,thrustAttack})
+            foreach(var attack in new[]{lightAttack,thrustAttack,followupAttack,slowAttack,perilousAttack})
                 if(attack!=null && !TraceMatches(attack))Debug.LogError("Rebake the trace for "+attack.name+" after changing its clip or phase markers.",this);
         }
 

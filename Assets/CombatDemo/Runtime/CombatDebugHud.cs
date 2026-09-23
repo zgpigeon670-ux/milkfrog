@@ -27,7 +27,7 @@ namespace Milkfrog.CombatDemo
                 actorText[i * 3 + 2] = "Deflect window: " + (core.DeflectOpen ? "OPEN " : "closed ") + core.DeflectRemaining.ToString("F3") + "s    Attack #" + core.AttackId;
             }
             lastEvent = "Last event: " + session.LastHit;
-            decision = "Mode: " + session.mode + "    AI: " + session.Brain.Decision + "    Blocks: " + session.Brain.Blocks + "/" + session.settings.blocksBeforeDeflect + "    Wait: " + session.Brain.WaitRemaining.ToString("F2");
+            decision = "Mode: " + session.mode + "    Lock: " + (session.LockedOn ? "ON" : "OFF") + "    AI: " + session.Brain.Decision + "    Next: " + session.Brain.NextPattern + "    Blocks: " + session.Brain.Blocks + "/" + session.settings.blocksBeforeDeflect + "    Wait: " + session.Brain.WaitRemaining.ToString("F2");
         }
         void OnGUI()
         {
@@ -51,7 +51,7 @@ namespace Milkfrog.CombatDemo
 
             float bottom = Screen.height / scale - 138;
             Panel(new Rect(16, bottom, 1068, 122));
-            GUI.Label(new Rect(32, bottom + 10, 1000, 24), "WASD Move    LMB Attack / Deathblow    RMB Guard / Deflect    R Reset    F1 Mode    F2 HUD", text);
+            GUI.Label(new Rect(32, bottom + 10, 1000, 24), "WASD Move    TAB Lock    LMB Attack / Combo    RMB Guard    SPACE Dodge    R Reset    F1 Mode    F2 HUD", text);
             GUI.Label(new Rect(32, bottom + 38, 1000, 24), decision, text);
             GUI.Label(new Rect(32, bottom + 65, 1000, 22), "Gold = Startup | Red = Active | Brown = Recovery | Blue = Guard | Pink = Broken | White = Deflected", small);
             GUI.Label(new Rect(32, bottom + 88, 1000, 22), "Duel: attack twice into guard; the third attack is deflected. Release and tap RMB just before the counter lands.", small);
