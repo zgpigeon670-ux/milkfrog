@@ -46,10 +46,15 @@ namespace Milkfrog.CombatDemo.Editor
                 var flashMaterial = Material("Impact", new Color(1,.8f,.2f), true);
                 session.playerAnimation = Humanoid(session.player, profile, bodyMaterial, swordMaterial, gripMaterial, flashMaterial);
                 session.enemyAnimation = Humanoid(session.enemy, profile, bodyMaterial, swordMaterial, gripMaterial, flashMaterial);
+                var trace = CombatBladeTraceBaker.Bake(session.playerAnimation);
+                session.player.bladeTrace = session.enemy.bladeTrace = trace;
+                session.player.transform.position = new Vector3(0,.02f,-.625f);
+                session.enemy.transform.position = new Vector3(0,.02f,.625f);
                 var rig = session.gameplayCamera.GetComponent<DemoCamera>(); rig.avoidObstacles = true; rig.offset = new Vector3(3.3f, 3.4f, -5.4f);
                 session.gameplayCamera.fieldOfView = 48;
                 var feedback = session.gameObject.AddComponent<CombatFeedback>();
                 feedback.session = session; feedback.cameraRig = rig; feedback.flashMaterial = flashMaterial; session.feedback = feedback;
+                CombatPresentationUpgrade.Configure(session);
                 EditorSceneManager.SaveScene(scene, ScenePath);
                 AssetDatabase.SaveAssets();
                 Debug.Log("[CombatDemo] Created animated humanoid scene.");
@@ -116,8 +121,8 @@ namespace Milkfrog.CombatDemo.Editor
             sword.transform.localPosition = new Vector3(0, .04f, 0); sword.transform.localRotation = Quaternion.Euler(0, 0, 90);
             Piece(sword.transform, "Grip", Vector3.zero, new Vector3(.035f,.2f,.045f), grip);
             Piece(sword.transform, "Guard", Vector3.up*.12f, new Vector3(.24f,.035f,.065f), steel);
-            Piece(sword.transform, "Blade", Vector3.up*.54f, new Vector3(.06f,.8f,.018f), steel);
-            var tip = new GameObject("Sword Trail", typeof(TrailRenderer)); tip.transform.SetParent(sword.transform, false); tip.transform.localPosition = Vector3.up*.94f;
+            Piece(sword.transform, "Blade", Vector3.up*.64f, new Vector3(.06f,1,.018f), steel);
+            var tip = new GameObject("Sword Trail", typeof(TrailRenderer)); tip.transform.SetParent(sword.transform, false); tip.transform.localPosition = Vector3.up*1.14f;
             var trail = tip.GetComponent<TrailRenderer>(); trail.sharedMaterial = trailMaterial; trail.time = .09f; trail.startWidth = .07f; trail.endWidth = 0; trail.emitting = false;
             presenter.swordTrail = trail;
             return presenter;
@@ -134,3 +139,4 @@ namespace Milkfrog.CombatDemo.Editor
         }
     }
 }
+

@@ -8,12 +8,16 @@ namespace Milkfrog.CombatDemo
         public Vector3 offset = new Vector3(3, 5, -7);
         public float smooth = 8;
         public bool avoidObstacles;
+        public bool followBehindPlayer;
+        [Range(0, .5f)] public float enemyFocusWeight = .2f;
+        public float headingSmooth = 7;
         public float collisionRadius = .25f;
         public LayerMask obstacleMask = ~0;
         readonly RaycastHit[] hits = new RaycastHit[32];
         float impulse, phase;
         Vector3 stablePosition;
         bool positioned;
+        Quaternion heading;
         public void Impulse(float strength) => impulse = Mathf.Max(impulse, Mathf.Clamp(strength, 0, .15f));
         public void ResetImpulse() { impulse = phase = 0; positioned = false; }
 
@@ -33,14 +37,18 @@ namespace Milkfrog.CombatDemo
             return focus + delta.normalized * clear;
         }
 
-        void LateUpdate()
+        void LateUpdate() => Step(Time.unscaledDeltaTime);
+
+        public void Step(float dt)
         {
             if (player == null || enemy == null) return;
-            float dt = Time.unscaledDeltaTime;
-            Vector3 focus = Vector3.Lerp(player.position, enemy.position, .45f) + Vector3.up * 1.1f;
+            Vector3 focus = Vector3.Lerp(player.position, enemy.position, followBehindPlayer ? enemyFocusWeight : .45f) + Vector3.up * 1.2f;
+            var forward = Vector3.ProjectOnPlane(player.forward, Vector3.up);
+            var targetHeading = forward.sqrMagnitude > .001f ? Quaternion.LookRotation(forward) : Quaternion.identity;
+            heading = positioned ? Quaternion.Slerp(heading, targetHeading, 1 - Mathf.Exp(-headingSmooth * dt)) : targetHeading;
             float framing = avoidObstacles ? Mathf.Clamp(Vector3.Distance(player.position, enemy.position) / 4, 1, 1.6f) : 1;
-            Vector3 desired = focus + offset * framing;
-            if (!positioned) { stablePosition = transform.position; positioned = true; }
+            Vector3 desired = focus + (followBehindPlayer ? heading * offset : offset) * framing;
+            if (!positioned) { stablePosition = desired; positioned = true; }
             stablePosition = Vector3.Lerp(stablePosition, desired, 1 - Mathf.Exp(-smooth * dt));
             stablePosition = ConstrainPosition(focus, stablePosition);
             phase += dt * 110;

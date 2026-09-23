@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Milkfrog.CombatDemo
 {
-    public enum CombatState { Neutral, Guard, AttackStartup, AttackActive, AttackRecovery, HitStun, DeflectedStun, PostureBroken, Dead }
+    public enum CombatState { Neutral, Guard, AttackStartup, AttackActive, AttackRecovery, HitStun, DeflectedStun, PostureBroken, Dead, AttackPrepare, Charging, Dodge }
     public enum HitResult { Ignore, Hit, Block, Deflect, Deathblow }
     public enum EnemyMode { Dummy, Rhythm, Duel }
 
@@ -16,6 +16,9 @@ namespace Milkfrog.CombatDemo
         public float deflectWindow = .15f, hitStun = .30f, deflectedStun = .20f;
         public float hitDamage = 10, hitPosture = 10, blockPosture = 20, deflectPosture = 30;
         public float brokenDuration = 2, postureRecoveryDelay = 2, postureRecoveryRate = 15;
+        public float dodgeDuration = .38f, dodgeMoveDuration = .24f, dodgeDistance = 1.6f;
+        public float invulnerableStart = .06f, invulnerableEnd = .18f;
+        public float prepareThreshold = .18f, fullChargeTime = .80f;
     }
 
     public readonly struct HitEvent
@@ -38,19 +41,33 @@ namespace Milkfrog.CombatDemo
         public float StateProgress => StateDuration <= 0 ? 0 : Math.Min(1, Math.Max(0, 1 - Remaining / StateDuration));
         public float DeflectRemaining { get; private set; }
         public int AttackId { get; private set; }
+        public AttackSnapshot ActiveAttack { get; private set; }
+        readonly AttackParameters lightDefinition, thrustDefinition;
+        float chargeElapsed;
+        public float ChargeElapsed => chargeElapsed;
+        public float ChargeRatio => IsPreparing ? Math.Min(1,Math.Max(0,(chargeElapsed-Tuning.prepareThreshold)/Math.Max(.001f,Tuning.fullChargeTime-Tuning.prepareThreshold))) : 0;
+        public float ReleasedCharge { get; private set; }
         public bool CanAct => State == CombatState.Neutral || State == CombatState.Guard;
         public bool IsAttacking => State == CombatState.AttackStartup || State == CombatState.AttackActive || State == CombatState.AttackRecovery;
         public bool DeflectOpen => State == CombatState.Guard && DeflectRemaining > 0;
+        public bool IsPreparing => State == CombatState.AttackPrepare || State == CombatState.Charging;
+        public float DodgeElapsed => State == CombatState.Dodge ? StateDuration-Remaining : 0;
+        public float DodgeProgress => State == CombatState.Dodge ? StateProgress : 0;
+        public bool IsInvulnerable => State == CombatState.Dodge && DodgeElapsed >= Tuning.invulnerableStart-.000001f && DodgeElapsed < Tuning.invulnerableEnd-.000001f;
         public event Action<CombatState, CombatState> StateChanged;
         public event Action<HitEvent> HitResolved;
         public event Action ActiveSample;
+        // Covers the complete active interval, including its endpoint on a slow frame.
+        public event Action<float, float> ActiveInterval;
+        public event Action<float, float> DodgeInterval;
         // AI may select a parry opportunity, but cannot bypass the shared facing/Guard checks.
         public Func<bool> DeflectPolicy;
         readonly HashSet<CombatCore> hitTargets = new HashSet<CombatCore>();
         bool guardHeld;
         float sinceInteraction;
 
-        public CombatCore(CombatTuning tuning) { Tuning = tuning; Reset(); }
+        public CombatCore(CombatTuning tuning,AttackParameters light=null,AttackParameters thrust=null)
+        { Tuning = tuning; lightDefinition=light; thrustDefinition=thrust??AttackParameters.Thrust(); Reset(); }
 
         public void Reset()
         {
@@ -58,6 +75,8 @@ namespace Milkfrog.CombatDemo
             DeflectRemaining = 0;
             sinceInteraction = 0;
             AttackId = 0;
+            chargeElapsed=ReleasedCharge=0;
+            ActiveAttack=lightDefinition!=null?lightDefinition.Snapshot(0):AttackSnapshot.Light(Tuning);
             hitTargets.Clear();
             Health = Tuning.maxHealth;
             Posture = 0;
@@ -68,6 +87,7 @@ namespace Milkfrog.CombatDemo
         {
             bool freshPress = pressed && !guardHeld;
             guardHeld = held;
+            if (held && IsPreparing) CancelPreparation();
             if (!CanAct) return;
             if (!held) { if (State == CombatState.Guard) Change(CombatState.Neutral); return; }
             if (State != CombatState.Guard) Change(CombatState.Guard);
@@ -77,9 +97,38 @@ namespace Milkfrog.CombatDemo
         public bool RequestAttack()
         {
             if (!CanAct) return false;
+            BeginAttack(lightDefinition!=null?lightDefinition.Snapshot(0):AttackSnapshot.Light(Tuning),0);
+            return true;
+        }
+        void BeginAttack(AttackSnapshot attack,float credit)
+        {
+            ActiveAttack=attack;
             hitTargets.Clear();
             AttackId++;
-            Change(CombatState.AttackStartup, Tuning.startup);
+            Change(CombatState.AttackStartup,attack.Startup);
+            Remaining=Math.Max(0,Remaining-credit);
+        }
+        public bool BeginPreparation()
+        {
+            if(!CanAct)return false;
+            guardHeld=false; chargeElapsed=ReleasedCharge=0;
+            ActiveAttack=lightDefinition!=null?lightDefinition.Snapshot(0):AttackSnapshot.Light(Tuning);
+            Change(CombatState.AttackPrepare,Tuning.prepareThreshold);
+            return true;
+        }
+        public bool ReleaseAttack()
+        {
+            if(!IsPreparing)return false;
+            if(State==CombatState.AttackPrepare) BeginAttack(ActiveAttack,chargeElapsed);
+            else {ReleasedCharge=ChargeRatio;BeginAttack(thrustDefinition.Snapshot(ReleasedCharge),0);}
+            return true;
+        }
+        public void CancelPreparation(){if(IsPreparing)ReturnToReady();}
+
+        public bool RequestDodge()
+        {
+            if (!CanAct && !IsPreparing) return false;
+            Change(CombatState.Dodge,Tuning.dodgeDuration);
             return true;
         }
 
@@ -93,20 +142,38 @@ namespace Milkfrog.CombatDemo
             for (int transitions = 0; transitions < 12; transitions++)
             {
                 if (CanAct) { AdvanceClock(left); return; }
+                if (State==CombatState.Charging)
+                {
+                    chargeElapsed=Math.Min(Tuning.fullChargeTime,chargeElapsed+left);
+                    if(Tuning.fullChargeTime-chargeElapsed<.000001f)chargeElapsed=Tuning.fullChargeTime;
+                    Remaining=Math.Max(0,Tuning.fullChargeTime-chargeElapsed);
+                    AdvanceClock(left);return;
+                }
                 if (State == CombatState.AttackActive)
                 {
                     ActiveSample?.Invoke();
                     if (State != CombatState.AttackActive) return;
                 }
                 float consumed = Math.Min(left, Remaining);
+                if(State==CombatState.AttackPrepare)chargeElapsed+=consumed;
+                float activeFrom = StateProgress;
+                float dodgeFrom = DodgeElapsed;
                 AdvanceClock(consumed);
                 Remaining = Math.Max(0, Remaining - consumed);
+                if(Remaining < .000001f)Remaining=0;
                 left = Math.Max(0, left - consumed);
+                if (State == CombatState.Dodge) DodgeInterval?.Invoke(dodgeFrom,DodgeElapsed);
+                if (State == CombatState.AttackActive)
+                {
+                    ActiveInterval?.Invoke(activeFrom, StateProgress);
+                    if (State != CombatState.AttackActive) return;
+                }
                 if (Remaining > 0) return;
                 switch (State)
                 {
-                    case CombatState.AttackStartup: Change(CombatState.AttackActive, Tuning.active); break;
-                    case CombatState.AttackActive: Change(CombatState.AttackRecovery, Tuning.recovery); break;
+                    case CombatState.AttackPrepare: Change(CombatState.Charging,Math.Max(0,Tuning.fullChargeTime-Tuning.prepareThreshold)); break;
+                    case CombatState.AttackStartup: Change(CombatState.AttackActive, ActiveAttack.Active); break;
+                    case CombatState.AttackActive: Change(CombatState.AttackRecovery, ActiveAttack.Recovery); break;
                     case CombatState.PostureBroken: Posture = 0; ReturnToReady(); break;
                     case CombatState.Dead: return;
                     default: ReturnToReady(); break;
@@ -134,6 +201,7 @@ namespace Milkfrog.CombatDemo
         {
             var previous = State;
             State = next;
+            if(next!=CombatState.AttackPrepare && next!=CombatState.Charging)chargeElapsed=0;
             Remaining = Math.Max(0, duration);
             StateDuration = Remaining;
             DeflectRemaining = 0;
@@ -144,7 +212,7 @@ namespace Milkfrog.CombatDemo
         public HitResult TryHit(CombatCore defender, bool defenderFacingAttacker)
         {
             if (State != CombatState.AttackActive || defender == null || defender == this ||
-                defender.State == CombatState.Dead || !hitTargets.Add(defender)) return HitResult.Ignore;
+                defender.State == CombatState.Dead || defender.IsInvulnerable || !hitTargets.Add(defender)) return HitResult.Ignore;
             return ResolveHit(defender, defenderFacingAttacker);
         }
 
@@ -162,15 +230,15 @@ namespace Milkfrog.CombatDemo
             else if (facing && defender.State == CombatState.Guard)
             {
                 result = HitResult.Block;
-                defender.Posture = Math.Min(defender.Tuning.maxPosture, defender.Posture + Tuning.blockPosture);
+                defender.Posture = Math.Min(defender.Tuning.maxPosture, defender.Posture + ActiveAttack.Block);
                 if (defender.Posture >= defender.Tuning.maxPosture)
                     defender.InterruptWithPriority(CombatState.HitStun, defender.Tuning.hitStun);
             }
             else
             {
                 result = HitResult.Hit;
-                defender.Health = Math.Max(0, defender.Health - Tuning.hitDamage);
-                defender.Posture = Math.Min(defender.Tuning.maxPosture, defender.Posture + Tuning.hitPosture);
+                defender.Health = Math.Max(0, defender.Health - ActiveAttack.Damage);
+                defender.Posture = Math.Min(defender.Tuning.maxPosture, defender.Posture + ActiveAttack.Posture);
                 defender.InterruptWithPriority(CombatState.HitStun, defender.Tuning.hitStun);
             }
             Emit(defender, result);

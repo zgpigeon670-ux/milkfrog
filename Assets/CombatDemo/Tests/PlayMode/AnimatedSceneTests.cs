@@ -63,7 +63,7 @@ namespace Milkfrog.CombatDemo.Tests
         [UnityTest] public IEnumerator InterruptedAttackCannotLeaveDamageOrTrail()
         {
             session.SetMode(EnemyMode.Dummy);
-            session.enemy.Core.RequestAttack(); Advance(.3f); Attack(); Advance(.18f);
+            session.enemy.Core.RequestAttack(); Advance(.3f); Attack(); Advance(.24f);
             Assert.That(session.player.Core.State, Is.EqualTo(CombatState.HitStun));
             Assert.That(session.playerAnimation.swordTrail.emitting, Is.False);
             Advance(.5f); Assert.That(session.enemy.Core.Health, Is.EqualTo(100));
@@ -102,11 +102,15 @@ namespace Milkfrog.CombatDemo.Tests
             var events = new List<HitResult>(); session.CombatEvent += hit => events.Add(hit.Result);
             session.SetMode(EnemyMode.Duel); Advance(.01f,fps);
             Attack(); Advance(.72f,fps); Attack(); Advance(.72f,fps);
-            Attack(); Advance(.27f,fps); Advance(.48f,fps);
+            Attack();
+            Until(() => session.player.Core.State == CombatState.DeflectedStun, fps);
+            Until(() => session.enemy.Core.State == CombatState.AttackStartup && session.enemy.Core.Remaining <= .08f, fps);
             Assert.That(session.enemy.Core.State, Is.EqualTo(CombatState.AttackStartup));
-            session.SubmitInput(Vector2.zero,true,true,false); Advance(.12f,fps);
+            session.SubmitInput(Vector2.zero,true,true,false);
+            Until(() => session.enemy.Core.State == CombatState.DeflectedStun, fps);
             Assert.That(session.enemy.Core.State, Is.EqualTo(CombatState.DeflectedStun));
-            session.SubmitInput(Vector2.zero,false,false,false); Advance(.26f,fps);
+            session.SubmitInput(Vector2.zero,false,false,false);
+            Until(() => session.enemy.Core.CanAct && !session.IsFrozen, fps);
             Attack(); Advance(.72f,fps); Attack(); Advance(.72f,fps);
             Assert.That(session.enemy.Core.State, Is.EqualTo(CombatState.PostureBroken));
             Attack(); Assert.That(session.enemy.Core.State, Is.EqualTo(CombatState.Dead));
@@ -114,6 +118,11 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(events, Is.EqualTo(new[] { HitResult.Block,HitResult.Block,HitResult.Deflect,HitResult.Deflect,HitResult.Block,HitResult.Block,HitResult.Deathblow }));
             Assert.That(session.enemyAnimation.animator.GetBoneTransform(HumanBodyBones.Head).position.y, Is.LessThan(1), "Death pose should lie down.");
             for (int i=0;i<5;i++) { session.ResetRound(); Assert.That(session.IsFrozen,Is.False); Assert.That(session.Brain.Blocks,Is.Zero); Assert.That(session.player.Core.AttackId,Is.Zero); }
+        }
+        void Until(System.Func<bool> condition, int fps)
+        {
+            for (int i = 0; i < fps * 3 && !condition(); i++) session.Simulate(1f / fps);
+            Assert.That(condition(), Is.True, "Combat exchange did not reach its expected state within 3 seconds.");
         }
     }
 }

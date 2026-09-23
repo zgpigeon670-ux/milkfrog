@@ -13,18 +13,38 @@ namespace Milkfrog.CombatDemo
         MaterialPropertyBlock colors;
         public bool cacheLabels = true;
         public bool retainFactionColor;
+        public bool diagnosticsOnly;
+        CombatDebugHud debugHud;
         Color stateColor;
-        float flashRemaining;
+        Color flashColor;
+        float flashRemaining, flashDuration;
+        public float FlashAmount => flashDuration > 0 ? Mathf.Clamp01(flashRemaining / flashDuration) : 0;
         CombatState shownState = (CombatState)(-1);
         bool shownWindow;
-        public void Flash(Color color, float duration) { flashRemaining = duration; if (colors != null) Paint(body, color); }
-        public void ResetFlash() { flashRemaining = 0; if (colors != null) Paint(body, stateColor); }
+        public void Flash(Color color, float duration)
+        {
+            flashColor = color; flashDuration = flashRemaining = Mathf.Max(.001f, duration); PaintBody();
+        }
+        public void TickFlash(float dt) { if (flashRemaining <= 0) return; flashRemaining = Mathf.Max(0, flashRemaining - dt); PaintBody(); }
+        public void ResetFlash() { flashRemaining = flashDuration = 0; PaintBody(); }
+        void PaintBody()
+        {
+            if (body == null || colors == null) return;
+            colors.Clear();
+            bool shaderFlash = body.sharedMaterial != null && body.sharedMaterial.HasProperty("_FlashAmount");
+            colors.SetColor(BaseColor, shaderFlash ? stateColor : Color.Lerp(stateColor, flashColor, FlashAmount));
+            colors.SetColor(ColorId, stateColor);
+            colors.SetFloat("_FlashAmount", Mathf.Sqrt(FlashAmount));
+            colors.SetColor("_FlashColor", flashColor);
+            body.SetPropertyBlock(colors);
+        }
         static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
         static readonly int ColorId = Shader.PropertyToID("_Color");
 
         void Start()
         {
             colors = new MaterialPropertyBlock();
+            debugHud = FindFirstObjectByType<CombatDebugHud>();
             actor.Core.StateChanged += OnState;
             OnState(actor.Core.State, actor.Core.State);
         }
@@ -46,13 +66,14 @@ namespace Milkfrog.CombatDemo
                 case CombatState.Dead: color = new Color(.2f, .22f, .25f); break;
             }
             stateColor = retainFactionColor ? (actor.isPlayer ? new Color(.25f, .8f, .95f) : new Color(.95f, .35f, .3f)) : color;
-            if (flashRemaining <= 0) Paint(body, stateColor);
+            PaintBody();
             if (attackRenderer != null) Paint(attackRenderer, color);
         }
 
         void Paint(Renderer target, Color color)
         {
             if (target == null) return;
+            colors.Clear();
             colors.SetColor(BaseColor, color);
             colors.SetColor(ColorId, color);
             target.SetPropertyBlock(colors);
@@ -61,8 +82,9 @@ namespace Milkfrog.CombatDemo
         void LateUpdate()
         {
             if (actor.Core == null) return;
-            if (flashRemaining > 0) { flashRemaining -= Time.unscaledDeltaTime; if (flashRemaining <= 0) Paint(body, stateColor); }
-            bool attacking = actor.Core.IsAttacking;
+            bool diagnostics = !diagnosticsOnly || (debugHud != null && debugHud.showDebug);
+            label.gameObject.SetActive(diagnostics);
+            bool attacking = diagnostics && actor.Core.IsAttacking;
             attackMarker.gameObject.SetActive(attacking);
             if (attacking)
             {

@@ -22,8 +22,22 @@ MonoBehaviour:
   parry: {fileID: 7400000, guid: f1bd6f2b2236ab140a34a2bbd29c16ab, type: 2}
   deflected: {fileID: 7400000, guid: 5c64f482cd0bdbe43a04d469b4d84258, type: 2}
   broken: {fileID: 7400000, guid: 1a07466cdf448a14494a68ef252d07ca, type: 2}
+  walkBack: {fileID: 7400000, guid: eec3d82c468194f42862ea502ba18d54, type: 2}
+  jogBack: {fileID: 7400000, guid: 820dc11e17dd7a84889835d2263841c9, type: 2}
+  walkLeft: {fileID: 7400000, guid: a23a033f6edf7c341a4a5d0904f0b87e, type: 2}
+  jogLeft: {fileID: 7400000, guid: bdaeaab344e0a1949bf267c1e41b69ed, type: 2}
+  walkRight: {fileID: 7400000, guid: ef209e8b85f4f8148be74b84de1c97d6, type: 2}
+  jogRight: {fileID: 7400000, guid: f32d66ed6af8d5343abc60021e416794, type: 2}
+  dodgeForward: {fileID: 7400000, guid: 1c5648360db274842b99a9e4a58e0137, type: 2}
+  dodgeBack: {fileID: 7400000, guid: ed41e50da1c9e5546927f9c73af1f0d4, type: 2}
+  dodgeLeft: {fileID: 7400000, guid: b38dff555daf7d14da833c4c7159925a, type: 2}
+  dodgeRight: {fileID: 7400000, guid: 7f8d195ace848de4f917ea4f0013ccf5, type: 2}
+  charge: {fileID: 7400000, guid: bd62e7970d0b2af43abce7820be27fe5, type: 2}
+  thrust: {fileID: 7400000, guid: 705f55bede31d33428f6389a93d0662b, type: 2}
   attackActiveStart: 0.25
   attackActiveEnd: 0.38
   blendTime: 0.07
   walkSpeed: 1.5
   jogSpeed: 4
+  walkStrideLengths: {x: 1.2, y: 1.3098289, z: 1.2562774, w: 1.2562418}
+  jogStrideLengths: {x: 1.8, y: 1.8640125, z: 1.8391101, w: 1.841253}

@@ -79,16 +79,27 @@ namespace Milkfrog.CombatDemo.Editor
                 if (stage >= 2)
                 {
                     session.SubmitInput(Vector2.zero,false,false,true); session.Simulate(.72f);
-                    session.SubmitInput(Vector2.zero,false,false,true); session.Simulate(.27f);
+                    session.SubmitInput(Vector2.zero,false,false,true);
+                    Until(() => session.player.Core.State == CombatState.DeflectedStun);
+                    Until(() => session.enemy.Core.State == CombatState.AttackStartup && session.enemy.Core.Remaining <= .08f);
+                    session.SubmitInput(Vector2.zero,true,true,false);
+                    Until(() => session.enemy.Core.State == CombatState.DeflectedStun);
                 }
                 if (stage == 3)
                 {
-                    session.Simulate(.48f); session.SubmitInput(Vector2.zero,true,true,false); session.Simulate(.12f);
-                    session.SubmitInput(Vector2.zero,false,false,false); session.Simulate(.26f);
+                    session.SubmitInput(Vector2.zero,false,false,false);
+                    Until(() => session.enemy.Core.CanAct && !session.IsFrozen);
                     session.SubmitInput(Vector2.zero,false,false,true); session.Simulate(.72f);
                     session.SubmitInput(Vector2.zero,false,false,true); session.Simulate(.72f);
                 }
+                Debug.Log("[CombatDemo] Capture stage " + stage + ": player=" + session.player.Core.State + " enemy=" + session.enemy.Core.State);
             }
+        }
+
+        static void Until(Func<bool> condition)
+        {
+            for (int i = 0; i < 360 && !condition(); i++) session.Simulate(1f / 120);
+            if (!condition()) throw new InvalidOperationException("Capture could not reach the expected combat state.");
         }
 
         static void Finish(int code)

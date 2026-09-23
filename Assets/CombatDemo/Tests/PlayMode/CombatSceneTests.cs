@@ -194,11 +194,13 @@ namespace Milkfrog.CombatDemo.Tests
             var reader = new DemoInput();
             try
             {
-                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W, Key.R, Key.F1));
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W, Key.R, Key.F1, Key.Space));
                 InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 3 });
                 InputSystem.Update();
                 Assert.That(reader.Move.y, Is.EqualTo(1));
                 Assert.That(reader.AttackPressed, Is.True);
+                Assert.That(reader.Snapshot.dodgePressed,Is.True);
+                Assert.That(reader.Snapshot.attackHeld,Is.True);
                 Assert.That(reader.GuardPressed, Is.True);
                 Assert.That(reader.GuardHeld, Is.True);
                 Assert.That(reader.ResetPressed, Is.True);
@@ -207,9 +209,12 @@ namespace Milkfrog.CombatDemo.Tests
                 Assert.That(reader.GuardHeld, Is.True);
                 Assert.That(reader.GuardPressed, Is.False);
                 Assert.That(reader.AttackPressed, Is.False);
+                Assert.That(reader.Snapshot.dodgePressed,Is.False);
                 InputSystem.QueueStateEvent(mouse, new MouseState());
                 InputSystem.QueueStateEvent(keyboard, new KeyboardState());
                 yield return null;
+                Assert.That(reader.Snapshot.attackReleased,Is.True);
+                Assert.That(reader.Snapshot.attackHeld,Is.False);
                 Assert.That(reader.GuardHeld, Is.False);
                 Assert.That(reader.Move, Is.EqualTo(Vector2.zero));
             }
