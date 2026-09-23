@@ -12,6 +12,66 @@ namespace Milkfrog.CombatDemo.Editor
     public static class CombatMotionAuthoring
     {
         const string Root = "Assets/CombatDemo/Animations/Directional";
+        public static void BuildActions()
+        {
+            if(!Application.isBatchMode)throw new InvalidOperationException("Run in a validation copy.");
+            var scene=EditorSceneManager.OpenScene(AnimatedDemoBuilder.ScenePath);
+            var session=UnityEngine.Object.FindFirstObjectByType<CombatDemoSession>();var presenter=session.playerAnimation;var p=presenter.profile;
+            p.dodgeForward=Dodge(presenter,"Dodge_Forward",Vector3.forward);
+            p.dodgeBack=Dodge(presenter,"Dodge_Back",Vector3.back);
+            p.dodgeLeft=Dodge(presenter,"Dodge_Left",Vector3.left);
+            p.dodgeRight=Dodge(presenter,"Dodge_Right",Vector3.right);
+            p.charge=Author(presenter,"Charge_Thrust",.62f,false,(anim,t)=>ThrustPose(presenter,t/.62f,0));
+            p.thrust=Author(presenter,"Sword_Thrust",.66f,false,(anim,t)=>
+            {
+                float extension=t<.12f?Mathf.Lerp(0,.15f,t/.12f):t<.24f?Mathf.Lerp(.15f,1,(t-.12f)/.12f):1-Mathf.SmoothStep(0,1,(t-.24f)/.42f);
+                ThrustPose(presenter,1,extension);
+            });
+            var light=Definition("PlayerSlash");light.rules=new AttackParameters();light.clip=p.attack;light.activeStart=p.attackActiveStart;light.activeEnd=p.attackActiveEnd;light.trace=session.player.bladeTrace;
+            var enemyLight=Definition("EnemySlash");enemyLight.rules=new AttackParameters{startup=.45f,recovery=.45f};enemyLight.clip=p.attack;enemyLight.activeStart=p.attackActiveStart;enemyLight.activeEnd=p.attackActiveEnd;enemyLight.trace=session.enemy.bladeTrace;
+            var thrust=Definition("PlayerThrust");thrust.rules=AttackParameters.Thrust();thrust.clip=p.thrust;thrust.activeStart=.12f/.66f;thrust.activeEnd=.24f/.66f;
+            thrust.trace=CombatBladeTraceBaker.Bake(presenter,thrust,"Assets/CombatDemo/Animations/ThrustBladeTrace.asset");
+            session.player.lightAttack=light;session.player.thrustAttack=thrust;session.enemy.lightAttack=enemyLight;
+            EditorUtility.SetDirty(p);EditorUtility.SetDirty(light);EditorUtility.SetDirty(enemyLight);EditorUtility.SetDirty(thrust);
+            EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();Debug.Log("[Phase3] Authored four dodges, charge and thrust; baked independent thrust trace.");
+        }
+        static CombatAttackDefinition Definition(string name)
+        {
+            string path="Assets/CombatDemo/Settings/"+name+".asset";
+            var definition=AssetDatabase.LoadAssetAtPath<CombatAttackDefinition>(path);
+            if(definition==null){definition=ScriptableObject.CreateInstance<CombatAttackDefinition>();AssetDatabase.CreateAsset(definition,path);}return definition;
+        }
+        static AnimationClip Dodge(CombatAnimationPresenter p,string name,Vector3 direction)
+        {
+            return Author(p,name,.38f,false,(anim,t)=>
+            {
+                float phase=t/.38f,pulse=Mathf.Sin(phase*Mathf.PI);
+                for(int side=0;side<2;side++)
+                {
+                    bool left=side==0;
+                    var hip=anim.GetBoneTransform(left?HumanBodyBones.LeftUpperLeg:HumanBodyBones.RightUpperLeg);
+                    var knee=anim.GetBoneTransform(left?HumanBodyBones.LeftLowerLeg:HumanBodyBones.RightLowerLeg);
+                    var foot=anim.GetBoneTransform(left?HumanBodyBones.LeftFoot:HumanBodyBones.RightFoot);
+                    float reach=Mathf.Sin(phase*Mathf.PI*2+(left?0:Mathf.PI))*.28f;
+                    Vector3 target=foot.position+p.actor.transform.TransformDirection(direction)*reach+Vector3.up*(Mathf.Max(0,reach)*.30f);
+                    Quaternion rotation=foot.rotation;SolveLimb(hip,knee,foot,target,p.actor.transform.forward);foot.rotation=rotation;
+                }
+                var spine=anim.GetBoneTransform(HumanBodyBones.Spine);
+                spine.rotation=Quaternion.AngleAxis(direction.z*18*pulse,p.actor.transform.right)*Quaternion.AngleAxis(-direction.x*18*pulse,p.actor.transform.forward)*spine.rotation;
+            });
+        }
+        static void ThrustPose(CombatAnimationPresenter p,float charge,float extension)
+        {
+            var a=p.animator;var actor=p.actor.transform;
+            var upper=a.GetBoneTransform(HumanBodyBones.RightUpperArm);var lower=a.GetBoneTransform(HumanBodyBones.RightLowerArm);var hand=a.GetBoneTransform(HumanBodyBones.RightHand);
+            Vector3 target=actor.TransformPoint(new Vector3(.27f,1.24f,Mathf.Lerp(.25f,.03f,charge)+extension*.65f));
+            SolveLimb(upper,lower,hand,target,actor.right);
+            hand.rotation=Quaternion.LookRotation(actor.right,Vector3.up);
+            var leftUpper=a.GetBoneTransform(HumanBodyBones.LeftUpperArm);var leftLower=a.GetBoneTransform(HumanBodyBones.LeftLowerArm);var left=a.GetBoneTransform(HumanBodyBones.LeftHand);
+            SolveLimb(leftUpper,leftLower,left,actor.TransformPoint(new Vector3(-.15f,1.2f,.25f)), -actor.right);
+            var spine=a.GetBoneTransform(HumanBodyBones.Spine);
+            spine.rotation=Quaternion.AngleAxis(Mathf.Lerp(-6,12,extension),actor.right)*spine.rotation;
+        }
         public static void BuildLocomotion()
         {
             if (!Application.isBatchMode) throw new InvalidOperationException("Run in a validation copy.");
@@ -25,8 +85,33 @@ namespace Milkfrog.CombatDemo.Editor
             p.jogLeft = Gait(session.playerAnimation, "Jog_Left", Vector3.left, true);
             p.walkRight = Gait(session.playerAnimation, "Walk_Right", Vector3.right, false);
             p.jogRight = Gait(session.playerAnimation, "Jog_Right", Vector3.right, true);
+            var directions=new[]{Vector3.back,Vector3.left,Vector3.right};
+            var walks=new[]{p.walkBack,p.walkLeft,p.walkRight};var jogs=new[]{p.jogBack,p.jogLeft,p.jogRight};
+            for(int i=0;i<3;i++)
+            {
+                p.walkStrideLengths[i+1]=MeasureStride(session.playerAnimation,walks[i],directions[i]);
+                p.jogStrideLengths[i+1]=MeasureStride(session.playerAnimation,jogs[i],directions[i]);
+            }
+            Directory.CreateDirectory("Evidence/Phase3");
+            File.WriteAllText("Evidence/Phase3/stride-calibration.txt","World meters per cycle, F/B/L/R\nWalk="+p.walkStrideLengths.ToString("F4")+"\nJog="+p.jogStrideLengths.ToString("F4"));
             EditorUtility.SetDirty(p); AssetDatabase.SaveAssets();
             Debug.Log("[Phase3] Authored backward, left and right walk/jog clips.");
+        }
+
+        static float MeasureStride(CombatAnimationPresenter p,AnimationClip clip,Vector3 direction)
+        {
+            var graph=PlayableGraph.Create("Measure planted stride");graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+            var input=AnimationClipPlayable.Create(graph,clip);input.SetSpeed(0);input.SetApplyFootIK(false);
+            AnimationPlayableOutput.Create(graph,"Measure",p.animator).SetSourcePlayable(input);graph.Play();
+            try
+            {
+                input.SetTime(clip.length*.1);graph.Evaluate(0);p.animator.transform.localPosition=Vector3.zero;
+                Vector3 a=p.actor.transform.InverseTransformPoint(p.animator.GetBoneTransform(HumanBodyBones.LeftFoot).position);
+                input.SetTime(clip.length*.5);graph.Evaluate(0);p.animator.transform.localPosition=Vector3.zero;
+                Vector3 b=p.actor.transform.InverseTransformPoint(p.animator.GetBoneTransform(HumanBodyBones.LeftFoot).position);
+                return Mathf.Max(.4f,-Vector3.Dot(b-a,direction)/.4f);
+            }
+            finally {graph.Destroy();p.animator.Rebind();}
         }
 
         static AnimationClip Gait(CombatAnimationPresenter presenter, string name, Vector3 direction, bool run)

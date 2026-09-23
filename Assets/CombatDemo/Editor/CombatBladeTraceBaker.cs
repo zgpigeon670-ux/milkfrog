@@ -34,9 +34,11 @@ namespace Milkfrog.CombatDemo.Editor
         }
 
         public static CombatBladeTrace Bake(CombatAnimationPresenter presentation)
+            => Bake(presentation,null,AssetPath);
+        public static CombatBladeTrace Bake(CombatAnimationPresenter presentation,CombatAttackDefinition definition,string path)
         {
-            var trace = AssetDatabase.LoadAssetAtPath<CombatBladeTrace>(AssetPath);
-            if (trace == null) { trace = ScriptableObject.CreateInstance<CombatBladeTrace>(); AssetDatabase.CreateAsset(trace,AssetPath); }
+            var trace = AssetDatabase.LoadAssetAtPath<CombatBladeTrace>(path);
+            if (trace == null) { trace = ScriptableObject.CreateInstance<CombatBladeTrace>(); AssetDatabase.CreateAsset(trace,path); }
             var model = presentation.animator;
             var profile = presentation.profile;
             var hand = model.GetBoneTransform(HumanBodyBones.RightHand);
@@ -48,17 +50,18 @@ namespace Milkfrog.CombatDemo.Editor
             var graph = PlayableGraph.Create("Bake blade trajectory"); graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
             try
             {
-                var clip = AnimationClipPlayable.Create(graph,profile.attack); clip.SetSpeed(0); clip.SetApplyFootIK(false);
+                var attack=definition!=null?definition.clip:profile.attack;
+                var clip = AnimationClipPlayable.Create(graph,attack); clip.SetSpeed(0); clip.SetApplyFootIK(false);
                 AnimationPlayableOutput.Create(graph,"Blade sampling",model).SetSourcePlayable(clip); graph.Play();
                 trace.engageDistance = 1.25f;
-                trace.sourceProfile = profile; trace.bakedClip = profile.attack;
-                trace.bakedStart = profile.attackActiveStart; trace.bakedEnd = profile.attackActiveEnd;
+                trace.sourceProfile = profile; trace.definition=definition; trace.bakedClip = attack;
+                trace.bakedStart = definition!=null?definition.activeStart:profile.attackActiveStart; trace.bakedEnd = definition!=null?definition.activeEnd:profile.attackActiveEnd;
                 trace.poses = new BladePose[65];
                 var report = new StringBuilder("Active progress,blade root (actor space),blade tip (actor space)\n");
                 for (int i=0;i<trace.poses.Length;i++)
                 {
                     float progress = (float)i/(trace.poses.Length-1);
-                    clip.SetTime(Mathf.Lerp(trace.bakedStart,trace.bakedEnd,progress)*profile.attack.length); graph.Evaluate(0);
+                    clip.SetTime(Mathf.Lerp(trace.bakedStart,trace.bakedEnd,progress)*attack.length); graph.Evaluate(0);
                     model.transform.localPosition=position; model.transform.localRotation=rotation;
                     trace.poses[i] = new BladePose {
                         root=presentation.actor.transform.InverseTransformPoint(blade.TransformPoint(Vector3.down*.5f)),

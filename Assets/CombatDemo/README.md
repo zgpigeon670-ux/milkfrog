@@ -8,7 +8,7 @@ Unity 6000.6.2f1 / URP / Input System。所有新增资产位于 `Assets/CombatD
 
 1. 等待 Unity 导入脚本并完成编译。
 2. 打开 **`Assets/CombatDemo/Scenes/CombatDemo_Animated.unity`**，点击 Play，再点击 Game View 使其获得输入焦点。
-3. WASD 相对镜头移动；左键单次攻击；右键按住格挡，命中前 0.15 秒内新按下可弹反。
+3. WASD 相对镜头移动；短按左键斩击，长按左键蓄力、松开突刺；空格＋方向垫步，无方向时后撤。右键按住格挡，命中前 0.15 秒内新按下可弹反。
 4. R 重置本轮；F1 循环切换 Duel（完整交战）、Dummy（静止靶子）、Rhythm（固定节奏攻击）。模式切换会重置本轮。F2 开关完整调试面板。
 5. 敌人架势崩溃后，等待自己恢复可操作状态，在正面 2m 内左键处决。
 
@@ -27,7 +27,12 @@ Game View 的英文文字避免依赖额外中文字体。正式战斗 UI 常驻
 
 | 来源 | 合法操作或事件 | 结果 |
 |---|---|---|
-| Neutral / Guard | 攻击请求 | AttackStartup，固定攻击方向，退出防御 |
+| Neutral / Guard | 玩家左键按下 | AttackPrepare；可行动且满足处决条件时立即处决 |
+| AttackPrepare | 0.18 秒前松开 / 按住达到阈值 | 普通斩击 AttackStartup，抵扣已用前摇 / Charging |
+| Charging | 松开左键 | 蓄力突刺 AttackStartup，固定攻击方向 |
+| Neutral / Guard | AI 或离散攻击请求 | AttackStartup，固定攻击方向，退出防御 |
+| Neutral / Guard / AttackPrepare / Charging | 空格 | Dodge，锁定方向；0.38 秒后恢复 |
+| AttackPrepare / Charging | 右键 | 取消并进入 Guard；新按下可弹反 |
 | Neutral / Guard | 防御按住 / 松开 | Guard / Neutral；合法新按下开启弹反窗口 |
 | AttackStartup | 前摇结束 | AttackActive |
 | AttackActive | 有效期结束 | AttackRecovery |
@@ -40,11 +45,11 @@ Game View 的英文文字避免依赖额外中文字体。正式战斗 UI 常驻
 | 玩家可行动、敌人崩溃 | 正面且距离不超过 2m 的攻击输入 | 独立处决检查，敌人 Dead |
 | Dead | 重置 | 初始资源、位置、Neutral |
 
-战斗结算没有反伤、霸体或攻击取消。同一攻击每个 CombatCore 最多命中一次，多个子 Collider 不会重复扣血。双方同一时间发起攻击时，本 Demo 的固定执行顺序先推进玩家，后推进敌人；不实现联网回滚或双向同时命中裁决。
+准备／蓄力可以用右键或空格取消；释放后的斩击和突刺不能主动取消，受击与弹反仍可中断。战斗没有反伤或霸体。同一攻击每个 CombatCore 最多命中一次，多个子 Collider 不会重复扣血。双方同一时间发起攻击时，本 Demo 固定先推进玩家，后推进敌人；不实现联网回滚或双向同时命中裁决。
 
 ## 参数与代码入口
 
-动画场景选中 `Settings/AnimatedCombat.asset`（胶囊场景为 `Settings/DefaultCombat.asset`） 调整双方战斗数据和 AI 参数。运行时修改配置需 R 重开，以便生命上限等初始化数值重新生效。
+动画场景的生命、架势恢复、防御、闪避和 AI 参数在 `Settings/AnimatedCombat.asset`；斩击与突刺的时序和伤害分别在 `Settings/PlayerSlash.asset`、`EnemySlash.asset`、`PlayerThrust.asset`。胶囊场景仍使用 `Settings/DefaultCombat.asset`。单次攻击使用开始时的规则快照；退出 Play 后编辑配置并重新进入，避免运行中修改共享资产。
 
 默认：生命/最大架势 100；Hit 扣血 10、架势 +10；Block 架势 +20；Deflect 攻击者架势 +30。攻击前摇/有效期/后摇为玩家 0.25/0.10/0.35 秒、敌人 0.45/0.10/0.45 秒。防御总角度 120°，弹反窗口 0.15 秒，受击/被弹反硬直 0.30/0.20 秒，崩溃 2 秒。有效交互刷新双方恢复延迟，2 秒无交互后仅在 Neutral/Guard 每秒恢复 15 架势。
 
@@ -84,7 +89,7 @@ Unity Test Runner 中执行 `Milkfrog.CombatDemo.EditTests` 和 `Milkfrog.Combat
 - 闪光复用 8 组放射状火花；短音效由正弦包络合成。完美弹反使被弹反的攻击者全身泛白 0.20 秒并渐退，普通命中令受击者泛红；格挡只有较小金色碰撞火花。自制 `CombatFighter.shader` 通过 MaterialPropertyBlock 驱动，不逐次实例化材质。重置清理 shader、火花、声音与镜头冲击。
 - 镜头使用玩家背后偏右的越肩取景，Inspector 可调整 `offset`、`headingSmooth` 和 `enemyFocusWeight`。保留 SphereCast 避障，镜头与 UI 在顿帧期间继续响应。
 - 世界标签只在状态/弹反窗口改变时重写，调试文本最多 10 Hz；F2 控制调试内容。正式血条和架势条由独立 `CombatHud` 绘制，默认可见。
-- 表现中断后停止旧攻击拖尾；攻击淡出保留最后采样姿势，避免回零抽动。移动防御使用上身遮罩，双腿继续行走；后退反向播放步态。处决仅组合挥剑和死亡，不是精密双人对位演出。
+- 表现中断后停止旧攻击拖尾；攻击淡出保留最后采样姿势，避免回零抽动。移动防御使用上身遮罩，双腿继续按方向行走。处决仅组合挥剑和死亡，不是精密双人对位演出。
 - 命中位置来自接触 Collider 的最近点。动画场景沿 `SwordBladeTrace.asset` 的 65 个刀刃姿势分段扫掠，覆盖大时间步跨过有效期的情况；不以当前渲染帧的骨骼位置决定规则。改动攻击片段、阶段标记、模型或剑尺寸后，应在验证副本执行 `Milkfrog.CombatDemo.Editor.CombatBladeTraceBaker.UpgradeScene` 重新烘焙，复制生成的轨迹资产与动画场景回来。该命令会将双方摆回默认训练位置；请先保存自行调整的场景。
 
 ## 构建、截图和性能复现
@@ -98,10 +103,21 @@ Unity Test Runner 中执行 `Milkfrog.CombatDemo.EditTests` 和 `Milkfrog.Combat
 
 `CombatPerformanceSampler` 采集平均帧时、nearest-rank p95 和 `GC Allocated In Frame`。采样器本身不改帧率、不跨场景常驻。只有明确运行性能工具才临时设置 60 FPS、VSync=0、后台运行并将 AudioListener 音量置零，销毁时还原；Development Player 与 Editor 的数据分开列出。对照仅衡量本次标签/HUD 缓存，不能代表更换模型前后或整个游戏的收益。
 
-最新改动与测试见 [战斗视角、UI 与判定验证](Validation/CombatFeel/Report.md)。[第二阶段验证报告](Validation/Animated/Report.md) 中性能数字属于此前版本，不代表本轮刀刃扫掠和新 UI 的性能。第三方素材来源见 [许可清单](ThirdParty/SOURCES.md)。
+最新改动与测试见 [第三阶段验证报告](Validation/Phase3/Report.md)。此前 [视角与判定验证](Validation/CombatFeel/Report.md) 和 [第二阶段验证报告](Validation/Animated/Report.md) 保留为历史记录，旧性能数字不代表当前版本。第三方素材来源见 [许可清单](ThirdParty/SOURCES.md)。
+
+## 第三阶段操作与动画
+
+- 前进沿用原走／跑动画，后退与左右侧移使用 `Animations/Directional` 内独立关键帧动画，不倒放或整体旋转前进动作。方向权重按角色局部实际速度混合，斜向使用相邻方向；步频按脚部实测行程校准。移动防御保留上身防御、下身步行。
+- 空格垫步总计 0.38s，前 0.24s 平滑位移最多 1.6m；无敌区间为 `[0.06,0.18)` 秒。方向在开始时锁定，无方向后撤。墙体、敌人会阻挡位移，受击可打断，无连按缓存。
+- 左键按下立即抬刀，0.18s 前松开为普通斩击，已经经过的准备时间抵扣 0.25s 前摇。按住超过阈值进入蓄力，0.80s 满蓄后保持，松开才突刺。
+- 突刺释放后为 0.12s 前摇、0.12s 有效期、0.42s 后摇；生命伤害 10→22、命中架势 10→28、格挡架势 20→35。可以格挡或弹反，无霸体与自动破防。实际命中使用独立 `ThrustBladeTrace.asset`。
+- 准备／蓄力期间不能移动，可以转向敌人；右键或空格取消。释放后方向锁定。受击、失焦、死亡、重置清除未完成蓄力；顿帧中松开左键会取消，不在恢复后补发。
+- 同帧输入优先级：重置、闪避、防御、攻击。保留原离散 `SubmitInput` 重载供 AI、历史测试和性能脚本调用，真人键鼠走完整按下／按住／松开输入快照。
+- 新动作是本项目制作的可编辑 Humanoid 肌肉关键帧，属于 Demo 适配，不是只狼提取资产或动作捕捉成品。`CombatMotionAuthoring.BuildLocomotion`、`BuildActions` 是验证副本中的显式重建工具；会覆盖本项目生成的动作或攻击默认配置，不应在手工微调后随意运行。
+- Game View 预览请用适合窗口的 Scale，Free Aspect 通常使用 1×。放大预览会裁掉边缘，即使运行时 HUD 正常缩放也是如此。
 
 ## 本阶段边界
 
-不包含闪避、连招、技能、装备、存档、网络、自由镜头、切换锁定、复杂 Boss AI 或付费资产。自动化验证不等于真人手感验收；挥剑时间标记、音量、镜头距离和招架姿势仍适合在实际键鼠试玩后微调。正式项目的 Build Profile 保持原样。
+不包含冲刺、跳跃、连招、体力条、技能、装备、存档、网络、自由镜头、切换锁定、敌人闪避 AI、复杂 Boss 或付费资产。自动化验证不等于真人手感验收；动作过渡、音量、镜头距离和姿势仍适合在实际键鼠试玩后微调。正式项目的 Build Profile 保持原样。
 
 

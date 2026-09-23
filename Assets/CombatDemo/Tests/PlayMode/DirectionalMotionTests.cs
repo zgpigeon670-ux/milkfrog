@@ -27,11 +27,16 @@ namespace Milkfrog.CombatDemo.Tests
             {
                 session.ResetRound(); Vector3 root=p.animator.transform.localPosition;
                 Vector3 before=p.animator.transform.InverseTransformPoint(foot.position);
-                for(int i=0;i<12;i++) {session.player.Move(direction,4,1f/60); p.AdvanceVisual(1f/60);}
-                Vector3 after=p.animator.transform.InverseTransformPoint(foot.position);
+                float excursion=0;
+                // Observe a full cycle: a valid gait can return close to its initial pose at a single sample.
+                for(int i=0;i<36;i++)
+                {
+                    session.player.Move(direction,4,1f/60);p.AdvanceVisual(1f/60);
+                    excursion=Mathf.Max(excursion,Vector3.Distance(before,p.animator.transform.InverseTransformPoint(foot.position)));
+                }
                 int index=direction==Vector3.back?1:direction==Vector3.left?2:3;
                 Assert.That(p.DirectionWeights[index],Is.GreaterThan(.95f));
-                Assert.That(Vector3.Distance(before,after),Is.GreaterThan(.05f),"Feet must articulate instead of holding a sliding pose");
+                Assert.That(excursion,Is.GreaterThan(.15f),"Feet must articulate through the cycle instead of holding a sliding pose");
                 Assert.That(p.animator.transform.localPosition,Is.EqualTo(root));
                 Assert.That(Quaternion.Angle(p.animator.transform.localRotation,Quaternion.identity),Is.LessThan(.01f));
             }

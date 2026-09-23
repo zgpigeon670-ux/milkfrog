@@ -18,6 +18,7 @@ namespace Milkfrog.CombatDemo
         DemoInput input;
         Vector2 movement;
         bool guardAfterFreeze, hasFrozenGuard;
+        bool attackNeedsRelease;
         public event Action<HitEvent> CombatEvent;
         public event Action<CombatContact> ContactResolved;
         public event Action RoundReset;
@@ -40,15 +41,49 @@ namespace Milkfrog.CombatDemo
 
         void OnEnable() => input = new DemoInput();
         void OnDisable() { input?.Dispose(); input = null; }
-        void OnApplicationFocus(bool focused) { if (!focused && player.Core != null) player.Core.SetGuard(false, false); }
+        void OnApplicationFocus(bool focused) { if (!focused) ClearInput(); }
+        public void ClearInput()
+        {
+            movement=Vector2.zero;hasFrozenGuard=guardAfterFreeze=false;attackNeedsRelease=true;
+            if(player==null || player.Core==null)return;
+            player.Core.SetGuard(false,false);player.Core.CancelPreparation();
+        }
 
         void Update()
         {
             if (manualSimulation || input == null) return;
             if (input.ModePressed) SetMode((EnemyMode)(((int)mode + 1) % 3));
-            if (input.ResetPressed) ResetRound();
-            SubmitInput(input.Move, input.GuardHeld, input.GuardPressed, input.AttackPressed);
+            SubmitInput(input.Snapshot);
             Simulate(Time.unscaledDeltaTime);
+        }
+
+        public void SubmitInput(CombatInputFrame frame)
+        {
+            if(frame.resetPressed){ResetRound();return;}
+            if(Finished)return;
+            movement=Vector2.ClampMagnitude(frame.move,1);
+            if(!frame.attackHeld)attackNeedsRelease=false;
+            if(IsFrozen)
+            {
+                guardAfterFreeze=frame.guardHeld;hasFrozenGuard=true;
+                if(frame.attackPressed)attackNeedsRelease=true;
+                if(frame.attackReleased || !frame.attackHeld)player.Core.CancelPreparation();
+                return;
+            }
+            hasFrozenGuard=false;
+            player.FaceTarget();
+            if(frame.dodgePressed && player.RequestDodge(CameraDirection(movement)))
+            {player.Core.SetGuard(frame.guardHeld,false);attackNeedsRelease=frame.attackHeld;return;}
+            player.Core.SetGuard(frame.guardHeld,frame.guardPressed);
+            if(frame.guardHeld)return;
+            if(frame.attackPressed && !attackNeedsRelease)
+            {player.BeginPlayerAttack();attackNeedsRelease=true;}
+            if(frame.attackReleased)player.Core.ReleaseAttack();
+        }
+        Vector3 CameraDirection(Vector2 direction)
+        {
+            Vector3 forward=Vector3.ProjectOnPlane(gameplayCamera.transform.forward,Vector3.up).normalized;
+            return forward*direction.y+Vector3.Cross(Vector3.up,forward)*direction.x;
         }
 
         public void SubmitInput(Vector2 move, bool guardHeld, bool guardPressed, bool attackPressed)
@@ -96,6 +131,7 @@ namespace Milkfrog.CombatDemo
         {
             movement = Vector2.zero;
             hasFrozenGuard = guardAfterFreeze = false;
+            attackNeedsRelease=false;
             player.ResetActor();
             enemy.ResetActor();
             Brain.Reset(mode);

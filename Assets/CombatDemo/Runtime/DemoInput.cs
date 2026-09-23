@@ -3,10 +3,15 @@ using UnityEngine.InputSystem;
 
 namespace Milkfrog.CombatDemo
 {
+    public struct CombatInputFrame
+    {
+        public Vector2 move;
+        public bool attackPressed,attackHeld,attackReleased,guardHeld,guardPressed,dodgePressed,resetPressed;
+    }
     public sealed class DemoInput : System.IDisposable
     {
         readonly InputActionMap map = new InputActionMap("CombatDemo");
-        readonly InputAction move, attack, guard, reset, mode;
+        readonly InputAction move, attack, guard, reset, mode, dodge;
         public DemoInput()
         {
             move = map.AddAction("Move", InputActionType.Value);
@@ -16,6 +21,7 @@ namespace Milkfrog.CombatDemo
             guard = map.AddAction("Guard", InputActionType.Button, "<Mouse>/rightButton");
             reset = map.AddAction("Reset", InputActionType.Button, "<Keyboard>/r");
             mode = map.AddAction("NextMode", InputActionType.Button, "<Keyboard>/f1");
+            dodge = map.AddAction("Dodge",InputActionType.Button,"<Keyboard>/space");
             map.Enable();
         }
         public Vector2 Move => move.ReadValue<Vector2>();
@@ -24,6 +30,7 @@ namespace Milkfrog.CombatDemo
         public bool GuardPressed => guard.WasPressedThisFrame();
         public bool ResetPressed => reset.WasPressedThisFrame();
         public bool ModePressed => mode.WasPressedThisFrame();
+        public CombatInputFrame Snapshot => new CombatInputFrame {move=Move,attackPressed=AttackPressed,attackHeld=attack.IsPressed(),attackReleased=attack.WasReleasedThisFrame(),guardHeld=GuardHeld,guardPressed=GuardPressed,dodgePressed=dodge.WasPressedThisFrame(),resetPressed=ResetPressed};
         public void Dispose() => map.Dispose();
     }
 }

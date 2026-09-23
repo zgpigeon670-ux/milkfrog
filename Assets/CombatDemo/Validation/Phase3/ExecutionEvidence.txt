@@ -1,0 +1,30 @@
+Selected build / capture / startup log evidence; not a complete log.
+--- Build ---
+[CombatDemo] Standalone development build: C:\Users\pigeon\AppData\Local\Temp\MilkfrogCombatValidation\Builds\CombatDemo\CombatDemo.exe
+Internal: There are remaining Allocations on the JobTempAlloc. This is a leak, and will impact performance
+Internal: There are remaining Allocations on the JobTempAlloc. This is a leak, and will impact performance
+--- Action capture ---
+[Phase3] Capture 0 state=Charging charge=0.3548386
+ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+  at UnityEditor.Search.SearchDatabase+<EnumerateAll>d__78.MoveNext () [0x00089] in <bf5fa3d429194bf78ff614e5729559a6>:0 
+  at UnityEditor.Search.SearchDatabase.GetDefaultSearchDatabase () [0x00005] in <bf5fa3d429194bf78ff614e5729559a6>:0 
+  at UnityEditor.Search.SearchInit.IndexationOnStartup () [0x0000a] in <bf5fa3d429194bf78ff614e5729559a6>:0 
+[Phase3] Capture 1 state=Charging charge=1
+[Phase3] Capture 2 state=AttackStartup charge=0
+[Phase3] Capture 3 state=AttackActive charge=0
+[Phase3] Capture 4 state=AttackRecovery charge=0
+[Phase3] Capture 5 state=Dodge charge=0
+[Phase3] Capture 6 state=Dodge charge=0
+[Phase3] Capture 7 state=Dodge charge=0
+[Phase3] Capture 8 state=Dodge charge=0
+[Phase3] Capture 9 state=Neutral charge=0
+[Phase3] Capture 10 state=Neutral charge=0
+[Phase3] Capture 11 state=Neutral charge=0
+[Phase3] Capture 12 state=Neutral charge=0
+--- Standalone startup ---
+Input System module state changed to: Initialized.
+Initialize engine version: 6000.6.2f1 (770e33f6875c)
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 4060 Laptop GPU (ID=0x28e0)
+UnloadTime: 0.903800 ms

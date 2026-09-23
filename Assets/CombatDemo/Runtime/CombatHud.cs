@@ -50,7 +50,13 @@ namespace Milkfrog.CombatDemo
             Diamond(35, height - 63, 6, red);
             PostureBar(new Rect(width * .5f - 170, height - 75, 340, 12), Posture(session.player));
             GUI.Label(new Rect(width * .5f - 150, height - 58, 300, 22), "POSTURE", centerStyle);
-            GUI.Label(new Rect(48, height - 35, width - 96, 24), "WASD  Move     LMB  Attack     RMB  Guard / Deflect     R  Restart     F1  Training mode     F2  Diagnostics", hintStyle);
+            GUI.Label(new Rect(48, height - 35, width - 96, 24), "WASD Move   SPACE Dodge   LMB Tap / Hold thrust   RMB Guard   R Restart   F1 Mode   F2 Debug", hintStyle);
+            if(session.player.Core.IsPreparing)
+            {
+                float charge=session.player.Core.ChargeRatio;
+                var r=new Rect(width*.5f-65,height-118,130,5);Frame(r);Fill(new Rect(r.x,r.y,r.width*charge,r.height),gold);
+                GUI.Label(new Rect(width*.5f-140,height-151,280,27),charge>=1?"READY / RELEASE TO THRUST":"HOLD / CHARGING",centerStyle);
+            }
 
             if (!session.Finished && session.enemy.Core.State == CombatState.PostureBroken)
             {
@@ -92,8 +98,9 @@ namespace Milkfrog.CombatDemo
         }
         static void Diamond(float x, float y, float radius, Color color)
         {
-            var matrix = GUI.matrix; GUIUtility.RotateAroundPivot(45, new Vector2(x, y));
-            Fill(new Rect(x - radius, y - radius, radius * 2, radius * 2), color); GUI.matrix = matrix;
+            // Draw in design coordinates: GUIUtility.RotateAroundPivot drifts under a scaled IMGUI matrix.
+            for(int row=-(int)radius;row<radius;row++)
+            {float half=radius-Mathf.Abs(row+.5f);Fill(new Rect(x-half,y+row,half*2,1),color);}
         }
         static void Fill(Rect r, Color color)
         {

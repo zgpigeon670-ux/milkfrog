@@ -7,6 +7,9 @@ namespace Milkfrog.CombatDemo
     {
         public bool isPlayer;
         public CombatBladeTrace bladeTrace;
+        public CombatAttackDefinition lightAttack, thrustAttack;
+        public CombatAttackDefinition CurrentAttackDefinition => Core != null && Core.ActiveAttack.Kind==AttackKind.Thrust ? thrustAttack : lightAttack;
+        CombatBladeTrace CurrentTrace => CurrentAttackDefinition != null ? CurrentAttackDefinition.trace : bladeTrace;
         public LayerMask combatMask = ~0;
         public float maxTargetHeightDifference = .9f;
         public CombatCore Core { get; private set; }
@@ -27,7 +30,7 @@ namespace Milkfrog.CombatDemo
             Motor = GetComponent<CharacterController>();
             spawnPosition = transform.position;
             spawnRotation = transform.rotation;
-            Core = new CombatCore(tuning);
+            Core = new CombatCore(tuning,lightAttack!=null?lightAttack.rules:null,thrustAttack!=null?thrustAttack.rules:null);
             Core.ActiveSample += SampleAttack;
             Core.ActiveInterval += SweepBlade;
             Core.DodgeInterval += MoveDodge;
@@ -36,6 +39,8 @@ namespace Milkfrog.CombatDemo
             DodgeDirection = -transform.forward;
             if (bladeTrace != null && !bladeTrace.IsValid)
                 Debug.LogError("Rebake the blade trace after changing its attack clip or phase markers.", this);
+            foreach(var attack in new[]{lightAttack,thrustAttack})
+                if(attack!=null && !TraceMatches(attack))Debug.LogError("Rebake the trace for "+attack.name+" after changing its clip or phase markers.",this);
         }
 
         void OnStateChanged(CombatState previous, CombatState next)
@@ -63,7 +68,7 @@ namespace Milkfrog.CombatDemo
 
         public void FaceTarget()
         {
-            if (!Core.CanAct || Target == null) return;
+            if ((!Core.CanAct && !Core.IsPreparing) || Target == null) return;
             Vector3 forward = Target.transform.position - transform.position;
             forward.y = 0;
             if (forward.sqrMagnitude > .001f) transform.rotation = Quaternion.LookRotation(forward);
@@ -97,6 +102,16 @@ namespace Milkfrog.CombatDemo
 
         public bool RequestPlayerAttack()
         {
+            if (TryExecute())return true;
+            return Core.RequestAttack();
+        }
+        public bool BeginPlayerAttack()
+        {
+            if(TryExecute())return true;
+            return Core.BeginPreparation();
+        }
+        bool TryExecute()
+        {
             if (isPlayer && Target != null && Core.CanAct && Target.Core.State == CombatState.PostureBroken &&
                 ValidTarget(Target, transform.forward))
             {
@@ -107,7 +122,7 @@ namespace Milkfrog.CombatDemo
                     if (Core.TryDeathblow(Target.Core, true, DistanceToTarget, true)) return true;
                 }
             }
-            return Core.RequestAttack();
+            return false;
         }
 
         bool ValidTarget(CombatActor other, Vector3 forward)
@@ -152,7 +167,7 @@ namespace Milkfrog.CombatDemo
 
         void SampleAttack()
         {
-            if (bladeTrace != null) return;
+            if (CurrentTrace != null) return;
             var tuning = Core.Tuning;
             Vector3 center = transform.position + Vector3.up + AttackForward * (tuning.range * .5f);
             Vector3 half = new Vector3(tuning.attackHalfWidth, .9f, tuning.range * .5f);
@@ -164,7 +179,9 @@ namespace Milkfrog.CombatDemo
 
         void SweepBlade(float from, float to)
         {
+            var bladeTrace=CurrentTrace;
             if (bladeTrace == null || !bladeTrace.IsValid) return;
+            if(CurrentAttackDefinition!=null && !TraceMatches(CurrentAttackDefinition))return;
             // Visit every baked knot and subdivide spatially: neither slow frames nor curved swings skip contact.
             int segments = bladeTrace.poses.Length - 1;
             BladePose previous = bladeTrace.Sample(from);
@@ -181,9 +198,12 @@ namespace Milkfrog.CombatDemo
                 previous = current; from = next;
             }
         }
+        static bool TraceMatches(CombatAttackDefinition definition) => definition.trace!=null && definition.trace.IsValid &&
+            definition.trace.bakedClip==definition.clip && Mathf.Approximately(definition.trace.bakedStart,definition.activeStart) && Mathf.Approximately(definition.trace.bakedEnd,definition.activeEnd);
 
         void CheckBlade(BladePose pose)
         {
+            var bladeTrace=CurrentTrace;
             if (Core.State != CombatState.AttackActive) return;
             Quaternion facing = Quaternion.LookRotation(AttackForward);
             Vector3 root = transform.position + facing * pose.root, tip = transform.position + facing * pose.tip;

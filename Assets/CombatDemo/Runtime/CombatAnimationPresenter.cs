@@ -24,9 +24,9 @@ namespace Milkfrog.CombatDemo
         public double AttackPoseTime => poseTimes[3];
         AnimationClipPlayable[] tracks;
         AnimationClip[] clips;
-        readonly float[] weights = new float[16];
-        readonly double[] poseTimes = new double[16];
-        readonly float[] blendFrom = new float[16];
+        readonly float[] weights = new float[22];
+        readonly double[] poseTimes = new double[22];
+        readonly float[] blendFrom = new float[22];
         int previousTrack = -1;
         float blendElapsed;
         float visualSpeed;
@@ -45,11 +45,14 @@ namespace Milkfrog.CombatDemo
             animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             modelPosition = animator.transform.localPosition;
             modelRotation = animator.transform.localRotation;
-            clips = new[] { profile.idle, profile.walk, profile.jog, profile.attack, profile.hit,
+            clips = new[] { profile.idle, profile.walk, profile.jog, actor.lightAttack!=null?actor.lightAttack.clip:profile.attack, profile.hit,
                 profile.death, profile.guard, profile.parry, profile.deflected, profile.broken,
                 profile.walkBack != null ? profile.walkBack : profile.walk, profile.jogBack != null ? profile.jogBack : profile.jog,
                 profile.walkLeft != null ? profile.walkLeft : profile.walk, profile.jogLeft != null ? profile.jogLeft : profile.jog,
-                profile.walkRight != null ? profile.walkRight : profile.walk, profile.jogRight != null ? profile.jogRight : profile.jog };
+                profile.walkRight != null ? profile.walkRight : profile.walk, profile.jogRight != null ? profile.jogRight : profile.jog,
+                profile.dodgeForward != null ? profile.dodgeForward : profile.idle, profile.dodgeBack != null ? profile.dodgeBack : profile.idle,
+                profile.dodgeLeft != null ? profile.dodgeLeft : profile.idle, profile.dodgeRight != null ? profile.dodgeRight : profile.idle,
+                profile.charge != null ? profile.charge : profile.idle, actor.thrustAttack!=null?actor.thrustAttack.clip:profile.thrust != null ? profile.thrust : profile.attack };
             graph = PlayableGraph.Create(actor.name + " Combat Visuals");
             graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
             mixer = AnimationMixerPlayable.Create(graph, clips.Length);
@@ -131,11 +134,15 @@ namespace Milkfrog.CombatDemo
             float totalDirection = Mathf.Abs(localVelocity.x) + Mathf.Abs(localVelocity.y);
             if (totalDirection > .01f) DirectionWeights = new Vector4(Mathf.Max(0,localVelocity.y),Mathf.Max(0,-localVelocity.y),Mathf.Max(0,-localVelocity.x),Mathf.Max(0,localVelocity.x)) / totalDirection;
             visualSpeed = force ? speed : Mathf.Lerp(visualSpeed, speed, 1 - Mathf.Exp(-dt / Mathf.Max(.01f, profile.blendTime)));
-            gaitPhase += dt * visualSpeed / Mathf.Max(.1f,Mathf.Lerp(profile.walkSpeed*.8f,profile.jogSpeed*.45f,Mathf.InverseLerp(profile.walkSpeed,profile.jogSpeed,visualSpeed)));
+            float stride=Mathf.Lerp(Vector4.Dot(DirectionWeights,profile.walkStrideLengths),Vector4.Dot(DirectionWeights,profile.jogStrideLengths),Mathf.InverseLerp(profile.walkSpeed,profile.jogSpeed,visualSpeed));
+            gaitPhase += dt * visualSpeed / Mathf.Max(.1f,stride);
             lastPosition = actor.transform.position;
             int selected = 0;
             var core = actor.Core;
-            if (core.IsAttacking) selected = 3;
+            if (core.IsAttacking) selected = core.ActiveAttack.Kind==AttackKind.Thrust?21:3;
+            else if(core.State==CombatState.AttackPrepare)selected=3;
+            else if(core.State==CombatState.Charging)selected=20;
+            else if(core.State==CombatState.Dodge)selected=16;
             else switch (core.State)
             {
                 case CombatState.Guard: selected = visualSpeed > .05f ? 0 : reactionTime < 0 ? 7 : 6; break;
@@ -161,9 +168,15 @@ namespace Milkfrog.CombatDemo
                     float moving = Mathf.Clamp01(visualSpeed / profile.walkSpeed);
                     float jogging = Mathf.InverseLerp(profile.walkSpeed, profile.jogSpeed, visualSpeed);
                     int directionIndex = i <= 2 ? 0 : (i-10)/2+1;
-                    bool gait = i == 1 || i == 2 || i >= 10;
+                    bool gait = i == 1 || i == 2 || i >= 10 && i <=15;
                     bool run = i == 2 || i >= 10 && i % 2 == 1;
                     target = i == 0 ? 1-moving : gait ? moving * (run ? jogging : 1-jogging) * DirectionWeights[directionIndex] : 0;
+                }
+                if(selected==16)
+                {
+                    Vector3 dodge=actor.transform.InverseTransformDirection(actor.DodgeDirection);
+                    float sumDirection=Mathf.Max(.001f,Mathf.Abs(dodge.x)+Mathf.Abs(dodge.z));
+                    target=i==16?Mathf.Max(0,dodge.z)/sumDirection:i==17?Mathf.Max(0,-dodge.z)/sumDirection:i==18?Mathf.Max(0,-dodge.x)/sumDirection:i==19?Mathf.Max(0,dodge.x)/sumDirection:0;
                 }
                 weights[i] = Mathf.Lerp(blendFrom[i], target, blend);
                 sum += weights[i];
@@ -173,14 +186,18 @@ namespace Milkfrog.CombatDemo
             {
                 mixer.SetInputWeight(i, weights[i] / sum);
                 double time = loopTime % Mathf.Max(.01f, clips[i].length);
-                if (i == 1 || i == 2 || i >= 10) time = Mathf.Repeat(gaitPhase,1) * clips[i].length;
-                if (i == 3) time = finisherTime >= 0 ? Mathf.Min(finisherTime, clips[3].length) : profile.AttackTime(core);
+                if (i == 1 || i == 2 || i >= 10 && i <=15) time = Mathf.Repeat(gaitPhase,1) * clips[i].length;
+                if (i == 3) time = finisherTime >= 0 ? Mathf.Min(finisherTime, clips[3].length) : actor.lightAttack!=null?actor.lightAttack.SampleTime(core):profile.AttackTime(core);
+                if(i==3 && core.State==CombatState.AttackPrepare)time=Mathf.Clamp01(core.ChargeElapsed/Mathf.Max(.001f,core.ActiveAttack.Startup))*(actor.lightAttack!=null?actor.lightAttack.activeStart:profile.attackActiveStart)*clips[3].length;
+                if(i>=16 && i<=19)time=core.DodgeProgress*clips[i].length;
+                if(i==20)time=core.ChargeRatio*clips[i].length;
+                if(i==21 && actor.thrustAttack!=null)time=actor.thrustAttack.SampleTime(core);
                 if (i == 4 || i == 8) time = core.StateProgress * clips[i].length;
                 if (i == 5) time = Mathf.Min(deathTime, clips[i].length - .001f);
                 if (i == 6 || i == 9) time = clips[i].length * .5f;
                 if (i == 7) time = Mathf.Clamp01(1 + reactionTime / .16f) * clips[i].length;
                 // An outgoing action keeps its final sampled pose instead of jumping back to frame zero.
-                if (i <= 2 || i >= 10 || i == selected || force) poseTimes[i] = time;
+                if (i <= 2 || i >= 10 && i <=15 || i == selected || selected==16 && i>=16 && i<=19 || force) poseTimes[i] = time;
                 tracks[i].SetTime(poseTimes[i]);
                 if (i == 3) SampledAttackTime = (float)poseTimes[i];
             }

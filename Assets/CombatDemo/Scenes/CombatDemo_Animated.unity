@@ -1306,6 +1306,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatActor
   isPlayer: 1
   bladeTrace: {fileID: 11400000, guid: d22377d09e8d577408d0bd4160760b60, type: 2}
+  lightAttack: {fileID: 11400000, guid: d5c0403a71760484894f0e31c42d2c59, type: 2}
+  thrustAttack: {fileID: 11400000, guid: 146d64d29e2440c48b13ba3e2e26e05e, type: 2}
   combatMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1424,6 +1426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatActor
   isPlayer: 0
   bladeTrace: {fileID: 11400000, guid: d22377d09e8d577408d0bd4160760b60, type: 2}
+  lightAttack: {fileID: 11400000, guid: f27f1fcb27f1761489db2c853933cddd, type: 2}
+  thrustAttack: {fileID: 0}
   combatMask:
     serializedVersion: 2
     m_Bits: 4294967295
