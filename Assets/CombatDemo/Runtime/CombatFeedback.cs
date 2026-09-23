@@ -24,7 +24,8 @@ namespace Milkfrog.CombatDemo
         public Material flashMaterial;
         public bool hitStop = true, flashes = true, sound = true, cameraImpulse = true;
         [Range(0, 1)] public float volume = .35f;
-        public float deflectFreeze = .04f;
+        public float deflectFreeze = .07f;
+        public float hitFreeze = .025f, blockFreeze = .012f, breakFreeze = .11f;
         public HitStopClock Clock { get; } = new HitStopClock();
         public int ActiveFlashes { get; private set; }
         readonly GameObject[] pool = new GameObject[8];
@@ -77,23 +78,25 @@ namespace Milkfrog.CombatDemo
             var result = contact.Hit.Result;
             if (result == HitResult.Ignore) return;
             bool parry = result == HitResult.Deflect;
-            if (parry && hitStop) Clock.Request(deflectFreeze);
-            if (cameraImpulse) cameraRig.Impulse(parry ? .11f : .035f);
-            if (sound) audioSource.PlayOneShot(parry ? deflectClip : result == HitResult.Block ? blockClip : hitClip, volume);
+            bool blocked = result == HitResult.Block;
+            bool broken = contact.Hit.Defender.State == CombatState.PostureBroken;
+            if (hitStop) Clock.Request(broken ? breakFreeze : parry ? deflectFreeze : blocked ? blockFreeze : hitFreeze);
+            if (cameraImpulse) cameraRig.Impulse(broken ? .14f : parry ? .11f : blocked ? .02f : .045f);
+            if (sound) audioSource.PlayOneShot(broken || parry ? deflectClip : blocked ? blockClip : hitClip, broken ? volume * 1.25f : volume);
             if (flashes)
             {
                 int slot = next++ % pool.Length;
                 pool[slot].transform.position = contact.Position;
-                sizes[slot] = parry ? .16f : .065f;
+                sizes[slot] = broken ? .22f : parry ? .16f : blocked ? .04f : .08f;
                 pool[slot].transform.localScale = Vector3.one * sizes[slot];
                 pool[slot].transform.rotation = session.gameplayCamera.transform.rotation;
                 color.SetColor("_BaseColor", parry ? new Color(2, 1.4f, .45f) : result == HitResult.Block ? new Color(1,.72f,.35f) : new Color(1, .3f, .2f));
                 foreach (var renderer in impactRenderers[slot]) renderer.SetPropertyBlock(color);
-                durations[slot] = lifetimes[slot] = parry ? .20f : .10f;
+                durations[slot] = lifetimes[slot] = broken ? .28f : parry ? .20f : blocked ? .07f : .11f;
                 pool[slot].SetActive(true);
                 var flashedCore = parry ? contact.Hit.Attacker : contact.Hit.Defender;
                 var view = flashedCore == session.player.Core ? playerView : enemyView;
-                if (result != HitResult.Block && view != null) view.Flash(parry ? new Color(1.6f,1.6f,1.6f) : new Color(1,.15f,.1f), parry ? .20f : .12f);
+                if (result != HitResult.Block && view != null) view.Flash(broken ? new Color(1.8f,.85f,.35f) : parry ? new Color(1.6f,1.6f,1.6f) : new Color(1,.15f,.1f), broken ? .28f : parry ? .20f : .12f);
             }
         }
 

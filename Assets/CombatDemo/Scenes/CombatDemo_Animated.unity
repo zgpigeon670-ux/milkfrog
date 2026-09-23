@@ -1338,6 +1338,9 @@ MonoBehaviour:
   bladeTrace: {fileID: 11400000, guid: d22377d09e8d577408d0bd4160760b60, type: 2}
   lightAttack: {fileID: 11400000, guid: d5c0403a71760484894f0e31c42d2c59, type: 2}
   thrustAttack: {fileID: 11400000, guid: 146d64d29e2440c48b13ba3e2e26e05e, type: 2}
+  followupAttack: {fileID: 11400000, guid: 6a4d91c0b2e4470a9f0c5d31a8b7e114, type: 2}
+  slowAttack: {fileID: 0}
+  perilousAttack: {fileID: 0}
   combatMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1458,6 +1461,9 @@ MonoBehaviour:
   bladeTrace: {fileID: 11400000, guid: d22377d09e8d577408d0bd4160760b60, type: 2}
   lightAttack: {fileID: 11400000, guid: f27f1fcb27f1761489db2c853933cddd, type: 2}
   thrustAttack: {fileID: 0}
+  followupAttack: {fileID: 0}
+  slowAttack: {fileID: 11400000, guid: 91e7c4ab55d04e6bb0a31f8d2c64aa20, type: 2}
+  perilousAttack: {fileID: 11400000, guid: c3b81f06e90a4d5c8e2a7b54d19f3308, type: 2}
   combatMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1950,6 +1956,7 @@ MonoBehaviour:
   smooth: 10
   avoidObstacles: 1
   followBehindPlayer: 1
+  lockOn: 1
   enemyFocusWeight: 0.2
   headingSmooth: 7
   collisionRadius: 0.25
@@ -2675,7 +2682,10 @@ MonoBehaviour:
   sound: 1
   cameraImpulse: 1
   volume: 0.35
-  deflectFreeze: 0.04
+  deflectFreeze: 0.07
+  hitFreeze: 0.025
+  blockFreeze: 0.012
+  breakFreeze: 0.11
 --- !u!114 &1223481152
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -31,6 +31,14 @@ MonoBehaviour:
     brokenDuration: 2
     postureRecoveryDelay: 2
     postureRecoveryRate: 15
+    dodgeDuration: 0.38
+    dodgeMoveDuration: 0.24
+    dodgeDistance: 1.6
+    invulnerableStart: 0.08
+    invulnerableEnd: 0.16
+    prepareThreshold: 0.18
+    fullChargeTime: 0.8
+    recoveryCancel: 0.16
   enemy:
     maxHealth: 100
     maxPosture: 100
@@ -50,9 +58,18 @@ MonoBehaviour:
     brokenDuration: 2
     postureRecoveryDelay: 2
     postureRecoveryRate: 15
+    dodgeDuration: 0.38
+    dodgeMoveDuration: 0.24
+    dodgeDistance: 1.6
+    invulnerableStart: 0.08
+    invulnerableEnd: 0.16
+    prepareThreshold: 0.18
+    fullChargeTime: 0.8
+    recoveryCancel: 0.16
   playerSpeed: 4
   enemySpeed: 2.5
-  enemyWait: 1.5
+  enemyWait: 1.35
   counterDelay: 0.1
   blocksBeforeDeflect: 2
   logEvents: 0
+  enemyPattern: 000000000100000002000000

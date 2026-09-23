@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9fd5f7d9d24a51880a6c8c2a37f502, type: 3}
-  m_Name: EnemySlash
+  m_Name: EnemySlow
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAttackDefinition
   rules:
-    kind: 0
+    kind: 3
     response: 0
-    startup: 0.45
-    active: 0.1
-    recovery: 0.45
-    damage: 10
-    maxDamage: 10
-    posture: 10
-    maxPosture: 10
-    block: 20
-    maxBlock: 20
-    deflectPosture: 30
+    startup: 0.72
+    active: 0.12
+    recovery: 0.55
+    damage: 14
+    maxDamage: 14
+    posture: 16
+    maxPosture: 16
+    block: 28
+    maxBlock: 28
+    deflectPosture: 42
     cancelWindow: 0
   clip: {fileID: -2807887025256620907, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
   activeStart: 0.25

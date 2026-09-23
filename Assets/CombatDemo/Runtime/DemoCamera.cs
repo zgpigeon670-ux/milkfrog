@@ -9,6 +9,7 @@ namespace Milkfrog.CombatDemo
         public float smooth = 8;
         public bool avoidObstacles;
         public bool followBehindPlayer;
+        public bool lockOn = true;
         [Range(0, .5f)] public float enemyFocusWeight = .2f;
         public float headingSmooth = 7;
         public float collisionRadius = .25f;

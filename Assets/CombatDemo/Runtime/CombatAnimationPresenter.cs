@@ -139,7 +139,7 @@ namespace Milkfrog.CombatDemo
             lastPosition = actor.transform.position;
             int selected = 0;
             var core = actor.Core;
-            if (core.IsAttacking) selected = core.ActiveAttack.Kind==AttackKind.Thrust?21:3;
+            if (core.IsAttacking) selected = core.ActiveAttack.Kind==AttackKind.Thrust || core.ActiveAttack.Kind==AttackKind.Perilous ? 21 : 3;
             else if(core.State==CombatState.AttackPrepare)selected=3;
             else if(core.State==CombatState.Charging)selected=20;
             else if(core.State==CombatState.Dodge)selected=16;
@@ -187,11 +187,11 @@ namespace Milkfrog.CombatDemo
                 mixer.SetInputWeight(i, weights[i] / sum);
                 double time = loopTime % Mathf.Max(.01f, clips[i].length);
                 if (i == 1 || i == 2 || i >= 10 && i <=15) time = Mathf.Repeat(gaitPhase,1) * clips[i].length;
-                if (i == 3) time = finisherTime >= 0 ? Mathf.Min(finisherTime, clips[3].length) : actor.lightAttack!=null?actor.lightAttack.SampleTime(core):profile.AttackTime(core);
+                if (i == 3) time = finisherTime >= 0 ? Mathf.Min(finisherTime, clips[3].length) : AttackPose(core, i);
                 if(i==3 && core.State==CombatState.AttackPrepare)time=Mathf.Clamp01(core.ChargeElapsed/Mathf.Max(.001f,core.ActiveAttack.Startup))*(actor.lightAttack!=null?actor.lightAttack.activeStart:profile.attackActiveStart)*clips[3].length;
                 if(i>=16 && i<=19)time=core.DodgeProgress*clips[i].length;
                 if(i==20)time=core.ChargeRatio*clips[i].length;
-                if(i==21 && actor.thrustAttack!=null)time=actor.thrustAttack.SampleTime(core);
+                if(i==21 && (core.ActiveAttack.Kind==AttackKind.Thrust || core.ActiveAttack.Kind==AttackKind.Perilous))time=AttackPose(core,i);
                 if (i == 4 || i == 8) time = core.StateProgress * clips[i].length;
                 if (i == 5) time = Mathf.Min(deathTime, clips[i].length - .001f);
                 if (i == 6 || i == 9) time = clips[i].length * .5f;
@@ -213,6 +213,23 @@ namespace Milkfrog.CombatDemo
             animator.transform.localPosition = modelPosition;
             animator.transform.localRotation = modelRotation;
             if (swordTrail != null) swordTrail.emitting = core.State == CombatState.AttackActive && dt > 0;
+        }
+
+        float AttackPose(CombatCore core, int track)
+        {
+            var definition = actor.CurrentAttackDefinition;
+            if (definition == null || definition.clip == null) return profile.AttackTime(core);
+            if (core.ActiveAttack.Kind == AttackKind.Followup)
+            {
+                float start = Mathf.Lerp(definition.activeStart, definition.activeEnd, .35f);
+                float a = start, b = definition.activeStart;
+                if (core.State == CombatState.AttackActive) { a = definition.activeStart; b = definition.activeEnd; }
+                if (core.State == CombatState.AttackRecovery) { a = definition.activeEnd; b = 1; }
+                return Mathf.Lerp(a, b, core.StateProgress) * definition.clip.length;
+            }
+            if (core.ActiveAttack.Kind == AttackKind.Perilous)
+                return Mathf.Lerp(.2f, .9f, core.State == CombatState.AttackRecovery ? 1 : core.StateProgress) * definition.clip.length;
+            return definition.SampleTime(core);
         }
 
         void OnDestroy()

@@ -14,6 +14,7 @@ namespace Milkfrog.CombatDemo
         public EnemyBrain Brain { get; private set; }
         public string LastHit { get; private set; } = "Ready";
         public bool Finished => player.Core.State == CombatState.Dead || enemy.Core.State == CombatState.Dead;
+        public bool LockedOn { get; private set; } = true;
         [NonSerialized] public bool manualSimulation;
         DemoInput input;
         Vector2 movement;
@@ -62,6 +63,7 @@ namespace Milkfrog.CombatDemo
             if(frame.resetPressed){ResetRound();return;}
             if(Finished)return;
             movement=Vector2.ClampMagnitude(frame.move,1);
+            if(frame.lockPressed)LockedOn=!LockedOn;
             if(!frame.attackHeld)attackNeedsRelease=false;
             if(IsFrozen)
             {
@@ -71,11 +73,13 @@ namespace Milkfrog.CombatDemo
                 return;
             }
             hasFrozenGuard=false;
-            player.FaceTarget();
+            if(LockedOn)player.FaceTarget();
             if(frame.dodgePressed && player.RequestDodge(CameraDirection(movement)))
             {player.Core.SetGuard(frame.guardHeld,false);attackNeedsRelease=frame.attackHeld;return;}
             player.Core.SetGuard(frame.guardHeld,frame.guardPressed);
             if(frame.guardHeld)return;
+            if(frame.attackPressed && player.Core.ComboOpen && (player.Target==null || player.Target.Core.State!=CombatState.PostureBroken) && player.Core.RequestFollowup())
+            {attackNeedsRelease=true;return;}
             if(frame.attackPressed && !attackNeedsRelease)
             {player.BeginPlayerAttack();attackNeedsRelease=true;}
             if(frame.attackReleased)player.Core.ReleaseAttack();
@@ -114,7 +118,9 @@ namespace Milkfrog.CombatDemo
                 visualDelta += step;
                 if (step <= 0 || Finished) continue;
                 if (hasFrozenGuard) { player.Core.SetGuard(guardAfterFreeze, false); hasFrozenGuard = false; }
-                player.FaceTarget();
+                if (LockedOn) player.FaceTarget();
+                var cameraRig = gameplayCamera != null ? gameplayCamera.GetComponent<DemoCamera>() : null;
+                if (cameraRig != null) cameraRig.lockOn = LockedOn;
                 Vector3 forward = Vector3.ProjectOnPlane(gameplayCamera.transform.forward, Vector3.up).normalized;
                 Vector3 right = Vector3.Cross(Vector3.up, forward);
                 player.Move(forward * movement.y + right * movement.x, settings.playerSpeed, step);
