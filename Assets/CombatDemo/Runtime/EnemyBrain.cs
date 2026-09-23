@@ -61,7 +61,7 @@ namespace Milkfrog.CombatDemo
             if (Mode == EnemyMode.Dummy)
             { actor.Core.SetGuard(false, false); Decision = "Training dummy"; return; }
             actor.FaceTarget();
-            bool near = actor.DistanceToTarget <= actor.Core.Tuning.range;
+            bool near = actor.DistanceToTarget <= actor.EngageDistance;
             if (counterRemaining >= 0)
             {
                 counterRemaining -= dt;

@@ -1,0 +1,4 @@
+Standalone smoke: launched copied Windows Development Player
+ProcessId=36364
+Executable=E:\UNITY\PROJECTS\milkfrog\Builds\CombatDemo\CombatDemo.exe
+Direct3D11 initialized on RTX4060; startup log has no combat exceptions; background startup only, not human input acceptance.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Milkfrog.CombatDemo
 {
-    public enum CombatState { Neutral, Guard, AttackStartup, AttackActive, AttackRecovery, HitStun, DeflectedStun, PostureBroken, Dead }
+    public enum CombatState { Neutral, Guard, AttackStartup, AttackActive, AttackRecovery, HitStun, DeflectedStun, PostureBroken, Dead, AttackPrepare, Charging, Dodge }
     public enum HitResult { Ignore, Hit, Block, Deflect, Deathblow }
     public enum EnemyMode { Dummy, Rhythm, Duel }
 
@@ -16,6 +16,8 @@ namespace Milkfrog.CombatDemo
         public float deflectWindow = .15f, hitStun = .30f, deflectedStun = .20f;
         public float hitDamage = 10, hitPosture = 10, blockPosture = 20, deflectPosture = 30;
         public float brokenDuration = 2, postureRecoveryDelay = 2, postureRecoveryRate = 15;
+        public float dodgeDuration = .38f, dodgeMoveDuration = .24f, dodgeDistance = 1.6f;
+        public float invulnerableStart = .06f, invulnerableEnd = .18f;
     }
 
     public readonly struct HitEvent
@@ -41,9 +43,16 @@ namespace Milkfrog.CombatDemo
         public bool CanAct => State == CombatState.Neutral || State == CombatState.Guard;
         public bool IsAttacking => State == CombatState.AttackStartup || State == CombatState.AttackActive || State == CombatState.AttackRecovery;
         public bool DeflectOpen => State == CombatState.Guard && DeflectRemaining > 0;
+        public bool IsPreparing => State == CombatState.AttackPrepare || State == CombatState.Charging;
+        public float DodgeElapsed => State == CombatState.Dodge ? StateDuration-Remaining : 0;
+        public float DodgeProgress => State == CombatState.Dodge ? StateProgress : 0;
+        public bool IsInvulnerable => State == CombatState.Dodge && DodgeElapsed >= Tuning.invulnerableStart-.000001f && DodgeElapsed < Tuning.invulnerableEnd-.000001f;
         public event Action<CombatState, CombatState> StateChanged;
         public event Action<HitEvent> HitResolved;
         public event Action ActiveSample;
+        // Covers the complete active interval, including its endpoint on a slow frame.
+        public event Action<float, float> ActiveInterval;
+        public event Action<float, float> DodgeInterval;
         // AI may select a parry opportunity, but cannot bypass the shared facing/Guard checks.
         public Func<bool> DeflectPolicy;
         readonly HashSet<CombatCore> hitTargets = new HashSet<CombatCore>();
@@ -83,6 +92,13 @@ namespace Milkfrog.CombatDemo
             return true;
         }
 
+        public bool RequestDodge()
+        {
+            if (!CanAct && !IsPreparing) return false;
+            Change(CombatState.Dodge,Tuning.dodgeDuration);
+            return true;
+        }
+
         public void Tick(float deltaTime)
         {
             if (deltaTime < 0 || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime))
@@ -99,9 +115,17 @@ namespace Milkfrog.CombatDemo
                     if (State != CombatState.AttackActive) return;
                 }
                 float consumed = Math.Min(left, Remaining);
+                float activeFrom = StateProgress;
+                float dodgeFrom = DodgeElapsed;
                 AdvanceClock(consumed);
                 Remaining = Math.Max(0, Remaining - consumed);
                 left = Math.Max(0, left - consumed);
+                if (State == CombatState.Dodge) DodgeInterval?.Invoke(dodgeFrom,DodgeElapsed);
+                if (State == CombatState.AttackActive)
+                {
+                    ActiveInterval?.Invoke(activeFrom, StateProgress);
+                    if (State != CombatState.AttackActive) return;
+                }
                 if (Remaining > 0) return;
                 switch (State)
                 {
@@ -144,7 +168,7 @@ namespace Milkfrog.CombatDemo
         public HitResult TryHit(CombatCore defender, bool defenderFacingAttacker)
         {
             if (State != CombatState.AttackActive || defender == null || defender == this ||
-                defender.State == CombatState.Dead || !hitTargets.Add(defender)) return HitResult.Ignore;
+                defender.State == CombatState.Dead || defender.IsInvulnerable || !hitTargets.Add(defender)) return HitResult.Ignore;
             return ResolveHit(defender, defenderFacingAttacker);
         }
 

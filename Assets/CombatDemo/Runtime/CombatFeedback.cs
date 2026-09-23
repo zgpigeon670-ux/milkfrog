@@ -29,6 +29,10 @@ namespace Milkfrog.CombatDemo
         public int ActiveFlashes { get; private set; }
         readonly GameObject[] pool = new GameObject[8];
         readonly float[] lifetimes = new float[8];
+        readonly float[] durations = new float[8];
+        readonly float[] sizes = new float[8];
+        readonly Renderer[][] impactRenderers = new Renderer[8][];
+        CombatActorView playerView, enemyView;
         AudioClip hitClip, blockClip, deflectClip;
         AudioSource audioSource;
         MaterialPropertyBlock color;
@@ -36,6 +40,8 @@ namespace Milkfrog.CombatDemo
         void Awake()
         {
             color = new MaterialPropertyBlock();
+            playerView = session.player.GetComponent<CombatActorView>();
+            enemyView = session.enemy.GetComponent<CombatActorView>();
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
             audioSource.spatialBlend = 0;
@@ -49,6 +55,17 @@ namespace Milkfrog.CombatDemo
                 pool[i].transform.SetParent(transform);
                 var collider = pool[i].GetComponent<Collider>(); collider.enabled = false; Destroy(collider);
                 pool[i].GetComponent<Renderer>().sharedMaterial = flashMaterial;
+                for (int ray = 0; ray < 8; ray++)
+                {
+                    var spark = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    spark.name = "Radial spark"; spark.transform.SetParent(pool[i].transform, false);
+                    var sparkCollider = spark.GetComponent<Collider>(); sparkCollider.enabled = false; Destroy(sparkCollider);
+                    spark.transform.localRotation = Quaternion.Euler(0, 0, ray * 45);
+                    spark.transform.localPosition = spark.transform.up * 1.65f;
+                    spark.transform.localScale = new Vector3(.065f, 1.4f, .065f);
+                    spark.GetComponent<Renderer>().sharedMaterial = flashMaterial;
+                }
+                impactRenderers[i] = pool[i].GetComponentsInChildren<Renderer>();
                 pool[i].SetActive(false);
             }
             session.ContactResolved += OnContact;
@@ -67,23 +84,30 @@ namespace Milkfrog.CombatDemo
             {
                 int slot = next++ % pool.Length;
                 pool[slot].transform.position = contact.Position;
-                pool[slot].transform.localScale = Vector3.one * (parry ? .3f : .16f);
-                color.SetColor("_BaseColor", parry ? new Color(1, .86f, .25f) : result == HitResult.Block ? Color.cyan : new Color(1, .3f, .2f));
-                pool[slot].GetComponent<Renderer>().SetPropertyBlock(color);
-                lifetimes[slot] = parry ? .15f : .09f;
+                sizes[slot] = parry ? .16f : .065f;
+                pool[slot].transform.localScale = Vector3.one * sizes[slot];
+                pool[slot].transform.rotation = session.gameplayCamera.transform.rotation;
+                color.SetColor("_BaseColor", parry ? new Color(2, 1.4f, .45f) : result == HitResult.Block ? new Color(1,.72f,.35f) : new Color(1, .3f, .2f));
+                foreach (var renderer in impactRenderers[slot]) renderer.SetPropertyBlock(color);
+                durations[slot] = lifetimes[slot] = parry ? .20f : .10f;
                 pool[slot].SetActive(true);
-                var victim = contact.Hit.Defender == session.player.Core ? session.player : session.enemy;
-                if (victim.TryGetComponent<CombatActorView>(out var view)) view.Flash(parry ? Color.white : Color.red, .08f);
+                var flashedCore = parry ? contact.Hit.Attacker : contact.Hit.Defender;
+                var view = flashedCore == session.player.Core ? playerView : enemyView;
+                if (result != HitResult.Block && view != null) view.Flash(parry ? new Color(1.6f,1.6f,1.6f) : new Color(1,.15f,.1f), parry ? .20f : .12f);
             }
         }
 
         public void TickReal(float dt)
         {
             ActiveFlashes = 0;
+            if (playerView != null) playerView.TickFlash(dt);
+            if (enemyView != null) enemyView.TickFlash(dt);
             for (int i = 0; i < pool.Length; i++)
             {
                 if (lifetimes[i] <= 0) continue;
                 lifetimes[i] = Mathf.Max(0, lifetimes[i] - dt);
+                float remaining = lifetimes[i] / durations[i];
+                pool[i].transform.localScale = Vector3.one * sizes[i] * (1 + (1-remaining) * .8f) * Mathf.Min(1, remaining * 4);
                 if (lifetimes[i] <= 0) pool[i].SetActive(false); else ActiveFlashes++;
             }
         }

@@ -6,6 +6,7 @@ namespace Milkfrog.CombatDemo
     public sealed class CombatAnimationProfile : ScriptableObject
     {
         public AnimationClip idle, walk, jog, attack, hit, death, guard, parry, deflected, broken;
+        public AnimationClip walkBack, jogBack, walkLeft, jogLeft, walkRight, jogRight;
         [Range(0, 1)] public float attackActiveStart = .35f;
         [Range(0, 1)] public float attackActiveEnd = .55f;
         [Min(0)] public float blendTime = .07f;

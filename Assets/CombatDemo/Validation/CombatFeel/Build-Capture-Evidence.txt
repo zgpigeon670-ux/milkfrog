@@ -1,0 +1,10 @@
+[CombatDemo] Standalone development build: C:\Users\pigeon\AppData\Local\Temp\MilkfrogCombatValidation\Builds\CombatDemo\CombatDemo.exe
+ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+  at UnityEditor.Search.SearchDatabase+<EnumerateAll>d__78.MoveNext () [0x00089] in <bf5fa3d429194bf78ff614e5729559a6>:0 
+  at UnityEditor.Search.SearchDatabase.GetDefaultSearchDatabase () [0x00005] in <bf5fa3d429194bf78ff614e5729559a6>:0 
+[CombatDemo] Capture stage 1: player=AttackActive enemy=HitStun
+[CombatDemo] Capture stage 2: player=Guard enemy=DeflectedStun
+[CombatDemo] Capture stage 3: player=Neutral enemy=PostureBroken
+[CombatDemo] Capture C:\Users\pigeon\AppData\Local\Temp\MilkfrogCombatValidation\Evidence\CombatDemo_Animated_3.png
+Internal: There are remaining Allocations on the JobTempAlloc. This is a leak, and will impact performance
+Internal: There are remaining Allocations on the JobTempAlloc. This is a leak, and will impact performance

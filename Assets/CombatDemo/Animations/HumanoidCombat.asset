@@ -22,6 +22,12 @@ MonoBehaviour:
   parry: {fileID: 7400000, guid: f1bd6f2b2236ab140a34a2bbd29c16ab, type: 2}
   deflected: {fileID: 7400000, guid: 5c64f482cd0bdbe43a04d469b4d84258, type: 2}
   broken: {fileID: 7400000, guid: 1a07466cdf448a14494a68ef252d07ca, type: 2}
+  walkBack: {fileID: 7400000, guid: eec3d82c468194f42862ea502ba18d54, type: 2}
+  jogBack: {fileID: 7400000, guid: 820dc11e17dd7a84889835d2263841c9, type: 2}
+  walkLeft: {fileID: 7400000, guid: a23a033f6edf7c341a4a5d0904f0b87e, type: 2}
+  jogLeft: {fileID: 7400000, guid: bdaeaab344e0a1949bf267c1e41b69ed, type: 2}
+  walkRight: {fileID: 7400000, guid: ef209e8b85f4f8148be74b84de1c97d6, type: 2}
+  jogRight: {fileID: 7400000, guid: f32d66ed6af8d5343abc60021e416794, type: 2}
   attackActiveStart: 0.25
   attackActiveEnd: 0.38
   blendTime: 0.07

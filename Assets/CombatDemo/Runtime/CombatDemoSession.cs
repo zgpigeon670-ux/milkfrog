@@ -114,7 +114,9 @@ namespace Milkfrog.CombatDemo
             LastHit = attacker + " -> " + hit.Result.ToString().ToUpperInvariant();
             Log(LastHit);
             CombatEvent?.Invoke(hit);
-            Vector3 contactPoint = Vector3.Lerp(player.transform.position, enemy.transform.position, .5f) + Vector3.up * 1.25f;
+            var attackerActor = hit.Attacker == player.Core ? player : enemy;
+            Vector3 contactPoint = attackerActor.HasContactPoint ? attackerActor.LastContactPoint :
+                Vector3.Lerp(player.transform.position, enemy.transform.position, .5f) + Vector3.up * 1.25f;
             ContactResolved?.Invoke(new CombatContact(hit, contactPoint));
         }
 

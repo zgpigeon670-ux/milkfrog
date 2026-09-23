@@ -20,10 +20,10 @@ namespace Milkfrog.CombatDemo
         float scriptTime, accumulator;
         int stage, cue, oldRate, oldVsync;
         float oldVolume;
-        bool oldBackground;
+        bool oldBackground, oldDebug;
         bool sampling;
         string output;
-        static readonly float[] cues = { .01f,.73f,1.45f,2.20f,2.32f,2.58f,3.30f,4.02f };
+        static readonly float[] cues = { .01f,.73f,1.45f,2.25f,2.45f,2.72f,3.44f,4.16f };
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void CommandLineStart()
         {
@@ -36,6 +36,7 @@ namespace Milkfrog.CombatDemo
             if (session == null || session.playerAnimation == null) throw new InvalidOperationException("Open the animated scene for benchmarking.");
             session.manualSimulation = true;
             hud = session.GetComponent<CombatDebugHud>(); playerView = session.player.GetComponent<CombatActorView>(); enemyView = session.enemy.GetComponent<CombatActorView>();
+            oldDebug = hud.showDebug; hud.showDebug = true;
             oldRate = Application.targetFrameRate; oldVsync = QualitySettings.vSyncCount;
             oldVolume = AudioListener.volume; oldBackground = Application.runInBackground;
             AudioListener.volume = 0; Application.runInBackground = true;
@@ -88,6 +89,7 @@ namespace Milkfrog.CombatDemo
         {
             sampler?.Dispose(); Application.targetFrameRate = oldRate; QualitySettings.vSyncCount = oldVsync;
             AudioListener.volume = oldVolume; Application.runInBackground = oldBackground;
+            if (hud != null) hud.showDebug = oldDebug;
         }
     }
 }
