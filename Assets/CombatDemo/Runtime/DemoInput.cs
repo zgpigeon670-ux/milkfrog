@@ -11,8 +11,8 @@ namespace Milkfrog.CombatDemo
     public sealed class DemoInput : System.IDisposable
     {
         readonly InputActionMap map = new InputActionMap("CombatDemo");
-        readonly InputAction move, attack, guard, reset, mode, dodge, lockOn;
-        public DemoInput()
+        readonly InputAction move, attack, guard, reset, mode, dodge, lockOn, look, pause;
+        public DemoInput(string lockBinding = "<Keyboard>/tab")
         {
             move = map.AddAction("Move", InputActionType.Value);
             move.AddCompositeBinding("2DVector").With("Up", "<Keyboard>/w").With("Down", "<Keyboard>/s")
@@ -22,11 +22,15 @@ namespace Milkfrog.CombatDemo
             reset = map.AddAction("Reset", InputActionType.Button, "<Keyboard>/r");
             mode = map.AddAction("NextMode", InputActionType.Button, "<Keyboard>/f1");
             dodge = map.AddAction("Dodge",InputActionType.Button,"<Keyboard>/space");
-            var lockOn = map.AddAction("Lock",InputActionType.Button,"<Keyboard>/tab");
+            var lockOn = map.AddAction("Lock",InputActionType.Button,lockBinding);
             this.lockOn = lockOn;
+            look = map.AddAction("Look", InputActionType.Value, "<Mouse>/delta");
+            pause = map.AddAction("Pause", InputActionType.Button, "<Keyboard>/escape");
             map.Enable();
         }
         public Vector2 Move => move.ReadValue<Vector2>();
+        public Vector2 Look => look.ReadValue<Vector2>();
+        public bool PausePressed => pause.WasPressedThisFrame();
         public bool AttackPressed => attack.WasPressedThisFrame();
         public bool GuardHeld => guard.IsPressed();
         public bool GuardPressed => guard.WasPressedThisFrame();

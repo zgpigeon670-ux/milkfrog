@@ -1,5 +1,5 @@
 {
   "name": "Milkfrog.CombatDemo",
   "rootNamespace": "Milkfrog.CombatDemo",
-  "references": ["Unity.InputSystem"]
+  "references": ["Unity.InputSystem", "Unity.ugui"]
 }

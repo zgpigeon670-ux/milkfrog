@@ -20,6 +20,8 @@ namespace Milkfrog.CombatDemo
     public sealed class CombatFeedback : MonoBehaviour
     {
         public CombatDemoSession session;
+        public System.Func<CombatCore, CombatActor> ResolveActor;
+        public CombatActor[] actors;
         public DemoCamera cameraRig;
         public Material flashMaterial;
         public bool hitStop = true, flashes = true, sound = true, cameraImpulse = true;
@@ -41,8 +43,11 @@ namespace Milkfrog.CombatDemo
         void Awake()
         {
             color = new MaterialPropertyBlock();
-            playerView = session.player.GetComponent<CombatActorView>();
-            enemyView = session.enemy.GetComponent<CombatActorView>();
+            if (session != null)
+            {
+                playerView = session.player.GetComponent<CombatActorView>();
+                enemyView = session.enemy.GetComponent<CombatActorView>();
+            }
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
             audioSource.spatialBlend = 0;
@@ -69,11 +74,10 @@ namespace Milkfrog.CombatDemo
                 impactRenderers[i] = pool[i].GetComponentsInChildren<Renderer>();
                 pool[i].SetActive(false);
             }
-            session.ContactResolved += OnContact;
-            session.RoundReset += ResetFeedback;
+            if (session != null) { session.ContactResolved += OnContact; session.RoundReset += ResetFeedback; }
         }
 
-        void OnContact(CombatContact contact)
+        public void OnContact(CombatContact contact)
         {
             var result = contact.Hit.Result;
             if (result == HitResult.Ignore) return;
@@ -89,13 +93,14 @@ namespace Milkfrog.CombatDemo
                 pool[slot].transform.position = contact.Position;
                 sizes[slot] = broken ? .22f : parry ? .16f : blocked ? .04f : .08f;
                 pool[slot].transform.localScale = Vector3.one * sizes[slot];
-                pool[slot].transform.rotation = session.gameplayCamera.transform.rotation;
+                pool[slot].transform.rotation = cameraRig.transform.rotation;
                 color.SetColor("_BaseColor", parry ? new Color(2, 1.4f, .45f) : result == HitResult.Block ? new Color(1,.72f,.35f) : new Color(1, .3f, .2f));
                 foreach (var renderer in impactRenderers[slot]) renderer.SetPropertyBlock(color);
                 durations[slot] = lifetimes[slot] = broken ? .28f : parry ? .20f : blocked ? .07f : .11f;
                 pool[slot].SetActive(true);
                 var flashedCore = parry ? contact.Hit.Attacker : contact.Hit.Defender;
-                var view = flashedCore == session.player.Core ? playerView : enemyView;
+                var view = ResolveActor != null ? ResolveActor(flashedCore)?.GetComponent<CombatActorView>() :
+                    session != null && flashedCore == session.player.Core ? playerView : enemyView;
                 if (result != HitResult.Block && view != null) view.Flash(broken ? new Color(1.8f,.85f,.35f) : parry ? new Color(1.6f,1.6f,1.6f) : new Color(1,.15f,.1f), broken ? .28f : parry ? .20f : .12f);
             }
         }
@@ -105,6 +110,7 @@ namespace Milkfrog.CombatDemo
             ActiveFlashes = 0;
             if (playerView != null) playerView.TickFlash(dt);
             if (enemyView != null) enemyView.TickFlash(dt);
+            if (actors != null) foreach (var actor in actors) if (actor != null) actor.GetComponent<CombatActorView>()?.TickFlash(dt);
             for (int i = 0; i < pool.Length; i++)
             {
                 if (lifetimes[i] <= 0) continue;
@@ -121,6 +127,7 @@ namespace Milkfrog.CombatDemo
             for (int i = 0; i < pool.Length; i++) { lifetimes[i] = 0; if (pool[i] != null) pool[i].SetActive(false); }
             if (audioSource != null) audioSource.Stop();
             if (cameraRig != null) cameraRig.ResetImpulse();
+            if (actors != null) foreach (var actor in actors) if (actor != null) actor.GetComponent<CombatActorView>()?.ResetFlash();
             if (session != null)
             {
                 if (session.player != null) session.player.GetComponent<CombatActorView>().ResetFlash();

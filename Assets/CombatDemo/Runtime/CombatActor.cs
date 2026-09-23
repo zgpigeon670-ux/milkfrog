@@ -6,6 +6,8 @@ namespace Milkfrog.CombatDemo
     public sealed class CombatActor : MonoBehaviour
     {
         public bool isPlayer;
+        public bool enforceFactions;
+        public bool AcceptsDamage { get; set; } = true;
         public CombatBladeTrace bladeTrace;
         public CombatAttackDefinition lightAttack, thrustAttack, followupAttack, slowAttack, perilousAttack;
         public CombatAttackDefinition CurrentAttackDefinition => AttackFor(Core == null ? AttackKind.Light : Core.ActiveAttack.Kind);
@@ -147,7 +149,8 @@ namespace Milkfrog.CombatDemo
 
         bool ValidTarget(CombatActor other, Vector3 forward)
         {
-            if (other == null || other == this || other.Core == null || other.Core.State == CombatState.Dead) return false;
+            if (other == null || other == this || other.Core == null || other.Core.State == CombatState.Dead || !other.AcceptsDamage) return false;
+            if (enforceFactions && isPlayer == other.isPlayer) return false;
             Vector3 delta = other.transform.position - transform.position;
             return Mathf.Abs(delta.y) <= maxTargetHeightDifference &&
                 Vector3.ProjectOnPlane(delta, Vector3.up).sqrMagnitude <= Core.Tuning.range * Core.Tuning.range &&

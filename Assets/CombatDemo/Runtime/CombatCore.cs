@@ -36,6 +36,7 @@ namespace Milkfrog.CombatDemo
         public CombatTuning Tuning { get; }
         public CombatState State { get; private set; }
         public float Health { get; private set; }
+        public bool AutomaticPostureRecovery { get; set; } = true;
         public float Posture { get; private set; }
         public float Remaining { get; private set; }
         public float StateDuration { get; private set; }
@@ -86,6 +87,24 @@ namespace Milkfrog.CombatDemo
             Health = Tuning.maxHealth;
             Posture = 0;
             Change(CombatState.Neutral);
+        }
+
+        public void RestoreVitals(float health, float posture)
+        {
+            if (float.IsNaN(health) || float.IsInfinity(health) || float.IsNaN(posture) || float.IsInfinity(posture))
+                throw new ArgumentOutOfRangeException(nameof(health));
+            Reset();
+            Health = Math.Min(Tuning.maxHealth, Math.Max(0, health));
+            Posture = Math.Min(Tuning.maxPosture, Math.Max(0, posture));
+            if (Health <= 0) Change(CombatState.Dead);
+        }
+
+        public void RecoverExploration(float dt, float healthRate = 5, float postureRate = 20)
+        {
+            if (dt < 0 || float.IsNaN(dt) || float.IsInfinity(dt)) throw new ArgumentOutOfRangeException(nameof(dt));
+            if (!CanAct) return;
+            Health = Math.Min(Tuning.maxHealth, Health + Math.Max(0, healthRate) * dt);
+            Posture = Math.Max(0, Posture - Math.Max(0, postureRate) * dt);
         }
 
         public void SetGuard(bool held, bool pressed)
@@ -216,7 +235,7 @@ namespace Milkfrog.CombatDemo
             float before = sinceInteraction;
             sinceInteraction += dt;
             DeflectRemaining = Math.Max(0, DeflectRemaining - dt);
-            if (CanAct)
+            if (CanAct && AutomaticPostureRecovery)
             {
                 float recoverTime = Math.Max(0, sinceInteraction - Math.Max(before, Tuning.postureRecoveryDelay));
                 Posture = Math.Max(0, Posture - recoverTime * Tuning.postureRecoveryRate);

@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/CombatDemo/Scenes/MainMenu.unity
+    guid: 24d5e8d945fe371498c4ac29efa0b3e7
+  - enabled: 1
+    path: Assets/CombatDemo/Scenes/MVP_TestLevel.unity
+    guid: 23f33dc609a7b1e4ebb946d170c9ff34
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:

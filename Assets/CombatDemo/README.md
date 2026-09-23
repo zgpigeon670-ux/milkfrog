@@ -1,10 +1,26 @@
 # Milkfrog Combat Demo
 
-Unity 6000.6.2f1 / URP / Input System。所有新增资产位于 `Assets/CombatDemo`，没有修改原始 SampleScene、项目输入设置或构建场景列表。
+Unity 6000.6.2f1 / URP / Input System。所有新增资产位于 `Assets/CombatDemo`。第四阶段将首页和 MVP 关卡加入构建场景列表，保留原始 SampleScene 与训练场，不修改项目输入设置。
 
 已提供 [Windows 可执行版本](../../Builds/CombatDemo/CombatDemo.exe)，也可直接在 Unity 中运行以下场景。完整画面的独立程序性能对照仍待验证，详情见报告。
 
-## 开始
+## MVP：从首页开始
+
+打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
+
+WASD 移动、鼠标转动自由过肩镜头、中键锁定／解锁最靠近准星的小怪。空格垫步、左键斩击／连击或按住蓄力、右键格挡／弹反。Esc 暂停，F2 调试。MVP 不使用训练场的 R／F1。
+
+平地从南向北依次布置三名巡逻小怪和训练守卫 BOSS。探索时每秒恢复 5 生命、20 架势；普通交战连续 10 秒无有效攻防或离开追击区域后结束。BOSS 在 8m 内触发，自动锁定并封闭场地，直到一方死亡。
+
+小怪和 BOSS 分别使用 `MobEnemy` / `BossEnemy` 类、`Prefabs/MVP` 下的 Prefab，以及 `Settings/MobEnemy.asset` / `BossEnemy.asset`。BOSS 攻击使用独立 `BossSlash.asset`，生命 600、架势 300、普通伤害 25。每个敌人的 stableId 必须唯一且不能随意改名，否则历史存档无法对应死亡记录。
+
+存档位于 `Application.persistentDataPath/MilkfrogMVP/save.json`，另有备份文件；记录位置、朝向、生命、架势、击败敌人 ID 和通关标志。仅脱战且动作 Neutral 时保存。战斗退出、死亡重试会回到最近安全档；不恢复攻击、锁定和仇恨等瞬间状态。新游戏、脱战、BOSS 胜利自动保存，探索中每 15 秒保存，Esc 菜单也提供手动保存。失败会显示提示；损坏文件保留，优先恢复备份。
+
+独立场景 `MVP_TestLevel` 也可直接 Play，加载有效存档或初始化安全出生点。建议正式验收从首页开始。无有效存档且直接 Play 关卡时会建立默认存档。开发构建支持 `--mvp-save-dir <独立目录>`，用于隔离验收存档，普通运行无需此参数。
+
+完整说明与本次证据见 [MVP 验证报告](Validation/MVP/Report.md)。下面的操作说明保留为原双人训练场文档。
+
+## 原训练场开始方式
 
 1. 等待 Unity 导入脚本并完成编译。
 2. 打开 **`Assets/CombatDemo/Scenes/CombatDemo_Animated.unity`**，点击 Play，再点击 Game View 使其获得输入焦点。

@@ -10,6 +10,20 @@ namespace Milkfrog.CombatDemo
         public bool avoidObstacles;
         public bool followBehindPlayer;
         public bool lockOn = true;
+        public bool freeOrbit;
+        public float yaw, pitch = 12, sensitivity = .12f;
+        public void Look(Vector2 delta)
+        {
+            if (!freeOrbit || lockOn) return;
+            yaw += delta.x * sensitivity;
+            pitch = Mathf.Clamp(pitch - delta.y * sensitivity, -20, 65);
+        }
+        public void ReleaseLock()
+        {
+            yaw = transform.eulerAngles.y;
+            pitch = Mathf.Clamp(Mathf.DeltaAngle(0, transform.eulerAngles.x), -20, 65);
+            lockOn = false; enemy = null;
+        }
         [Range(0, .5f)] public float enemyFocusWeight = .2f;
         public float headingSmooth = 7;
         public float collisionRadius = .25f;
@@ -42,6 +56,7 @@ namespace Milkfrog.CombatDemo
 
         public void Step(float dt)
         {
+            if (freeOrbit) { StepOrbit(dt); return; }
             if (player == null || enemy == null) return;
             Vector3 focus = Vector3.Lerp(player.position, enemy.position, followBehindPlayer ? enemyFocusWeight : .45f) + Vector3.up * 1.2f;
             var forward = Vector3.ProjectOnPlane(player.forward, Vector3.up);
@@ -56,6 +71,28 @@ namespace Milkfrog.CombatDemo
             Vector3 shake = new Vector3(Mathf.Sin(phase), Mathf.Cos(phase * 1.31f), 0) * impulse;
             transform.position = ConstrainPosition(focus, stablePosition + shake);
             transform.LookAt(focus);
+            impulse = Mathf.Max(0, impulse - dt * .9f);
+        }
+
+        void StepOrbit(float dt)
+        {
+            if (player == null) return;
+            Vector3 focus = player.position + Vector3.up * 1.4f;
+            Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
+            if (lockOn && enemy != null)
+            {
+                Vector3 delta = enemy.position - player.position; delta.y = 0;
+                if (delta.sqrMagnitude > .001f) rotation = Quaternion.LookRotation(delta) * Quaternion.Euler(12, 0, 0);
+                focus = Vector3.Lerp(player.position, enemy.position, .18f) + Vector3.up * 1.4f;
+            }
+            heading = positioned ? Quaternion.Slerp(heading, rotation, 1 - Mathf.Exp(-headingSmooth * dt)) : rotation;
+            Vector3 desired = focus + heading * new Vector3(.65f, .25f, -4.5f);
+            stablePosition = positioned ? Vector3.Lerp(stablePosition, desired, 1 - Mathf.Exp(-smooth * dt)) : desired;
+            positioned = true; stablePosition = ConstrainPosition(focus, stablePosition);
+            phase += dt * 110;
+            transform.position = ConstrainPosition(focus, stablePosition + transform.right * Mathf.Sin(phase) * impulse);
+            transform.rotation = heading;
+            if (lockOn && enemy != null) transform.LookAt(focus);
             impulse = Mathf.Max(0, impulse - dt * .9f);
         }
     }
