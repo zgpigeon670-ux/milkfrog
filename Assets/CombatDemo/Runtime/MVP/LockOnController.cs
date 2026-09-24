@@ -30,11 +30,15 @@ namespace Milkfrog.CombatDemo
         public void Force(EnemyController target)
         {
             Target = target; obscured = 0; world.player.Target = target.Actor;
-            world.cameraRig.enemy = target.transform; world.cameraRig.lockOn = true;
+            // A mob lock is a selection aid; only the boss owns the camera.
+            world.cameraRig.enemy = target.IsBoss ? target.transform : null;
+            world.cameraRig.lockOn = target.IsBoss;
         }
         public void Clear()
         {
-            Target = null; obscured = 0; world.player.Target = null; world.cameraRig.ReleaseLock();
+            Target = null; obscured = 0; world.player.Target = null;
+            if (world.cameraRig.lockOn) world.cameraRig.ReleaseLock();
+            else world.cameraRig.enemy = null;
         }
         public void Tick(float dt)
         {

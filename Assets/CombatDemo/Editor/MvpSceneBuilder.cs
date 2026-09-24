@@ -33,15 +33,30 @@ namespace Milkfrog.CombatDemo.Editor
             mobDefinition.blocksBeforeDeflect = settings.blocksBeforeDeflect;
             AssetDatabase.CreateAsset(mobDefinition, Root + "/Settings/MobEnemy.asset");
             var bossDefinition = Object.Instantiate(mobDefinition); bossDefinition.displayName = "THE TRAINING GUARDIAN";
-            bossDefinition.tuning.maxHealth = 600; bossDefinition.tuning.maxPosture = 300;
-            bossDefinition.speed = 3; bossDefinition.wait = 1;
+            bossDefinition.tuning.maxHealth = 750; bossDefinition.tuning.maxPosture = 350;
+            bossDefinition.speed = 3.2f; bossDefinition.wait = .85f;
+            bossDefinition.attackPattern = new[] { AttackPattern.Slash, AttackPattern.Slow, AttackPattern.Slash, AttackPattern.Perilous };
             var bossAttack = Object.Instantiate(source.enemy.lightAttack);
             bossAttack.rules = JsonUtility.FromJson<AttackParameters>(JsonUtility.ToJson(source.enemy.lightAttack.rules));
-            bossAttack.rules.damage = bossAttack.rules.maxDamage = 25;
-            bossAttack.rules.posture = bossAttack.rules.maxPosture = 25;
-            bossAttack.rules.block = bossAttack.rules.maxBlock = 40; bossAttack.rules.recovery = .4f;
+            bossAttack.rules.startup = .35f; bossAttack.rules.damage = bossAttack.rules.maxDamage = 28;
+            bossAttack.rules.posture = bossAttack.rules.maxPosture = 28;
+            bossAttack.rules.block = bossAttack.rules.maxBlock = 44; bossAttack.rules.recovery = .4f;
             AssetDatabase.CreateAsset(bossAttack, Root + "/Settings/BossSlash.asset");
             bossDefinition.slash = bossAttack;
+            var bossSlow = Object.Instantiate(source.enemy.slowAttack);
+            bossSlow.rules = JsonUtility.FromJson<AttackParameters>(JsonUtility.ToJson(source.enemy.slowAttack.rules));
+            bossSlow.rules.damage = bossSlow.rules.maxDamage = 36;
+            bossSlow.rules.posture = bossSlow.rules.maxPosture = 38;
+            bossSlow.rules.block = bossSlow.rules.maxBlock = 55;
+            AssetDatabase.CreateAsset(bossSlow, Root + "/Settings/BossSlow.asset");
+            bossDefinition.slow = bossSlow;
+            var bossPerilous = Object.Instantiate(source.enemy.perilousAttack);
+            bossPerilous.rules = JsonUtility.FromJson<AttackParameters>(JsonUtility.ToJson(source.enemy.perilousAttack.rules));
+            bossPerilous.rules.damage = bossPerilous.rules.maxDamage = 42;
+            bossPerilous.rules.posture = bossPerilous.rules.maxPosture = 45;
+            bossPerilous.rules.block = bossPerilous.rules.maxBlock = 0;
+            AssetDatabase.CreateAsset(bossPerilous, Root + "/Settings/BossPerilous.asset");
+            bossDefinition.perilous = bossPerilous;
             AssetDatabase.CreateAsset(bossDefinition, Root + "/Settings/BossEnemy.asset");
             ConfigurePrefab<MobEnemy>(mobPrefab, mobDefinition);
             ConfigurePrefab<BossEnemy>(bossPrefab, bossDefinition);
@@ -60,7 +75,7 @@ namespace Milkfrog.CombatDemo.Editor
             light.transform.rotation = Quaternion.Euler(48,-30,0); light.shadows = LightShadows.Soft;
             RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat; RenderSettings.ambientLight = new Color(.55f,.6f,.67f);
             var camera = new GameObject("Main Camera", typeof(Camera),typeof(AudioListener),typeof(DemoCamera)).GetComponent<Camera>();
-            camera.tag = "MainCamera"; camera.fieldOfView = 58; camera.farClipPlane = 180;
+            camera.tag = "MainCamera"; camera.fieldOfView = 60; camera.farClipPlane = 180;
             camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = new Color(.055f,.075f,.10f);
             var rig = camera.GetComponent<DemoCamera>(); rig.freeOrbit = true; rig.lockOn = false; rig.avoidObstacles = true;
             var root = new GameObject("MVP Session");
@@ -116,7 +131,10 @@ namespace Milkfrog.CombatDemo.Editor
         static void ConfigurePrefab<T>(GameObject prefab,EnemyDefinition definition) where T:EnemyController
         {
             string path = AssetDatabase.GetAssetPath(prefab); var root = PrefabUtility.LoadPrefabContents(path);
-            root.AddComponent<T>().definition = definition; root.GetComponent<CombatActor>().lightAttack = definition.slash;
+            root.AddComponent<T>().definition = definition;
+            var combat = root.GetComponent<CombatActor>(); combat.lightAttack = definition.slash;
+            if (definition.slow != null) combat.slowAttack = definition.slow;
+            if (definition.perilous != null) combat.perilousAttack = definition.perilous;
             PrefabUtility.SaveAsPrefabAsset(root,path); PrefabUtility.UnloadPrefabContents(root);
         }
         static CombatActor Spawn(GameObject prefab,Vector3 position,string name,Camera camera)
@@ -142,7 +160,9 @@ namespace Milkfrog.CombatDemo.Editor
         }
         public static void BuildPlayer()
         {
-            string path = Path.GetFullPath("Builds/MilkfrogMVP/MilkfrogMVP.exe"); Directory.CreateDirectory(Path.GetDirectoryName(path));
+            string requested = Environment.GetEnvironmentVariable("MILKFROG_BUILD_OUTPUT");
+            string path = Path.GetFullPath(string.IsNullOrEmpty(requested) ? "Builds/MilkfrogMVP/MilkfrogMVP.exe" : requested);
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
             bool previousResizable = PlayerSettings.resizableWindow;
             try
             {
@@ -150,6 +170,8 @@ namespace Milkfrog.CombatDemo.Editor
                 var result = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new[]{Home,Level,AnimatedDemoBuilder.ScenePath,CombatDemoBuilder.ScenePath},
                     locationPathName = path, target = BuildTarget.StandaloneWindows64, options = BuildOptions.Development });
                 if (result.summary.result != BuildResult.Succeeded) throw new InvalidOperationException("MVP build failed: "+result.summary.result);
+                File.Copy(Path.GetFullPath(Root + "/ThirdParty/NotoSansSC/OFL.txt"),
+                    Path.Combine(Path.GetDirectoryName(path), "NotoSansSC-OFL.txt"), true);
             }
             finally { PlayerSettings.resizableWindow = previousResizable; }
             Debug.Log("[MVP] Windows build succeeded: "+path);

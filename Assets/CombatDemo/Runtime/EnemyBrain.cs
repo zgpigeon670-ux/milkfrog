@@ -101,7 +101,7 @@ namespace Milkfrog.CombatDemo
         AttackPattern ChoosePattern()
         {
             var pattern = settings.enemyPattern;
-            if (pattern == null || pattern.Length == 0 || Mode == EnemyMode.Duel) return AttackPattern.Slash;
+            if (pattern == null || pattern.Length == 0 || Mode == EnemyMode.Duel && !settings.usePatternInDuel) return AttackPattern.Slash;
             return pattern[PatternIndex % pattern.Length];
         }
 
@@ -109,7 +109,7 @@ namespace Milkfrog.CombatDemo
         {
             var definition = actor.AttackFor(pattern);
             if (definition == null || !actor.Core.RequestDefinedAttack(definition.rules)) actor.Core.RequestAttack();
-            else if (Mode != EnemyMode.Duel && settings.enemyPattern != null && settings.enemyPattern.Length > 0)
+            else if ((Mode != EnemyMode.Duel || settings.usePatternInDuel) && settings.enemyPattern != null && settings.enemyPattern.Length > 0)
                 PatternIndex = (PatternIndex + 1) % settings.enemyPattern.Length;
         }
     }

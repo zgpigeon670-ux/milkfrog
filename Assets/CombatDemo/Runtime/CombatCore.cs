@@ -278,7 +278,7 @@ namespace Milkfrog.CombatDemo
                 Posture = Math.Min(Tuning.maxPosture, Posture + ActiveAttack.DeflectPosture);
                 InterruptWithPriority(CombatState.DeflectedStun, Tuning.deflectedStun);
             }
-            else if (facing && defender.State == CombatState.Guard)
+            else if (ActiveAttack.Response != AttackResponse.DodgeOnly && facing && defender.State == CombatState.Guard)
             {
                 result = HitResult.Block;
                 defender.Posture = Math.Min(defender.Tuning.maxPosture, defender.Posture + ActiveAttack.Block);

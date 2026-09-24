@@ -7,6 +7,8 @@ namespace Milkfrog.CombatDemo
     {
         public bool isPlayer;
         public bool enforceFactions;
+        // Used by the MVP player only. Training actors retain directional guard rules.
+        public bool autoFaceGuardAttacks;
         public bool AcceptsDamage { get; set; } = true;
         public CombatBladeTrace bladeTrace;
         public CombatAttackDefinition lightAttack, thrustAttack, followupAttack, slowAttack, perilousAttack;
@@ -184,6 +186,14 @@ namespace Milkfrog.CombatDemo
                 Vector3 point = found[i].ClosestPoint(bladeRoot + blade * along);
                 if (!HasLineOfSight(other, point)) continue;
                 LastContactPoint = point; HasContactPoint = true;
+                if (other.autoFaceGuardAttacks && other.Core.State == CombatState.Guard &&
+                    Core.ActiveAttack.Response != AttackResponse.DodgeOnly)
+                {
+                    Vector3 incoming = transform.position - other.transform.position;
+                    incoming.y = 0;
+                    if (incoming.sqrMagnitude > .000001f)
+                        other.transform.rotation = Quaternion.LookRotation(incoming);
+                }
                 Core.TryHit(other.Core, IsInFront(other.transform.forward, transform.position - other.transform.position, other.Core.Tuning.guardAngle));
             }
         }

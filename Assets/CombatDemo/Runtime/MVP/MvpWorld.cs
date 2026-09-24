@@ -12,6 +12,7 @@ namespace Milkfrog.CombatDemo
         public EnemyController[] enemies;
         public Camera gameplayCamera;
         public DemoCamera cameraRig;
+        [Range(0, .5f)] public float aimReticleRadius = .18f;
         public CombatFeedback feedback;
         public GameObject arena;
         public Vector3 spawn = new Vector3(0, .02f, -35);
@@ -21,6 +22,7 @@ namespace Milkfrog.CombatDemo
         public bool manualSimulation;
         public bool BossDefeated { get; private set; }
         public int ContactCount { get; private set; }
+        public string AimDecision { get; private set; } = "None";
         public readonly HashSet<string> Defeated = new HashSet<string>();
         public bool CanSave => Director.State == EncounterState.Exploration && player.Core.State == CombatState.Neutral;
         public bool Running => Flow != null && Flow.State == GameFlowState.Playing && !Flow.Paused;
@@ -37,6 +39,7 @@ namespace Milkfrog.CombatDemo
         {
             Flow = GetComponent<GameFlowController>();
             player.enforceFactions = true;
+            player.autoFaceGuardAttacks = true;
             player.Initialize(JsonUtility.FromJson<CombatTuning>(JsonUtility.ToJson(settings.player)));
             Director = new EncounterDirector(this); Lock = new LockOnController(this);
             Register(player);
@@ -49,7 +52,13 @@ namespace Milkfrog.CombatDemo
             feedback.actors = new List<CombatActor>(actors.Values).ToArray();
             feedback.ResolveActor = core => actors.TryGetValue(core, out var actor) ? actor : null;
             cameraRig.freeOrbit = true; cameraRig.lockOn = false; cameraRig.enemy = null;
-            hud = GetComponent<MvpHud>(); if (hud != null) hud.Read = HudData;
+            hud = GetComponent<MvpHud>();
+            if (hud != null)
+            {
+                hud.Read = HudData;
+                hud.ReadPerilousWarning = IsBossPerilousStartup;
+                hud.ReadVisible = () => Flow.State == GameFlowState.Playing && !Flow.Paused;
+            }
             input = new DemoInput("<Mouse>/middleButton");
         }
         void Register(CombatActor actor)
@@ -61,6 +70,7 @@ namespace Milkfrog.CombatDemo
         public void Restore(PlayerSnapshot snapshot)
         {
             Director = new EncounterDirector(this); saveClock = 0; pendingSave = false;
+            AimDecision = "None";
             foreach (var enemy in enemies) enemy.ResetForLoad();
             Defeated.Clear(); BossDefeated = snapshot != null && snapshot.bossDefeated;
             if (snapshot?.defeatedEnemyIds != null) foreach (string id in snapshot.defeatedEnemyIds) Defeated.Add(id);
@@ -138,36 +148,72 @@ namespace Milkfrog.CombatDemo
                 return;
             }
             hasFrozenGuard = false;
-            if (Lock.Target != null) player.FaceTarget();
             if (frame.dodgePressed && player.RequestDodge(MoveDirection()))
             { player.Core.SetGuard(frame.guardHeld, false); needsRelease = frame.attackHeld; return; }
             player.Core.SetGuard(frame.guardHeld, frame.guardPressed);
             if (frame.guardHeld) return;
             if (frame.attackPressed)
             {
-                player.Target = ExecutionTarget();
-                if (player.Core.ComboOpen && (player.Target == null || player.Target.Core.State != CombatState.PostureBroken) && player.Core.RequestFollowup())
-                { needsRelease = true; return; }
-                if (!needsRelease) { player.BeginPlayerAttack(); needsRelease = true; }
-                player.Target = Lock.Target == null ? null : Lock.Target.Actor;
+                if (!needsRelease && player.Core.CanAct)
+                {
+                    CombatActor target = SelectAttackTarget();
+                    bool followup = player.Core.ComboOpen && player.followupAttack != null &&
+                        (target == null || target.Core.State != CombatState.PostureBroken);
+                    FaceAttackAim(target);
+                    if (followup) player.Core.RequestFollowup();
+                    else player.BeginPlayerAttack();
+                    needsRelease = true;
+                }
             }
-            if (frame.attackReleased) player.Core.ReleaseAttack();
+            if (frame.attackReleased && player.Core.IsPreparing)
+            {
+                FaceAttackAim(SelectAttackTarget());
+                player.Core.ReleaseAttack();
+            }
+            player.Target = Lock.Target == null ? null : Lock.Target.Actor;
         }
-        CombatActor ExecutionTarget()
+        public CombatActor SelectAttackTarget()
         {
-            CombatActor best = null; float distance = float.PositiveInfinity;
+            if (Lock.Target != null && Lock.Target.Alive && Lock.Target.Actor.AcceptsDamage)
+            { AimDecision = "Locked: " + Lock.Target.stableId; return Lock.Target.Actor; }
+            EnemyController reticle = null, nearest = null;
+            float reticleScore = float.PositiveInfinity, reticleDistance = float.PositiveInfinity;
+            float nearestDistance = float.PositiveInfinity;
+            float radius = Mathf.Min(gameplayCamera.pixelWidth, gameplayCamera.pixelHeight) * Mathf.Clamp01(aimReticleRadius);
+            float radiusSquared = radius * radius;
             foreach (var enemy in enemies)
             {
                 var actor = enemy.Actor;
-                if (!enemy.Alive || !actor.AcceptsDamage || actor.Core.State != CombatState.PostureBroken) continue;
+                if (!enemy.Alive || !actor.AcceptsDamage) continue;
                 Vector3 offset = actor.transform.position - player.transform.position;
                 float d = Vector3.ProjectOnPlane(offset, Vector3.up).magnitude;
                 if (d > player.Core.Tuning.range || Mathf.Abs(offset.y) > player.maxTargetHeightDifference ||
-                    !CombatActor.IsInFront(player.transform.forward, offset, 120) || !player.HasLineOfSight(actor, actor.transform.position + Vector3.up)) continue;
-                if (Lock.Target == enemy) return actor;
-                if (d < distance) { best = actor; distance = d; }
+                    !player.HasLineOfSight(actor, actor.transform.position + Vector3.up * 1.1f)) continue;
+                if (d < nearestDistance || Mathf.Approximately(d, nearestDistance) &&
+                    string.CompareOrdinal(enemy.stableId, nearest?.stableId) < 0)
+                { nearest = enemy; nearestDistance = d; }
+                Vector3 viewport = gameplayCamera.WorldToViewportPoint(actor.transform.position + Vector3.up * 1.2f);
+                if (viewport.z <= 0 || viewport.x < 0 || viewport.x > 1 || viewport.y < 0 || viewport.y > 1 || !Visible(actor)) continue;
+                float dx = (viewport.x - .5f) * gameplayCamera.pixelWidth;
+                float dy = (viewport.y - .5f) * gameplayCamera.pixelHeight;
+                float score = dx * dx + dy * dy;
+                if (score > radiusSquared) continue;
+                if (score < reticleScore || Mathf.Approximately(score, reticleScore) &&
+                    (d < reticleDistance || Mathf.Approximately(d, reticleDistance) &&
+                    string.CompareOrdinal(enemy.stableId, reticle?.stableId) < 0))
+                { reticle = enemy; reticleScore = score; reticleDistance = d; }
             }
-            return best ?? Lock.Target?.Actor;
+            EnemyController selected = reticle ?? nearest;
+            AimDecision = selected == null ? "Reticle" : (reticle != null ? "Reticle: " : "Nearest: ") + selected.stableId;
+            return selected?.Actor;
+        }
+        void FaceAttackAim(CombatActor target)
+        {
+            Vector3 forward = target == null
+                ? Vector3.ProjectOnPlane(gameplayCamera.ViewportPointToRay(new Vector3(.5f, .5f)).direction, Vector3.up)
+                : Vector3.ProjectOnPlane(target.transform.position - player.transform.position, Vector3.up);
+            if (forward.sqrMagnitude > .000001f) player.transform.rotation = Quaternion.LookRotation(forward);
+            player.Target = target;
         }
         public void Simulate(float dt)
         {
@@ -182,7 +228,7 @@ namespace Milkfrog.CombatDemo
                 if (hasFrozenGuard) { player.Core.SetGuard(frozenGuard, false); hasFrozenGuard = false; }
                 Director.Tick(step); Lock.Tick(step);
                 Vector3 direction = MoveDirection();
-                if (Lock.Target != null) { player.Target = Lock.Target.Actor; player.FaceTarget(); }
+                if (Lock.Target != null && Lock.Target.IsBoss) { player.Target = Lock.Target.Actor; player.FaceTarget(); }
                 else if (direction.sqrMagnitude > .001f && player.Core.CanAct)
                     player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, Quaternion.LookRotation(direction), 720 * step);
                 player.Move(direction, settings.playerSpeed, step);
@@ -231,6 +277,14 @@ namespace Milkfrog.CombatDemo
             { var owner = sightHits[i].collider.GetComponentInParent<CombatActor>(); if (owner != actor && owner != player) return false; }
             return true;
         }
+        bool IsBossPerilousStartup()
+        {
+            if (Director.State != EncounterState.BossCombat || Flow.State != GameFlowState.Playing || Flow.Paused) return false;
+            foreach (var enemy in enemies)
+                if (enemy.IsBoss && enemy.Alive && enemy.Actor.Core.State == CombatState.AttackStartup &&
+                    enemy.Actor.Core.ActiveAttack.Kind == AttackKind.Perilous) return true;
+            return false;
+        }
         MvpHudData HudData()
         {
             var core = player.Core;
@@ -238,7 +292,7 @@ namespace Milkfrog.CombatDemo
                 health = core.Health, maxHealth = core.Tuning.maxHealth, posture = core.Posture, maxPosture = core.Tuning.maxPosture,
                 charge = core.ChargeRatio, charging = core.IsPreparing, camera = gameplayCamera,
                 encounter = Director.State.ToString().ToUpperInvariant(), message = Flow.Message,
-                debug = $"{core.State} | Enemies: {Director.Count} | Disengage: {Director.Remaining:F1}s | Contacts: {ContactCount}" };
+                debug = $"{core.State} | Enemies: {Director.Count} | Disengage: {Director.Remaining:F1}s | Contacts: {ContactCount} | Aim: {AimDecision}" };
             if (Lock.Target != null) data.lockPoint = Lock.Target.transform.position + Vector3.up * 1.35f;
             var bars = new List<MvpEnemyBar>();
             foreach (var enemy in enemies)
@@ -248,7 +302,12 @@ namespace Milkfrog.CombatDemo
                 if (enemy.IsBoss)
                 {
                     if (Director.State == EncounterState.BossCombat)
-                    { data.bossName = enemy.definition.displayName; data.bossHealth = c.Health; data.bossMaxHealth = c.Tuning.maxHealth; data.bossPosture = c.Posture; data.bossMaxPosture = c.Tuning.maxPosture; }
+                    {
+                        data.bossName = enemy.definition.displayName; data.bossHealth = c.Health;
+                        data.bossMaxHealth = c.Tuning.maxHealth; data.bossPosture = c.Posture;
+                        data.bossMaxPosture = c.Tuning.maxPosture;
+                        data.perilousWarning = IsBossPerilousStartup();
+                    }
                 }
                 else bars.Add(new MvpEnemyBar { name = enemy.definition.displayName, status = enemy.Activity + " / " + c.State, point = enemy.transform.position + Vector3.up * 2f,
                     health = c.Health, maxHealth = c.Tuning.maxHealth, posture = c.Posture, maxPosture = c.Tuning.maxPosture,

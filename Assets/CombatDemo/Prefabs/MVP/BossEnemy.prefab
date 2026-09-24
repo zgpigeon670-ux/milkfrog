@@ -1214,8 +1214,8 @@ MonoBehaviour:
   lightAttack: {fileID: 11400000, guid: 1d49493a91795164ea73d003db3bb659, type: 2}
   thrustAttack: {fileID: 0}
   followupAttack: {fileID: 0}
-  slowAttack: {fileID: 11400000, guid: 91e7c4ab55d04e6bb0a31f8d2c64aa20, type: 2}
-  perilousAttack: {fileID: 11400000, guid: c3b81f06e90a4d5c8e2a7b54d19f3308, type: 2}
+  slowAttack: {fileID: 11400000, guid: d9b6c936fa8342d6a0f5c48846134175, type: 2}
+  perilousAttack: {fileID: 11400000, guid: ac4d8d36c3c7462eb9344b5403d590f0, type: 2}
   combatMask:
     serializedVersion: 2
     m_Bits: 4294967295

@@ -2,23 +2,23 @@
 
 Unity 6000.6.2f1 / URP / Input System。所有新增资产位于 `Assets/CombatDemo`。第四阶段将首页和 MVP 关卡加入构建场景列表，保留原始 SampleScene 与训练场，不修改项目输入设置。
 
-已提供 [MVP Windows 可执行版本](../../Builds/MilkfrogMVP/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。旧双人训练场构建仍保留在 `Builds/CombatDemo`。本轮验证与限制见 MVP 报告。
+本轮 Windows 构建位于 [MilkfrogMVP-Phase5](../../Builds/MilkfrogMVP-Phase5/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。旧构建目录因程序正在运行而无法可靠更新，请只用新目录验收；本轮测试与限制见 [定向、镜头与 BOSS 验证报告](Validation/TargetingCameraBoss/Report.md)。
 
 ## MVP：从首页开始
 
-打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
+打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP-Phase5/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
 
-WASD 移动、鼠标转动自由过肩镜头、中键锁定／解锁最靠近准星的小怪。空格垫步、左键斩击／连击或按住蓄力、右键格挡／弹反。Esc 暂停，F2 调试。MVP 不使用训练场的 R／F1。
+WASD 移动、鼠标转动自由过肩镜头、中键锁定／解锁最靠近准星的小怪。普通锁定只选择攻击目标，不强迫角色或镜头转向；挥刀提交时优先面向该目标。未锁定时依次选择攻击范围内的准星附近敌人、最近敌人或准星方向。空格垫步、左键斩击／连击或按住蓄力、右键格挡／弹反。已进入防御时，普通攻击到达前会自动转向攻击者；红色“危”突刺不能格挡或弹反，需要闪避。Esc 暂停，F2 调试。MVP 不使用训练场的 R／F1。
 
 平地从南向北依次布置三名巡逻小怪和训练守卫 BOSS。探索时每秒恢复 5 生命、20 架势；普通交战连续 10 秒无有效攻防或离开追击区域后结束。BOSS 在 8m 内触发，自动锁定并封闭场地，直到一方死亡。
 
-小怪和 BOSS 分别使用 `MobEnemy` / `BossEnemy` 类、`Prefabs/MVP` 下的 Prefab，以及 `Settings/MobEnemy.asset` / `BossEnemy.asset`。BOSS 攻击使用独立 `BossSlash.asset`，生命 600、架势 300、普通伤害 25。每个敌人的 stableId 必须唯一且不能随意改名，否则历史存档无法对应死亡记录。
+小怪和 BOSS 分别使用 `MobEnemy` / `BossEnemy` 类、`Prefabs/MVP` 下的 Prefab，以及 `Settings/MobEnemy.asset` / `BossEnemy.asset`。BOSS 使用独立快刀、慢刀、危突刺资产，默认按快→慢→快→危循环；生命 750、最大架势 350。BOSS 战仍强制锁定并持续跟随双方。每个敌人的 stableId 必须唯一且不能随意改名，否则历史存档无法对应死亡记录。
 
 存档位于 `Application.persistentDataPath/MilkfrogMVP/save.json`，另有备份文件；记录位置、朝向、生命、架势、击败敌人 ID 和通关标志。仅脱战且动作 Neutral 时保存。战斗退出、死亡重试会回到最近安全档；不恢复攻击、锁定和仇恨等瞬间状态。新游戏、脱战、BOSS 胜利自动保存，探索中每 15 秒保存，Esc 菜单也提供手动保存。失败会显示提示；损坏文件保留，优先恢复备份。
 
 独立场景 `MVP_TestLevel` 也可直接 Play，加载有效存档或初始化安全出生点。建议正式验收从首页开始。无有效存档且直接 Play 关卡时会建立默认存档。开发构建支持 `--mvp-save-dir <独立目录>`，用于隔离验收存档，普通运行无需此参数。
 
-完整说明与本次证据见 [MVP 验证报告](Validation/MVP/Report.md)。下面的操作说明保留为原双人训练场文档。
+此前的 MVP 交付记录见 [第四阶段报告](Validation/MVP/Report.md)；本轮实测见 [定向、镜头与 BOSS 验证报告](Validation/TargetingCameraBoss/Report.md)。下面的操作说明保留为原双人训练场文档。
 
 ## 原训练场开始方式
 
@@ -128,7 +128,7 @@ Unity Test Runner 中执行 `Milkfrog.CombatDemo.EditTests` 和 `Milkfrog.Combat
 - 左键按下立即抬刀，0.18s 前松开为普通斩击，已经经过的准备时间抵扣 0.25s 前摇。按住超过阈值进入蓄力，0.80s 满蓄后保持，松开才突刺。
 - 普通斩击完整结束后的 0.18s 内再按左键接第二刀，伤害 12、架势 14。同一次按住不会自动连出第二刀；架势崩溃时优先处决。
 - 斩击后摇前 0.16s、突刺后摇前 0.14s 可以切到格挡或垫步。前摇和有效帧不能取消，取消也不会补发弹反窗口。
-- Rhythm 模式循环普通斩、慢斩、危险斩。慢斩前摇 0.72s，弹反奖励 42 架势；危险斩前摇 0.62s，不能弹反，格挡仍扣 36 架势，HUD 显示 `PERILOUS / DODGE`。Duel 保持原来的普通斩交战。
+- Rhythm 模式循环普通斩、慢斩、危险斩。慢斩前摇 0.72s，弹反奖励 42 架势；危险斩前摇 0.62s，现已修正为不能格挡或弹反，HUD 显示 `PERILOUS / DODGE`。训练场 Duel 仍保持原来的普通斩交战。
 - Tab 锁定时角色持续朝向敌人，移动仍相对镜头；镜头继续从玩家背后跟随。默认锁定开启。
 - 突刺释放后为 0.12s 前摇、0.12s 有效期、0.42s 后摇；生命伤害 10→22、命中架势 10→28、格挡架势 20→35。可以格挡或弹反，无霸体与自动破防。实际命中使用独立 `ThrustBladeTrace.asset`。
 - 准备／蓄力期间不能移动，可以转向敌人；右键或空格取消。释放后方向锁定。受击、失焦、死亡、重置清除未完成蓄力；顿帧中松开左键会取消，不在恢复后补发。
@@ -138,6 +138,6 @@ Unity Test Runner 中执行 `Milkfrog.CombatDemo.EditTests` 和 `Milkfrog.Combat
 
 ## 本阶段边界
 
-不包含冲刺、跳跃、连招、体力条、技能、装备、存档、网络、自由镜头、切换锁定、敌人闪避 AI、复杂 Boss 或付费资产。自动化验证不等于真人手感验收；动作过渡、音量、镜头距离和姿势仍适合在实际键鼠试玩后微调。正式项目的 Build Profile 保持原样。
+仍不包含冲刺、跳跃、体力条、技能、装备、网络、敌人闪避 AI 或付费资产。自动化验证不等于真人手感验收；动作过渡、音量、镜头距离和姿势仍需实际键鼠试玩后微调。正式项目的 Build Profile 保持原样。
 
 

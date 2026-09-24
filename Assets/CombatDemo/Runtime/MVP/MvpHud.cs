@@ -6,6 +6,8 @@ namespace Milkfrog.CombatDemo
     public sealed class MvpHud : MonoBehaviour
     {
         public Func<MvpHudData> Read;
+        public Func<bool> ReadPerilousWarning;
+        public Func<bool> ReadVisible;
         public bool showDebug;
 
         const float RefreshInterval = .1f;
@@ -20,6 +22,9 @@ namespace Milkfrog.CombatDemo
         GUIStyle debugStyle;
         GUIStyle enemyStyle;
         GUIStyle enemyStatusStyle;
+        GUIStyle perilousWarningStyle;
+        GUIStyle perilousHintStyle;
+        Font perilousFont;
 
         static readonly Color Ink = new Color(.045f, .035f, .025f, .92f);
         static readonly Color Bronze = new Color(.51f, .41f, .24f);
@@ -28,10 +33,15 @@ namespace Milkfrog.CombatDemo
         static readonly Color Text = new Color(.91f, .85f, .71f);
         static readonly Color MutedText = new Color(.78f, .75f, .66f);
 
-        void Update()
+        void LateUpdate()
         {
-            if (Time.unscaledTime >= nextRefreshTime)
-                Refresh();
+            // Keep resource bars at 10 Hz, but update the warning and visibility every frame.
+            if (data == null || Time.unscaledTime >= nextRefreshTime) Refresh();
+            else
+            {
+                if (ReadPerilousWarning != null) data.perilousWarning = ReadPerilousWarning();
+                if (ReadVisible != null) data.visible = ReadVisible();
+            }
         }
 
         public void Refresh()
@@ -39,6 +49,8 @@ namespace Milkfrog.CombatDemo
             nextRefreshTime = Time.unscaledTime + RefreshInterval;
             data = Read == null ? null : Read();
         }
+
+        public bool PerilousWarningVisible => data != null && data.visible && data.perilousWarning;
 
         void OnGUI()
         {
@@ -66,6 +78,7 @@ namespace Milkfrog.CombatDemo
                 DrawSystemMessage(width);
                 DrawBoss(width);
                 DrawPlayerBars(width, height);
+                DrawPerilousWarning(width, height);
                 DrawReticle(width, height);
                 DrawEnemies(width, scale);
 
@@ -104,6 +117,14 @@ namespace Milkfrog.CombatDemo
             enemyStyle.clipping = TextClipping.Clip;
             enemyStatusStyle = Style(11, Gold, TextAnchor.MiddleCenter);
             enemyStatusStyle.clipping = TextClipping.Clip;
+
+            perilousFont = Resources.Load<Font>("NotoSansSC-VF");
+            perilousWarningStyle = Style(92, new Color(1f, .08f, .035f), TextAnchor.MiddleCenter);
+            perilousWarningStyle.font = perilousFont;
+            perilousHintStyle = Style(24, new Color(1f, .91f, .82f), TextAnchor.MiddleCenter);
+            perilousHintStyle.font = perilousFont;
+            if (perilousFont != null)
+                perilousFont.RequestCharactersInTexture("危闪避", 92, FontStyle.Bold);
         }
 
         static GUIStyle Style(int fontSize, Color color, TextAnchor anchor)
@@ -144,6 +165,20 @@ namespace Milkfrog.CombatDemo
             GUI.Label(new Rect(x, 39f, barWidth, 23f), data.bossName, bossStyle);
             DrawHealthBar(new Rect(x, 65f, barWidth, 12f), Ratio(data.bossHealth, data.bossMaxHealth), Red);
             DrawPostureBar(new Rect(x, 87f, barWidth, 7f), Ratio(data.bossPosture, data.bossMaxPosture));
+        }
+
+        void DrawPerilousWarning(float width, float height)
+        {
+            if (!data.perilousWarning)
+                return;
+
+            float center = width * .5f;
+            float top = height * .30f;
+            float pulse = .82f + .18f * Mathf.Sin(Time.unscaledTime * 10f);
+            Fill(new Rect(center - 116f, top, 232f, 142f), new Color(.10f, .015f, .012f, .78f));
+            Fill(new Rect(center - 116f, top, 232f, 3f), new Color(1f, .08f, .035f, pulse));
+            GUI.Label(new Rect(center - 94f, top + 2f, 188f, 100f), "危", perilousWarningStyle);
+            GUI.Label(new Rect(center - 104f, top + 100f, 208f, 34f), "闪避", perilousHintStyle);
         }
 
         void DrawPlayerBars(float width, float height)
@@ -318,6 +353,7 @@ namespace Milkfrog.CombatDemo
         public float maxPosture = 100f;
         public float charge;
         public bool charging;
+        public bool perilousWarning;
         public string encounter = "EXPLORATION";
         public string message = string.Empty;
         public string debug = string.Empty;

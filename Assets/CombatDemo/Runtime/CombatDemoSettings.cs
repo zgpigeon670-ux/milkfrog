@@ -14,5 +14,6 @@ namespace Milkfrog.CombatDemo
         public int blocksBeforeDeflect = 2;
         public bool logEvents = true;
         public AttackPattern[] enemyPattern = { AttackPattern.Slash, AttackPattern.Slow, AttackPattern.Perilous };
+        public bool usePatternInDuel;
     }
 }

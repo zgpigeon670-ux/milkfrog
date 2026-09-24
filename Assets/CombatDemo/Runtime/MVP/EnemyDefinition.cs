@@ -8,6 +8,8 @@ namespace Milkfrog.CombatDemo
         public string displayName = "Swordsman";
         public CombatTuning tuning = new CombatTuning();
         public CombatAttackDefinition slash;
+        public CombatAttackDefinition slow, perilous;
+        public AttackPattern[] attackPattern;
         public float speed = 2.5f, wait = 1.35f, counterDelay = .1f;
         public int blocksBeforeDeflect = 2;
         public float alertRadius = 6, patrolRadius = 3, leashMargin = 12;

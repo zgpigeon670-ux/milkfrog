@@ -25,12 +25,16 @@ namespace Milkfrog.CombatDemo
         {
             world = owner; Home = transform.position;
             Actor = GetComponent<CombatActor>(); Actor.lightAttack = definition.slash;
+            if (definition.slow != null) Actor.slowAttack = definition.slow;
+            if (definition.perilous != null) Actor.perilousAttack = definition.perilous;
             Actor.enforceFactions = true;
             Actor.Initialize(JsonUtility.FromJson<CombatTuning>(JsonUtility.ToJson(definition.tuning)));
             Actor.Target = owner.player; Actor.AcceptsDamage = !IsBoss;
             brainSettings = ScriptableObject.CreateInstance<CombatDemoSettings>();
             brainSettings.enemySpeed = definition.speed; brainSettings.enemyWait = definition.wait;
             brainSettings.counterDelay = definition.counterDelay; brainSettings.blocksBeforeDeflect = definition.blocksBeforeDeflect;
+            brainSettings.usePatternInDuel = IsBoss && definition.attackPattern != null && definition.attackPattern.Length > 0;
+            brainSettings.enemyPattern = definition.attackPattern;
             Brain = new EnemyBrain(Actor, brainSettings); Brain.Reset(EnemyMode.Duel);
             Activity = IsBoss ? EnemyActivity.Dormant : EnemyActivity.Patrol;
         }

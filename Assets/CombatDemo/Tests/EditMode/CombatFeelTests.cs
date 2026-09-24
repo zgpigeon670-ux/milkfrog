@@ -66,16 +66,16 @@ namespace Milkfrog.CombatDemo.Tests
         }
 
         [Test]
-        public void PerilousAttackCannotBeDeflectedButCanBeBlocked()
+        public void PerilousAttackCannotBeDeflectedOrBlocked()
         {
             var perilous = new AttackParameters { kind = AttackKind.Perilous, response = AttackResponse.DodgeOnly, startup = .20f, active = .10f, recovery = .20f, damage = 24, posture = 36, block = 48 };
             var attacker = new CombatCore(new CombatTuning(), perilous);
             var defender = new CombatCore(new CombatTuning());
             defender.SetGuard(true, true);
             attacker.RequestDefinedAttack(perilous); attacker.Tick(.20f);
-            Assert.That(attacker.TryHit(defender, true), Is.EqualTo(HitResult.Block));
-            Assert.That(defender.Health, Is.EqualTo(100));
-            Assert.That(defender.Posture, Is.EqualTo(48));
+            Assert.That(attacker.TryHit(defender, true), Is.EqualTo(HitResult.Hit));
+            Assert.That(defender.Health, Is.EqualTo(76));
+            Assert.That(defender.Posture, Is.EqualTo(36));
             Assert.That(attacker.State, Is.EqualTo(CombatState.AttackActive));
         }
 

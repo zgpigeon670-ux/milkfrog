@@ -52,8 +52,8 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(world.Director.State, Is.EqualTo(EncounterState.Exploration)); Assert.That(world.Lock.Target, Is.Null);
             Assert.That(world.player.Core.State, Is.EqualTo(CombatState.Neutral));
             Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True); Assert.That(saved.health, Is.EqualTo(100));
-            Assert.That(world.enemies[3].Actor.Core.Health, Is.EqualTo(600));
-            Assert.That(world.enemies[3].Actor.Core.Tuning.maxPosture, Is.EqualTo(300));
+            Assert.That(world.enemies[3].Actor.Core.Health, Is.EqualTo(750));
+            Assert.That(world.enemies[3].Actor.Core.Tuning.maxPosture, Is.EqualTo(350));
             Assert.That(world.enemies[0].Actor.Core.ActiveAttack.Damage, Is.EqualTo(10));
             yield return null;
         }
@@ -237,6 +237,197 @@ namespace Milkfrog.CombatDemo.Tests
                 world.Director.Tick(1f/fps+.0001f);
                 Assert.That(world.Director.State,Is.EqualTo(EncounterState.Exploration));
             }
+            yield return null;
+        }
+        [UnityTest] public IEnumerator MobLockDoesNotSteerMovementOrCameraButAimsCommittedAttack()
+        {
+            var mob = world.enemies[0];
+            Place(world.player, mob.Home + Vector3.back * 1.4f);
+            world.player.transform.rotation = Quaternion.LookRotation(Vector3.right);
+            float beforeYaw = world.cameraRig.yaw;
+            world.Lock.Force(mob);
+            Assert.That(world.cameraRig.lockOn, Is.False);
+            Assert.That(Vector3.Angle(world.player.transform.forward, Vector3.right), Is.LessThan(.1f));
+            world.cameraRig.Look(new Vector2(20, 0));
+            Assert.That(world.cameraRig.yaw, Is.GreaterThan(beforeYaw));
+            world.Simulate(.02f);
+            Assert.That(Vector3.Angle(world.player.transform.forward, Vector3.right), Is.LessThan(.1f));
+            world.SubmitInput(new CombatInputFrame { attackPressed = true, attackHeld = true });
+            Assert.That(world.player.Core.IsPreparing, Is.True);
+            Assert.That(Vector3.Angle(world.player.transform.forward,
+                Vector3.ProjectOnPlane(mob.transform.position - world.player.transform.position, Vector3.up)), Is.LessThan(.1f));
+            yield return null;
+        }
+        [UnityTest] public IEnumerator AttackSelectionUsesLockThenReticleThenNearestThenCameraRay()
+        {
+            Place(world.player, new Vector3(0, .02f, -30));
+            var reticle = world.enemies[0]; var near = world.enemies[1];
+            Place(reticle.Actor, world.player.transform.position + Vector3.forward * 1.8f);
+            Place(near.Actor, world.player.transform.position + new Vector3(1.1f, 0, .2f));
+            Place(world.enemies[2].Actor, new Vector3(-30, .02f, 0));
+            world.gameplayCamera.transform.SetPositionAndRotation(world.player.transform.position + new Vector3(0, 1.2f, -4), Quaternion.identity);
+            Assert.That(world.SelectAttackTarget(), Is.EqualTo(reticle.Actor));
+            world.Lock.Force(near); Assert.That(world.SelectAttackTarget(), Is.EqualTo(near.Actor));
+            world.Lock.Clear();
+            world.gameplayCamera.transform.rotation = Quaternion.LookRotation(Vector3.back);
+            Assert.That(world.SelectAttackTarget(), Is.EqualTo(near.Actor));
+            Place(reticle.Actor, new Vector3(-25, .02f, 0)); Place(near.Actor, new Vector3(25, .02f, 0));
+            world.gameplayCamera.transform.rotation = Quaternion.LookRotation(Vector3.right);
+            Assert.That(world.SelectAttackTarget(), Is.Null);
+            world.SubmitInput(new CombatInputFrame { attackPressed = true, attackHeld = true });
+            Assert.That(Vector3.Angle(world.player.transform.forward, Vector3.right), Is.LessThan(.1f));
+            yield return null;
+        }
+        [UnityTest] public IEnumerator SideLockedSlashUsesTurnedBladeAndActuallyConnects()
+        {
+            var mob = world.enemies[0];
+            Place(mob.Actor, mob.Home);
+            Place(world.player, mob.Home + Vector3.right * .9f);
+            world.player.transform.rotation = Quaternion.LookRotation(Vector3.back);
+            world.Lock.Force(mob);
+            int contacts = world.ContactCount;
+            world.SubmitInput(new CombatInputFrame { attackPressed = true, attackHeld = true });
+            world.SubmitInput(new CombatInputFrame { attackReleased = true });
+            Assert.That(world.player.Core.State, Is.EqualTo(CombatState.AttackStartup));
+            Assert.That(Vector3.Angle(world.player.AttackForward, Vector3.left), Is.LessThan(.1f));
+            world.player.Core.Tick(.35f);
+            Assert.That(world.ContactCount, Is.EqualTo(contacts + 1));
+            Assert.That(mob.Actor.Core.Health, Is.LessThan(mob.Actor.Core.Tuning.maxHealth));
+            yield return null;
+        }
+        [UnityTest] public IEnumerator ChargeReleaseReaimsAndKeepsBladeForwardAligned()
+        {
+            var mob = world.enemies[0];
+            Place(world.player, mob.Home + Vector3.back * 1.5f);
+            world.Lock.Force(mob);
+            world.SubmitInput(new CombatInputFrame { attackPressed = true, attackHeld = true });
+            Advance(.3f);
+            Assert.That(world.player.Core.IsPreparing, Is.True);
+            Place(mob.Actor, world.player.transform.position + Vector3.right * 1.5f);
+            world.SubmitInput(new CombatInputFrame { attackReleased = true });
+            Assert.That(world.player.Core.State, Is.EqualTo(CombatState.AttackStartup));
+            Assert.That(world.player.Core.ActiveAttack.Kind, Is.EqualTo(AttackKind.Thrust));
+            Assert.That(Vector3.Angle(world.player.AttackForward, Vector3.right), Is.LessThan(.1f));
+            Assert.That(Vector3.Angle(world.player.transform.forward, world.player.AttackForward), Is.LessThan(.1f));
+            yield return null;
+        }
+        [UnityTest] public IEnumerator FollowupAndExecutionUseSelectedDirection()
+        {
+            var mob = world.enemies[0];
+            Place(world.player, new Vector3(0, .02f, -35));
+            world.player.Core.RequestAttack(); world.player.Core.Tick(.7f);
+            Assert.That(world.player.Core.ComboOpen, Is.True);
+            Place(mob.Actor, world.player.transform.position + Vector3.back * 1.2f);
+            world.player.transform.rotation = Quaternion.LookRotation(Vector3.right);
+            world.Lock.Force(mob);
+            world.SubmitInput(new CombatInputFrame { attackPressed = true, attackHeld = true });
+            Assert.That(world.player.Core.ActiveAttack.Kind, Is.EqualTo(AttackKind.Followup));
+            Assert.That(Vector3.Angle(world.player.AttackForward, Vector3.back), Is.LessThan(.1f));
+            world.player.Core.Reset(); mob.Actor.Core.RestoreVitals(100, 95);
+            world.player.Core.RequestAttack(); world.player.Core.Tick(.25f);
+            world.player.Core.TryHit(mob.Actor.Core, true);
+            Assert.That(mob.Actor.Core.State, Is.EqualTo(CombatState.PostureBroken));
+            world.player.Core.Reset(); world.player.transform.rotation = Quaternion.LookRotation(Vector3.right);
+            world.SubmitInput(new CombatInputFrame { attackReleased = true });
+            world.SubmitInput(new CombatInputFrame { attackPressed = true, attackHeld = true });
+            Assert.That(mob.Actor.Core.State, Is.EqualTo(CombatState.Dead));
+            Assert.That(Vector3.Angle(world.player.transform.forward, Vector3.back), Is.LessThan(.1f));
+            yield return null;
+        }
+        [UnityTest] public IEnumerator GuardTurnsTowardEachMobButBreakAndPerilousStillHit()
+        {
+            var a = world.enemies[0].Actor; var b = world.enemies[1].Actor;
+            Place(world.player, new Vector3(0, .02f, -28));
+            Place(a, world.player.transform.position + Vector3.back * .9f);
+            Place(b, world.player.transform.position + Vector3.forward * .9f);
+            a.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            b.transform.rotation = Quaternion.LookRotation(Vector3.back);
+            world.player.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+            world.player.Core.SetGuard(true, false);
+            a.Core.RequestAttack(); a.Core.Tick(.7f);
+            Assert.That(world.player.Core.Health, Is.EqualTo(100));
+            Assert.That(world.player.Core.Posture, Is.EqualTo(20));
+            Assert.That(Vector3.Angle(world.player.transform.forward, Vector3.back), Is.LessThan(.1f));
+            b.Core.RequestAttack(); b.Core.Tick(.7f);
+            Assert.That(world.player.Core.Health, Is.EqualTo(100));
+            Assert.That(world.player.Core.Posture, Is.EqualTo(40));
+            Assert.That(Vector3.Angle(world.player.transform.forward, Vector3.forward), Is.LessThan(.1f));
+            world.player.Core.RestoreVitals(100, 95); world.player.Core.SetGuard(true, false);
+            a.Core.Reset(); a.Core.RequestAttack(); a.Core.Tick(.7f);
+            Assert.That(world.player.Core.State, Is.EqualTo(CombatState.PostureBroken));
+            b.Core.Reset(); b.Core.RequestAttack(); b.Core.Tick(.7f);
+            Assert.That(world.player.Core.Health, Is.LessThan(100));
+            yield return null;
+        }
+        [UnityTest] public IEnumerator BossCyclesDedicatedClipsAndWarningClearsWithState()
+        {
+            var boss = world.enemies[3];
+            Place(world.player, boss.Home + Vector3.back * 1f);
+            world.Director.Tick(.01f);
+            Assert.That(world.Lock.Target, Is.EqualTo(boss));
+            Assert.That(world.cameraRig.lockOn, Is.True);
+            Assert.That(boss.definition.attackPattern, Is.EqualTo(new[] { AttackPattern.Slash, AttackPattern.Slow, AttackPattern.Slash, AttackPattern.Perilous }));
+            var presenter = boss.GetComponent<CombatAnimationPresenter>();
+            var expected = new[] { AttackKind.Light, AttackKind.Slow, AttackKind.Light, AttackKind.Perilous };
+            foreach (var kind in expected)
+            {
+                boss.Brain.Tick(boss.definition.wait + .01f);
+                Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.AttackStartup));
+                Assert.That(boss.Actor.Core.ActiveAttack.Kind, Is.EqualTo(kind));
+                presenter.AdvanceVisual(.01f);
+                Assert.That(presenter.CurrentPoseClip, Is.EqualTo(boss.Actor.AttackFor(kind).clip));
+                if (kind == AttackKind.Perilous)
+                {
+                    var hud = world.GetComponent<MvpHud>(); hud.Refresh();
+                    Assert.That(hud.PerilousWarningVisible, Is.True);
+                    world.Flow.TogglePause(); hud.Refresh(); Assert.That(hud.PerilousWarningVisible, Is.False);
+                    world.Flow.TogglePause();
+                }
+                boss.Actor.Core.Reset();
+            }
+            var finalHud = world.GetComponent<MvpHud>(); finalHud.Refresh();
+            Assert.That(finalHud.PerilousWarningVisible, Is.False);
+            yield return null;
+        }
+        [UnityTest] public IEnumerator OverShoulderCameraAvoidsWallAndBossLockFramesTarget()
+        {
+            Place(world.player, new Vector3(0, .02f, -35));
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.position = new Vector3(0, 1.8f, -36.8f);
+            wall.transform.localScale = new Vector3(4, 3, .2f);
+            Physics.SyncTransforms();
+            world.cameraRig.yaw = 0; world.cameraRig.pitch = 12; world.cameraRig.ResetImpulse();
+            world.cameraRig.Step(.1f);
+            Assert.That(world.gameplayCamera.transform.position.z, Is.GreaterThan(-36.6f));
+            UnityEngine.Object.Destroy(wall);
+            yield return null;
+            var boss = world.enemies[3];
+            Place(world.player, boss.Home + Vector3.back * 7);
+            world.Director.Tick(.01f);
+            world.cameraRig.ResetImpulse(); world.cameraRig.Step(.1f);
+            Vector3 toBoss = boss.transform.position + Vector3.up * 1.35f - world.gameplayCamera.transform.position;
+            Assert.That(Vector3.Angle(world.gameplayCamera.transform.forward, toBoss), Is.LessThan(25f));
+            float yaw = world.cameraRig.yaw;
+            world.cameraRig.Look(new Vector2(40, 0));
+            Assert.That(world.cameraRig.yaw, Is.EqualTo(yaw), "Boss lock should own the camera heading.");
+        }
+        [UnityTest] public IEnumerator BossPerilousBladeHitsThroughGuardButRespectsDodgeInvulnerability()
+        {
+            var boss = world.enemies[3].Actor;
+            Place(world.player, boss.transform.position + Vector3.back * .9f);
+            boss.transform.rotation = Quaternion.LookRotation(Vector3.back);
+            world.player.transform.rotation = Quaternion.LookRotation(Vector3.back);
+            world.player.Core.SetGuard(true, false);
+            Assert.That(boss.Core.RequestDefinedAttack(boss.perilousAttack.rules), Is.True);
+            boss.Core.Tick(.76f);
+            Assert.That(world.player.Core.Health, Is.LessThan(100), "The boss's dangerous blade must bypass Guard.");
+            boss.Core.Reset(); world.player.Core.RestoreVitals(100, 0);
+            Assert.That(world.player.RequestDodge(Vector3.forward), Is.True);
+            world.player.Core.Tick(.10f);
+            Assert.That(world.player.Core.IsInvulnerable, Is.True);
+            Assert.That(boss.Core.RequestDefinedAttack(boss.perilousAttack.rules), Is.True);
+            boss.Core.Tick(.62f);
+            Assert.That(world.player.Core.Health, Is.EqualTo(100), "Dodge invulnerability must ignore the dangerous contact.");
             yield return null;
         }
         static void Click(string label)
