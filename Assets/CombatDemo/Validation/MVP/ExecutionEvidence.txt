@@ -1,0 +1,30 @@
+Selected execution evidence; not the complete logs.
+--- Baseline: 44 EditMode and 37 PlayMode passed. ---
+--- Build ---
+[MVP] Windows build succeeded: C:\Users\pigeon\AppData\Local\Temp\MilkfrogCombatValidation\Builds\MilkfrogMVP\MilkfrogMVP.exe
+--- Render capture ---
+[MVP Capture] stage=0 flow=MainMenu encounter=-
+ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+  at UnityEditor.Search.SearchDatabase+<EnumerateAll>d__78.MoveNext () [0x00089] in <bf5fa3d429194bf78ff614e5729559a6>:0 
+  at UnityEditor.Search.SearchDatabase.GetDefaultSearchDatabase () [0x00005] in <bf5fa3d429194bf78ff614e5729559a6>:0 
+[MVP Capture] stage=1 flow=MainMenu encounter=-
+[MVP Capture] stage=2 flow=MainMenu encounter=-
+[MVP Capture] stage=3 flow=Playing encounter=Exploration
+[MVP Capture] stage=4 flow=Playing encounter=NormalCombat
+[MVP Capture] stage=5 flow=Playing encounter=NormalCombat
+[MVP Capture] stage=6 flow=Playing encounter=BossCombat
+[MVP Capture] stage=7 flow=Victory encounter=Exploration
+[MVP Capture] stage=8 flow=Playing encounter=Exploration
+[MVP Capture] stage=9 flow=PlayerDead encounter=Exploration
+[MVP Capture] stage=10 flow=Playing encounter=Exploration
+[MVP Capture] stage=11 flow=Playing encounter=Exploration
+--- Standalone startup ---
+Input System module state changed to: Initialized.
+Initialize engine version: 6000.6.2f1 (770e33f6875c)
+    Renderer: NVIDIA GeForce RTX 4060 Laptop GPU (ID=0x28e0)
+UnloadTime: 0.956500 ms
+UnityEngine.Rendering.Universal.UniversalRenderer:.ctor (UnityEngine.Rendering.Universal.UniversalRendererData) (at ./Library/PackageCache/com.unity.render-pipelines.universal@1e1cf3dcbd40/Runtime/UniversalRenderer.cs:427)
+UnityEngine.Rendering.Universal.UniversalRenderer:.ctor (UnityEngine.Rendering.Universal.UniversalRendererData) (at ./Library/PackageCache/com.unity.render-pipelines.universal@1e1cf3dcbd40/Runtime/UniversalRenderer.cs:427)
+UnityEngine.Rendering.Universal.UniversalRenderer:.ctor (UnityEngine.Rendering.Universal.UniversalRendererData) (at ./Library/PackageCache/com.unity.render-pipelines.universal@1e1cf3dcbd40/Runtime/UniversalRenderer.cs:427)
+UnityEngine.Rendering.Universal.UniversalRenderer:.ctor (UnityEngine.Rendering.Universal.UniversalRendererData) (at ./Library/PackageCache/com.unity.render-pipelines.universal@1e1cf3dcbd40/Runtime/UniversalRenderer.cs:427)
+UnloadTime: 3.645000 ms

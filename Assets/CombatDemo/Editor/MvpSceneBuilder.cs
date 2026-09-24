@@ -143,9 +143,15 @@ namespace Milkfrog.CombatDemo.Editor
         public static void BuildPlayer()
         {
             string path = Path.GetFullPath("Builds/MilkfrogMVP/MilkfrogMVP.exe"); Directory.CreateDirectory(Path.GetDirectoryName(path));
-            var result = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new[]{Home,Level,AnimatedDemoBuilder.ScenePath,CombatDemoBuilder.ScenePath},
-                locationPathName = path, target = BuildTarget.StandaloneWindows64, options = BuildOptions.Development });
-            if (result.summary.result != BuildResult.Succeeded) throw new InvalidOperationException("MVP build failed: "+result.summary.result);
+            bool previousResizable = PlayerSettings.resizableWindow;
+            try
+            {
+                PlayerSettings.resizableWindow = true;
+                var result = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new[]{Home,Level,AnimatedDemoBuilder.ScenePath,CombatDemoBuilder.ScenePath},
+                    locationPathName = path, target = BuildTarget.StandaloneWindows64, options = BuildOptions.Development });
+                if (result.summary.result != BuildResult.Succeeded) throw new InvalidOperationException("MVP build failed: "+result.summary.result);
+            }
+            finally { PlayerSettings.resizableWindow = previousResizable; }
             Debug.Log("[MVP] Windows build succeeded: "+path);
         }
     }

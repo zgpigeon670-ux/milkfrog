@@ -2,7 +2,7 @@
 
 Unity 6000.6.2f1 / URP / Input System。所有新增资产位于 `Assets/CombatDemo`。第四阶段将首页和 MVP 关卡加入构建场景列表，保留原始 SampleScene 与训练场，不修改项目输入设置。
 
-已提供 [Windows 可执行版本](../../Builds/CombatDemo/CombatDemo.exe)，也可直接在 Unity 中运行以下场景。完整画面的独立程序性能对照仍待验证，详情见报告。
+已提供 [MVP Windows 可执行版本](../../Builds/MilkfrogMVP/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。旧双人训练场构建仍保留在 `Builds/CombatDemo`。本轮验证与限制见 MVP 报告。
 
 ## MVP：从首页开始
 

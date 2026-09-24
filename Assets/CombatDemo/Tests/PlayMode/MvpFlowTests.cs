@@ -182,17 +182,20 @@ namespace Milkfrog.CombatDemo.Tests
             policy.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
 #endif
             var mouse = InputSystem.AddDevice<Mouse>();
+            var keyboard = InputSystem.AddDevice<Keyboard>();
             try
             {
                 using (var input = new DemoInput("<Mouse>/middleButton"))
                 {
-                    InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Middle)); yield return null;
+                    InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Middle));
+                    InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Escape)); yield return null;
                     Assert.That(input.Snapshot.lockPressed,Is.True);
+                    Assert.That(input.PausePressed,Is.True);
                 }
             }
             finally
             {
-                InputSystem.RemoveDevice(mouse); policy.backgroundBehavior=previousBackground;
+                InputSystem.RemoveDevice(mouse); InputSystem.RemoveDevice(keyboard); policy.backgroundBehavior=previousBackground;
 #if UNITY_EDITOR
                 policy.editorInputBehaviorInPlayMode=previousEditorPolicy;
 #endif
