@@ -15,12 +15,15 @@ namespace Milkfrog.CombatDemo
         [Range(0, .5f)] public float aimReticleRadius = .18f;
         public CombatFeedback feedback;
         public GameObject arena;
+        public BonfireCheckpoint[] bonfires;
         public Vector3 spawn = new Vector3(0, .02f, -35);
         public EncounterDirector Director { get; private set; }
         public LockOnController Lock { get; private set; }
         public GameFlowController Flow { get; private set; }
         public bool manualSimulation;
         public bool BossDefeated { get; private set; }
+        public PlayerProgression Progression { get; private set; } = new PlayerProgression();
+        public string ActiveCheckpointId { get; private set; } = BonfireCheckpoint.StartId;
         public int ContactCount { get; private set; }
         public string AimDecision { get; private set; } = "None";
         public readonly HashSet<string> Defeated = new HashSet<string>();
@@ -60,6 +63,7 @@ namespace Milkfrog.CombatDemo
                 hud.ReadVisible = () => Flow.State == GameFlowState.Playing && !Flow.Paused;
             }
             input = new DemoInput("<Mouse>/middleButton");
+            if (bonfires == null || bonfires.Length == 0) bonfires = FindObjectsByType<BonfireCheckpoint>();
         }
         void Register(CombatActor actor)
         {
@@ -73,6 +77,8 @@ namespace Milkfrog.CombatDemo
             AimDecision = "None";
             foreach (var enemy in enemies) enemy.ResetForLoad();
             Defeated.Clear(); BossDefeated = snapshot != null && snapshot.bossDefeated;
+            Progression.Restore(snapshot);
+            ActiveCheckpointId = FindBonfire(snapshot?.activeCheckpointId) != null ? snapshot.activeCheckpointId : BonfireCheckpoint.StartId;
             if (snapshot?.defeatedEnemyIds != null) foreach (string id in snapshot.defeatedEnemyIds) Defeated.Add(id);
             Vector3 position = snapshot == null ? spawn : snapshot.position;
             if (Mathf.Abs(position.x) > 38 || Mathf.Abs(position.z) > 48 || position.y < -1 || position.y > 4 ||
@@ -81,7 +87,9 @@ namespace Milkfrog.CombatDemo
             player.Motor.enabled = false;
             player.transform.SetPositionAndRotation(position, Quaternion.Euler(0, snapshot?.yaw ?? 0, 0));
             player.Motor.enabled = true;
-            player.Core.RestoreVitals(snapshot?.health ?? settings.player.maxHealth, snapshot?.posture ?? 0);
+            player.Core.Reset();
+            ApplyProgression();
+            player.Core.RestoreVitals(snapshot?.health ?? player.Core.Tuning.maxHealth, snapshot?.posture ?? 0);
             foreach (var enemy in enemies)
                 if (Defeated.Contains(enemy.stableId) || (enemy.IsBoss && BossDefeated))
                 { enemy.Actor.Core.RestoreVitals(0, 0); enemy.MarkDead(); enemy.gameObject.SetActive(false); }
@@ -101,13 +109,95 @@ namespace Milkfrog.CombatDemo
         {
             position = player.transform.position, yaw = player.transform.eulerAngles.y,
             health = player.Core.Health, posture = player.Core.Posture,
-            defeatedEnemyIds = new List<string>(Defeated).ToArray(), bossDefeated = BossDefeated
+            defeatedEnemyIds = new List<string>(Defeated).ToArray(), bossDefeated = BossDefeated,
+            activeCheckpointId = ActiveCheckpointId,
+            experience = Progression.Experience, vitality = Progression.Vitality,
+            resolve = Progression.Resolve, power = Progression.Power
         };
+        public BonfireCheckpoint FindBonfire(string id)
+        {
+            if (bonfires == null) return null;
+            foreach (var bonfire in bonfires) if (bonfire != null && bonfire.stableId == id) return bonfire;
+            return null;
+        }
+        BonfireCheckpoint NearbyBonfire()
+        {
+            if (bonfires == null) return null;
+            foreach (var bonfire in bonfires)
+                if (bonfire != null && bonfire.InRange(player.transform.position)) return bonfire;
+            return null;
+        }
+        void ApplyProgression()
+        {
+            player.Core.ApplyGrowth(settings.player.maxHealth + 10 * Progression.Vitality,
+                settings.player.maxPosture + 10 * Progression.Resolve, Progression.AttackMultiplier);
+        }
+        public bool TryRest(BonfireCheckpoint bonfire)
+        {
+            if (!Running || !CanSave || bonfire == null || !bonfire.InRange(player.transform.position)) return false;
+            var save = Snapshot();
+            save.activeCheckpointId = bonfire.stableId;
+            save.health = player.Core.Tuning.maxHealth; save.posture = 0;
+            save.defeatedEnemyIds = BossDefeatedIds();
+            if (!Flow.Store.TrySave(save)) { Flow.Notify(Flow.Store.LastMessage); return false; }
+            ActiveCheckpointId = bonfire.stableId;
+            foreach (var enemy in enemies)
+                if (!enemy.IsBoss) enemy.ResetForLoad();
+                else if (BossDefeated) enemy.gameObject.SetActive(false);
+            Defeated.Clear();
+            foreach (string id in BossDefeatedIds()) Defeated.Add(id);
+            Director = new EncounterDirector(this); Lock.Clear();
+            player.Core.RestoreVitals(player.Core.Tuning.maxHealth, 0);
+            feedback.ResetFeedback(); ClearInput(); Physics.SyncTransforms();
+            Flow.OpenBonfire(bonfire);
+            return true;
+        }
+        public bool TryUpgrade(GrowthStat stat)
+        {
+            if (!Flow.Paused || Flow.ActiveBonfire == null || !CanSave) return false;
+            var proposed = Snapshot();
+            var next = new PlayerProgression(); next.Restore(proposed);
+            if (!next.TryUpgrade(stat)) return false;
+            next.WriteTo(proposed);
+            proposed.health = settings.player.maxHealth + 10 * next.Vitality;
+            proposed.posture = 0;
+            if (!Flow.Store.TrySave(proposed)) { Flow.Notify(Flow.Store.LastMessage); return false; }
+            Progression.Restore(proposed); ApplyProgression(); player.Core.RestoreVitals(player.Core.Tuning.maxHealth, 0);
+            hud?.Refresh(); return true;
+        }
+        public PlayerSnapshot DeathRespawnSnapshot()
+        {
+            if (!Flow.Store.TryLoad(out var safe)) safe = new PlayerSnapshot { position = spawn };
+            var camp = FindBonfire(ActiveCheckpointId) ?? FindBonfire(BonfireCheckpoint.StartId);
+            safe.position = camp != null ? camp.RespawnPosition : spawn;
+            safe.yaw = camp != null ? camp.RespawnYaw : 0;
+            safe.health = settings.player.maxHealth + 10 * Progression.Vitality; safe.posture = 0;
+            safe.activeCheckpointId = ActiveCheckpointId; safe.bossDefeated = BossDefeated;
+            safe.defeatedEnemyIds = BossDefeatedIds();
+            Progression.WriteTo(safe); return safe;
+        }
+        void PersistCombatRewards()
+        {
+            if (!Flow.Store.TryLoad(out var safe)) { Flow.Notify(Flow.Store.LastMessage); return; }
+            Progression.WriteTo(safe);
+            safe.bossDefeated = BossDefeated;
+            if (BossDefeated) safe.defeatedEnemyIds = BossDefeatedIds();
+            if (!Flow.Store.TrySave(safe)) Flow.Notify(Flow.Store.LastMessage);
+        }
+        string[] BossDefeatedIds()
+        {
+            if (!BossDefeated) return Array.Empty<string>();
+            foreach (var enemy in enemies) if (enemy.IsBoss) return new[] { enemy.stableId };
+            return Array.Empty<string>();
+        }
         void Update()
         {
             if (manualSimulation || input == null) return;
             if (Keyboard.current != null && Keyboard.current.f2Key.wasPressedThisFrame && hud != null) hud.showDebug = !hud.showDebug;
             if (input.PausePressed && Flow.State == GameFlowState.Playing) { Flow.TogglePause(); return; }
+            if (Running && input.AttributesPressed && Director.State == EncounterState.Exploration)
+            { Flow.OpenAttributes(); return; }
+            if (Running && input.InteractPressed && TryRest(NearbyBonfire())) return;
             if (!Running)
             {
                 if (Flow.State == GameFlowState.PlayerDead || Flow.State == GameFlowState.Victory)
@@ -245,12 +335,15 @@ namespace Milkfrog.CombatDemo
                     if (!enemy.Alive && Defeated.Add(enemy.stableId))
                     {
                         enemy.MarkDead();
+                        Progression.Grant(enemy.IsBoss ? 200 : 20);
                         if (enemy.IsBoss)
                         {
                             BossDefeated = true; Director.FinishBoss();
+                            PersistCombatRewards();
                             player.Core.RestoreVitals(player.Core.Health, player.Core.Posture);
                             Flow.Won(); break;
                         }
+                        PersistCombatRewards();
                     }
                 }
                 if (!Running) break;
@@ -291,6 +384,11 @@ namespace Milkfrog.CombatDemo
             var data = new MvpHudData { visible = Flow.State == GameFlowState.Playing && !Flow.Paused,
                 health = core.Health, maxHealth = core.Tuning.maxHealth, posture = core.Posture, maxPosture = core.Tuning.maxPosture,
                 charge = core.ChargeRatio, charging = core.IsPreparing, camera = gameplayCamera,
+                level = Progression.Level, experience = Progression.Experience, nextLevelCost = Progression.NextCost,
+                vitality = Progression.Vitality, resolve = Progression.Resolve, power = Progression.Power,
+                attackMultiplier = Progression.AttackMultiplier,
+                bonfirePrompt = Director.State == EncounterState.Exploration && core.State == CombatState.Neutral && NearbyBonfire() != null ?
+                    "E 休息 · " + NearbyBonfire().displayName : null,
                 encounter = Director.State.ToString().ToUpperInvariant(), message = Flow.Message,
                 debug = $"{core.State} | Enemies: {Director.Count} | Disengage: {Director.Remaining:F1}s | Contacts: {ContactCount} | Aim: {AimDecision}" };
             if (Lock.Target != null) data.lockPoint = Lock.Target.transform.position + Vector3.up * 1.35f;

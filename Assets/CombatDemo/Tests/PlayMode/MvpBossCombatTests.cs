@@ -65,9 +65,9 @@ namespace Milkfrog.CombatDemo.Tests
             return boss;
         }
 
-        static void BeginBossAttack(EnemyController boss, CombatState phase)
+        static void BeginBossAttack(EnemyController boss, CombatState phase, bool reset = true)
         {
-            boss.Actor.Core.Reset();
+            if (reset) boss.Actor.Core.Reset();
             var attack = boss.Actor.lightAttack.rules;
             Assert.That(boss.Actor.Core.RequestDefinedAttack(attack), Is.True);
             if (phase == CombatState.AttackActive) boss.Actor.Core.Tick(attack.startup);
@@ -157,19 +157,34 @@ namespace Milkfrog.CombatDemo.Tests
         }
 
         [UnityTest]
+        public IEnumerator PlayerParryStillInterruptsArmoredBossAttack()
+        {
+            var boss = EngageBoss();
+            Place(world.player, boss.Home + Vector3.back * 12f);
+            boss.Actor.Core.Reset();
+            Assert.That(boss.Actor.Core.RequestDefinedAttack(boss.Actor.lightAttack.rules), Is.True);
+            boss.Actor.Core.Tick(boss.Actor.lightAttack.rules.startup);
+            Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.AttackActive));
+            world.player.Core.SetGuard(true, true);
+            Assert.That(boss.Actor.Core.TryHit(world.player.Core, true), Is.EqualTo(HitResult.Deflect));
+            Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.DeflectedStun));
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator PostureBreakAndDeathStillOverrideBossHitResistance()
         {
             var boss = EngageBoss();
             boss.Actor.Core.Tuning.maxPosture = 25;
             boss.Actor.Core.AutomaticPostureRecovery = false;
             boss.Actor.Core.RestoreVitals(boss.Actor.Core.Tuning.maxHealth, 24);
-            BeginBossAttack(boss, CombatState.AttackStartup);
+            BeginBossAttack(boss, CombatState.AttackStartup, reset: false);
             Assert.That(HitBoss(boss, damage: 3, posture: 5), Is.EqualTo(HitResult.Hit));
             Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.PostureBroken),
                 "A normal hit that fills posture must break the boss out of its attack.");
 
             boss.Actor.Core.RestoreVitals(5, 0);
-            BeginBossAttack(boss, CombatState.AttackStartup);
+            BeginBossAttack(boss, CombatState.AttackStartup, reset: false);
             Assert.That(HitBoss(boss, damage: 5, posture: 0), Is.EqualTo(HitResult.Hit));
             Assert.That(boss.Actor.Core.Health, Is.Zero);
             Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.Dead),

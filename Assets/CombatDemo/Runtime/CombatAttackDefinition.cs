@@ -27,6 +27,8 @@ namespace Milkfrog.CombatDemo
         public AttackSnapshot(AttackKind kind,AttackResponse response,float startup,float active,float recovery,float damage,float posture,float block,float deflectPosture,float cancelWindow)
         {Kind=kind;Response=response;Startup=startup;Active=active;Recovery=recovery;Damage=damage;Posture=posture;Block=block;DeflectPosture=deflectPosture;CancelWindow=cancelWindow;}
         public static AttackSnapshot Light(CombatTuning t) => new AttackSnapshot(AttackKind.Light,AttackResponse.Deflectable,t.startup,t.active,t.recovery,t.hitDamage,t.hitPosture,t.blockPosture,t.deflectPosture,.16f);
+        public AttackSnapshot ScaledOffense(float multiplier) => new AttackSnapshot(Kind,Response,Startup,Active,Recovery,
+            Damage*multiplier,Posture*multiplier,Block*multiplier,DeflectPosture,CancelWindow);
     }
     [CreateAssetMenu(menuName="Combat Demo/Attack Definition")]
     public sealed class CombatAttackDefinition : ScriptableObject

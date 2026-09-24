@@ -111,6 +111,7 @@ namespace Milkfrog.CombatDemo.Editor
             camera.transform.position = world.spawn+new Vector3(0,3,-5);
             camera.transform.LookAt(world.spawn+Vector3.up);
             EditorSceneManager.SaveScene(scene,Level);
+            UpgradeBonfires();
 
             scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
             var menuCamera = new GameObject("Menu Camera",typeof(Camera),typeof(AudioListener)).GetComponent<Camera>();
@@ -160,8 +161,65 @@ namespace Milkfrog.CombatDemo.Editor
             disc.transform.position = new Vector3(position.x,.006f,position.z); disc.transform.localScale = new Vector3(radius*2,.005f,radius*2);
             Object.DestroyImmediate(disc.GetComponent<Collider>()); disc.GetComponent<Renderer>().sharedMaterial = Material(name.Replace(" ",""),color);
         }
+        [MenuItem("Tools/Combat Demo/Upgrade MVP Bonfires")]
+        public static void UpgradeBonfires()
+        {
+            if (!File.Exists(Level)) throw new FileNotFoundException("MVP level is missing", Level);
+            var scene = EditorSceneManager.OpenScene(Level, OpenSceneMode.Single);
+            var world = Object.FindAnyObjectByType<MvpWorld>();
+            if (world == null) throw new InvalidOperationException("MVP level has no world controller.");
+            bool changed = false;
+            var existing = Object.FindObjectsByType<BonfireCheckpoint>().ToList();
+            if (!existing.Any(c => c.stableId == BonfireCheckpoint.StartId))
+            {
+                existing.Add(CreateBonfire(BonfireCheckpoint.StartId, "起点篝火", new Vector3(3,.02f,-35)));
+                changed = true;
+            }
+            if (!existing.Any(c => c.stableId == BonfireCheckpoint.BossApproachId))
+            {
+                existing.Add(CreateBonfire(BonfireCheckpoint.BossApproachId, "守门篝火", new Vector3(0,.02f,17)));
+                changed = true;
+            }
+            if (world.bonfires == null || world.bonfires.Length != existing.Count ||
+                existing.Any(c => !world.bonfires.Contains(c)))
+            {
+                world.bonfires = existing.ToArray(); EditorUtility.SetDirty(world); changed = true;
+            }
+            foreach (var bonfire in existing)
+            {
+                var stone = bonfire.transform.Find("Stone ring")?.GetComponent<Renderer>();
+                var ember = bonfire.transform.Find("Ember")?.GetComponent<Renderer>();
+                if (stone != null && !AssetDatabase.GetAssetPath(stone.sharedMaterial).StartsWith("Assets/", StringComparison.Ordinal))
+                { stone.sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>(Root + "/Materials/MvpGround.mat"); changed = true; }
+                if (ember != null && !AssetDatabase.GetAssetPath(ember.sharedMaterial).StartsWith("Assets/", StringComparison.Ordinal))
+                { ember.sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>(Root + "/Materials/MvpArena.mat"); changed = true; }
+            }
+            if (changed) EditorSceneManager.SaveScene(scene);
+            Debug.Log(changed ? "[MVP] Bonfires added without rebuilding scene." : "[MVP] Bonfires already present; no scene changes.");
+        }
+        static BonfireCheckpoint CreateBonfire(string id, string displayName, Vector3 position)
+        {
+            var root = new GameObject(displayName);
+            root.transform.position = position;
+            var bonfire = root.AddComponent<BonfireCheckpoint>();
+            bonfire.stableId = id; bonfire.displayName = displayName;
+            var stone = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            stone.name = "Stone ring"; stone.transform.SetParent(root.transform, false);
+            stone.transform.localPosition = Vector3.zero; stone.transform.localScale = new Vector3(1.2f,.18f,1.2f);
+            Object.DestroyImmediate(stone.GetComponent<Collider>());
+            var ember = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            ember.name = "Ember"; ember.transform.SetParent(root.transform, false);
+            ember.transform.localPosition = Vector3.up * .48f; ember.transform.localScale = new Vector3(.65f,.75f,.65f);
+            Object.DestroyImmediate(ember.GetComponent<Collider>());
+            var light = new GameObject("Fire light").AddComponent<Light>();
+            light.transform.SetParent(root.transform, false); light.transform.localPosition = Vector3.up * .65f;
+            light.type = LightType.Point;
+            light.color = new Color(1f,.39f,.09f); light.intensity = 3; light.range = 5;
+            return bonfire;
+        }
         public static void BuildPlayer()
         {
+            UpgradeBonfires();
             string requested = Environment.GetEnvironmentVariable("MILKFROG_BUILD_OUTPUT");
             string path = Path.GetFullPath(string.IsNullOrEmpty(requested) ? "Builds/MilkfrogMVP/MilkfrogMVP.exe" : requested);
             Directory.CreateDirectory(Path.GetDirectoryName(path));

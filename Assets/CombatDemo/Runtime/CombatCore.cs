@@ -45,6 +45,7 @@ namespace Milkfrog.CombatDemo
         public float DeflectRemaining { get; private set; }
         public int AttackId { get; private set; }
         public AttackSnapshot ActiveAttack { get; private set; }
+        public float OffensiveMultiplier { get; private set; } = 1f;
         readonly AttackParameters lightDefinition, thrustDefinition, followupDefinition;
         float chargeElapsed;
         public float ChargeElapsed => chargeElapsed;
@@ -100,6 +101,20 @@ namespace Milkfrog.CombatDemo
             if (Health <= 0) Change(CombatState.Dead);
         }
 
+        public void ApplyGrowth(float maximumHealth, float maximumPosture, float offensiveMultiplier)
+        {
+            if (maximumHealth <= 0 || maximumPosture <= 0 || offensiveMultiplier <= 0 ||
+                float.IsNaN(maximumHealth) || float.IsNaN(maximumPosture) || float.IsNaN(offensiveMultiplier) ||
+                float.IsInfinity(maximumHealth) || float.IsInfinity(maximumPosture) || float.IsInfinity(offensiveMultiplier))
+                throw new ArgumentOutOfRangeException(nameof(maximumHealth));
+            if (!CanAct) throw new InvalidOperationException("Growth requires an idle combat state.");
+            Tuning.maxHealth = maximumHealth;
+            Tuning.maxPosture = maximumPosture;
+            OffensiveMultiplier = offensiveMultiplier;
+            Health = Math.Min(Health, maximumHealth);
+            Posture = Math.Min(Posture, maximumPosture);
+        }
+
         public void RecoverExploration(float dt, float healthRate = 5, float postureRate = 20)
         {
             if (dt < 0 || float.IsNaN(dt) || float.IsInfinity(dt)) throw new ArgumentOutOfRangeException(nameof(dt));
@@ -148,7 +163,7 @@ namespace Milkfrog.CombatDemo
         }
         void BeginAttack(AttackSnapshot attack,float credit)
         {
-            ActiveAttack=attack;
+            ActiveAttack=attack.ScaledOffense(OffensiveMultiplier);
             hitTargets.Clear();
             AttackId++;
             Change(CombatState.AttackStartup,attack.Startup);

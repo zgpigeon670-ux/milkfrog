@@ -37,6 +37,9 @@ namespace Milkfrog.CombatDemo
 
             _titleText.text = title ?? string.Empty;
             _subtitleText.text = subtitle ?? string.Empty;
+            _subtitleText.alignment = !string.IsNullOrEmpty(subtitle) && subtitle.IndexOf('\n') >= 0
+                ? TextAnchor.MiddleLeft
+                : TextAnchor.MiddleCenter;
 
             int actionCount = Mathf.Min(actions?.Length ?? 0, MaxActions);
             for (int i = 0; i < _buttons.Count; i++)
@@ -135,16 +138,21 @@ namespace Milkfrog.CombatDemo
             rootRect.offsetMin = Vector2.zero;
             rootRect.offsetMax = Vector2.zero;
 
-            Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            Font font = Resources.Load<Font>("NotoSansSC-VF");
+            if (font == null)
+            {
+                font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            }
+
             GameObject panel = CreateUiObject("Panel", _root.transform, typeof(Image));
             RectTransform panelRect = panel.GetComponent<RectTransform>();
             SetCenteredRect(panelRect, new Vector2(840f, 620f), Vector2.zero);
             panel.GetComponent<Image>().color = PanelColor;
 
-            _titleText = CreateText("Title", panel.transform, font, 34, FontStyle.Bold,
-                TextAnchor.MiddleCenter, TitleColor, new Vector2(740f, 58f), new Vector2(0f, 248f));
-            _subtitleText = CreateText("Subtitle", panel.transform, font, 22, FontStyle.Normal,
-                TextAnchor.MiddleCenter, BodyColor, new Vector2(720f, 104f), new Vector2(0f, 170f));
+            _titleText = CreateText("Title", panel.transform, font, 30, FontStyle.Bold,
+                TextAnchor.MiddleCenter, TitleColor, new Vector2(740f, 52f), new Vector2(0f, 254f));
+            _subtitleText = CreateText("Subtitle", panel.transform, font, 24, FontStyle.Normal,
+                TextAnchor.MiddleCenter, BodyColor, new Vector2(720f, 210f), new Vector2(0f, 124f));
 
             for (int i = 0; i < MaxActions; i++)
             {
@@ -158,9 +166,9 @@ namespace Milkfrog.CombatDemo
         {
             GameObject buttonObject = CreateUiObject("Action " + (index + 1), parent, typeof(Image), typeof(Button));
             RectTransform buttonRect = buttonObject.GetComponent<RectTransform>();
-            float listCenterY = -80f;
-            float rowHeight = 62f;
-            float rowSpacing = 12f;
+            float listCenterY = -150f;
+            float rowHeight = 52f;
+            float rowSpacing = 8f;
             float totalHeight = MaxActions * rowHeight + (MaxActions - 1) * rowSpacing;
             float firstCenterY = listCenterY + totalHeight * 0.5f - rowHeight * 0.5f;
             SetCenteredRect(buttonRect, new Vector2(720f, rowHeight),
@@ -188,7 +196,7 @@ namespace Milkfrog.CombatDemo
             button.navigation = navigation;
 
             CreateText("Label", buttonObject.transform, font, 24, FontStyle.Normal,
-                TextAnchor.MiddleCenter, BodyColor, new Vector2(680f, 54f), Vector2.zero);
+                TextAnchor.MiddleCenter, BodyColor, new Vector2(680f, 48f), Vector2.zero);
             return button;
         }
 

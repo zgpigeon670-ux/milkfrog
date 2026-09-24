@@ -24,7 +24,10 @@ namespace Milkfrog.CombatDemo
         GUIStyle enemyStatusStyle;
         GUIStyle perilousWarningStyle;
         GUIStyle perilousHintStyle;
+        GUIStyle resourceStyle;
+        GUIStyle bonfirePromptStyle;
         Font perilousFont;
+        string requestedBonfirePrompt;
 
         static readonly Color Ink = new Color(.045f, .035f, .025f, .92f);
         static readonly Color Bronze = new Color(.51f, .41f, .24f);
@@ -78,6 +81,7 @@ namespace Milkfrog.CombatDemo
                 DrawSystemMessage(width);
                 DrawBoss(width);
                 DrawPlayerBars(width, height);
+                DrawBonfirePrompt(width, height);
                 DrawPerilousWarning(width, height);
                 DrawReticle(width, height);
                 DrawEnemies(width, scale);
@@ -89,7 +93,7 @@ namespace Milkfrog.CombatDemo
                 }
 
                 GUI.Label(new Rect(28f, height - 31f, width - 56f, 22f),
-                    "WASD MOVE   MOUSE LOOK   MMB LOCK   SPACE DODGE   LMB ATTACK   RMB GUARD   ESC MENU",
+                    "WASD MOVE   MOUSE LOOK   MMB LOCK   SPACE DODGE   LMB ATTACK   RMB GUARD   E REST   C STATS   ESC MENU",
                     hintStyle);
             }
             finally
@@ -119,12 +123,15 @@ namespace Milkfrog.CombatDemo
             enemyStatusStyle.clipping = TextClipping.Clip;
 
             perilousFont = Resources.Load<Font>("NotoSansSC-VF");
+            resourceStyle = Style(15, Text, TextAnchor.MiddleLeft);
+            bonfirePromptStyle = Style(22, Text, TextAnchor.MiddleCenter);
+            bonfirePromptStyle.font = perilousFont;
             perilousWarningStyle = Style(92, new Color(1f, .08f, .035f), TextAnchor.MiddleCenter);
             perilousWarningStyle.font = perilousFont;
             perilousHintStyle = Style(24, new Color(1f, .91f, .82f), TextAnchor.MiddleCenter);
             perilousHintStyle.font = perilousFont;
             if (perilousFont != null)
-                perilousFont.RequestCharactersInTexture("危闪避", 92, FontStyle.Bold);
+                perilousFont.RequestCharactersInTexture("危闪避篝火按休息", 92, FontStyle.Bold);
         }
 
         static GUIStyle Style(int fontSize, Color color, TextAnchor anchor)
@@ -183,13 +190,18 @@ namespace Milkfrog.CombatDemo
 
         void DrawPlayerBars(float width, float height)
         {
-            GUI.Label(new Rect(48f, height - 111f, 280f, 24f), "VITALITY", encounterStyle);
+            GUI.Label(new Rect(48f, height - 143f, 360f, 22f),
+                "LV " + Mathf.Max(1, data.level) + "   XP " + Mathf.Max(0, data.experience) +
+                "   NEXT " + Mathf.Max(0, data.nextLevelCost), resourceStyle);
+            GUI.Label(new Rect(48f, height - 111f, 360f, 24f),
+                "VITALITY  " + Mathf.Max(0f, data.health).ToString("0") + "/" + Mathf.Max(0f, data.maxHealth).ToString("0"), encounterStyle);
             DrawHealthBar(new Rect(48f, height - 82f, 280f, 15f), Ratio(data.health, data.maxHealth), Red);
 
             float center = width * .5f;
             DrawPostureBar(new Rect(center - 170f, height - 82f, 340f, 12f),
                 Ratio(data.posture, data.maxPosture));
-            GUI.Label(new Rect(center - 150f, height - 63f, 300f, 20f), "POSTURE", centerStyle);
+            GUI.Label(new Rect(center - 190f, height - 63f, 380f, 20f),
+                "POSTURE  " + Mathf.Max(0f, data.posture).ToString("0") + "/" + Mathf.Max(0f, data.maxPosture).ToString("0"), centerStyle);
 
             if (data.charging || data.charge > 0f)
             {
@@ -198,6 +210,23 @@ namespace Milkfrog.CombatDemo
                 GUI.Label(new Rect(center - 170f, height - 161f, 340f, 20f),
                     data.charge >= 1f ? "READY  /  RELEASE" : "CHARGING", centerStyle);
             }
+        }
+
+        void DrawBonfirePrompt(float width, float height)
+        {
+            if (string.IsNullOrEmpty(data.bonfirePrompt))
+                return;
+
+            if (perilousFont != null && data.bonfirePrompt != requestedBonfirePrompt)
+            {
+                perilousFont.RequestCharactersInTexture(data.bonfirePrompt, bonfirePromptStyle.fontSize, FontStyle.Bold);
+                requestedBonfirePrompt = data.bonfirePrompt;
+            }
+
+            float center = width * .5f;
+            Rect rect = new Rect(center - 270f, height - 218f, 540f, 36f);
+            Fill(new Rect(rect.x, rect.y + 2f, rect.width, rect.height - 4f), new Color(.045f, .035f, .025f, .78f));
+            GUI.Label(rect, data.bonfirePrompt, bonfirePromptStyle);
         }
 
         void DrawReticle(float width, float height)
@@ -351,6 +380,14 @@ namespace Milkfrog.CombatDemo
         public float maxHealth = 100f;
         public float posture;
         public float maxPosture = 100f;
+        public int level = 1;
+        public int experience;
+        public int nextLevelCost = 40;
+        public int vitality;
+        public int resolve;
+        public int power;
+        public float attackMultiplier = 1f;
+        public string bonfirePrompt = string.Empty;
         public float charge;
         public bool charging;
         public bool perilousWarning;
