@@ -182,5 +182,20 @@ namespace Milkfrog.CombatDemo.Tests
             b.Reset(); b.SetGuard(true, false);
             Assert.That(Strike(Actor(), b, false), Is.EqualTo(HitResult.Hit));
         }
+
+        [Test]
+        public void GrowthScalesOnlyOffensiveAttackSnapshotAndUpdatesResourceCaps()
+        {
+            var actor = Actor();
+            actor.ApplyGrowth(120, 110, 1.1f);
+            actor.RestoreVitals(120, 0);
+            Assert.That(actor.Health, Is.EqualTo(120));
+            Assert.That(actor.Tuning.maxPosture, Is.EqualTo(110));
+            Assert.That(actor.RequestAttack(), Is.True);
+            Assert.That(actor.ActiveAttack.Damage, Is.EqualTo(11).Within(.0001f));
+            Assert.That(actor.ActiveAttack.Posture, Is.EqualTo(11).Within(.0001f));
+            Assert.That(actor.ActiveAttack.Block, Is.EqualTo(22).Within(.0001f));
+            Assert.That(actor.ActiveAttack.DeflectPosture, Is.EqualTo(30));
+        }
     }
 }

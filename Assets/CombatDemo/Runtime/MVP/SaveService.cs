@@ -8,7 +8,7 @@ namespace Milkfrog.CombatDemo
     [Serializable]
     public sealed class PlayerSnapshot
     {
-        public int version = 1;
+        public int version = 2;
         public string levelId = "MVP_TestLevel";
         public Vector3 position;
         public float yaw;
@@ -16,11 +16,14 @@ namespace Milkfrog.CombatDemo
         public float posture;
         public string[] defeatedEnemyIds = Array.Empty<string>();
         public bool bossDefeated;
+        public string activeCheckpointId = BonfireCheckpoint.StartId;
+        public int experience;
+        public int vitality, resolve, power;
     }
 
     public sealed class SaveService
     {
-        private const int CurrentVersion = 1;
+        public const int CurrentVersion = 2;
         private const string CurrentLevelId = "MVP_TestLevel";
         private const string SaveFileName = "save.json";
         private const string BackupFileName = "save.backup.json";
@@ -119,7 +122,11 @@ namespace Milkfrog.CombatDemo
                 if (current.status == SnapshotReadStatus.Valid)
                 {
                     backupTempPath = NewTemporaryPath(BackupFileName);
-                    File.Copy(_savePath, backupTempPath);
+                    // Keep the rollback point in v2 as well, so restoring it cannot re-run v1 compensation.
+                    if (current.sourceVersion == 1)
+                        File.WriteAllText(backupTempPath, JsonUtility.ToJson(current.snapshot, true), new UTF8Encoding(false));
+                    else
+                        File.Copy(_savePath, backupTempPath);
                     CommitTemporaryFile(backupTempPath, _backupPath, null);
                     backupTempPath = null;
 
@@ -128,12 +135,28 @@ namespace Milkfrog.CombatDemo
                 }
                 else if (current.status == SnapshotReadStatus.Invalid)
                 {
+                    SnapshotReadResult fallback = ReadSnapshot(_backupPath);
+                    if (fallback.status == SnapshotReadStatus.Valid && fallback.sourceVersion == 1)
+                    {
+                        backupTempPath = NewTemporaryPath(BackupFileName);
+                        File.WriteAllText(backupTempPath, JsonUtility.ToJson(fallback.snapshot, true), new UTF8Encoding(false));
+                        CommitTemporaryFile(backupTempPath, _backupPath, null);
+                        backupTempPath = null;
+                    }
                     string archivePath = NewCorruptArchivePath();
                     CommitTemporaryFile(saveTempPath, _savePath, archivePath);
                     saveTempPath = null;
                 }
                 else
                 {
+                    SnapshotReadResult fallback = ReadSnapshot(_backupPath);
+                    if (fallback.status == SnapshotReadStatus.Valid && fallback.sourceVersion == 1)
+                    {
+                        backupTempPath = NewTemporaryPath(BackupFileName);
+                        File.WriteAllText(backupTempPath, JsonUtility.ToJson(fallback.snapshot, true), new UTF8Encoding(false));
+                        CommitTemporaryFile(backupTempPath, _backupPath, null);
+                        backupTempPath = null;
+                    }
                     CommitTemporaryFile(saveTempPath, _savePath, null);
                     saveTempPath = null;
                 }
@@ -168,9 +191,6 @@ namespace Milkfrog.CombatDemo
                 return SnapshotReadResult.Unreadable("Could not read save.");
             }
 
-            if (!HasRequiredFields(json))
-                return SnapshotReadResult.Invalid("Save data is invalid.");
-
             PlayerSnapshot snapshot;
             try
             {
@@ -182,16 +202,27 @@ namespace Milkfrog.CombatDemo
             }
 
             string validationMessage;
-            if (!IsValid(snapshot, out validationMessage))
+            if (!HasRequiredFields(json, snapshot.version))
+                return SnapshotReadResult.Invalid("Save data is invalid.");
+            if (!IsValid(snapshot, out validationMessage, true))
                 return SnapshotReadResult.Invalid(validationMessage);
+
+            int sourceVersion = snapshot.version;
+            if (sourceVersion == 1)
+            {
+                snapshot.version = CurrentVersion;
+                snapshot.activeCheckpointId = BonfireCheckpoint.StartId;
+                snapshot.experience = snapshot.bossDefeated ? 200 : 0;
+                snapshot.vitality = snapshot.resolve = snapshot.power = 0;
+            }
 
             if (snapshot.defeatedEnemyIds == null)
                 snapshot.defeatedEnemyIds = Array.Empty<string>();
 
-            return SnapshotReadResult.Valid(snapshot);
+            return SnapshotReadResult.Valid(snapshot, sourceVersion);
         }
 
-        private static bool HasRequiredFields(string json)
+        private static bool HasRequiredFields(string json, int version)
         {
             if (string.IsNullOrEmpty(json))
                 return false;
@@ -201,7 +232,7 @@ namespace Milkfrog.CombatDemo
             if (index >= json.Length || json[index++] != '{')
                 return false;
 
-            bool[] found = new bool[8];
+            bool[] found = new bool[13];
             while (index < json.Length)
             {
                 SkipWhitespace(json, ref index);
@@ -239,8 +270,8 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
-            return found[0] && found[1] && found[2] && found[3] &&
-                   found[4] && found[5] && found[6] && found[7];
+            for (int i = 0; i < (version == 1 ? 8 : 13); i++) if (!found[i]) return false;
+            return true;
         }
 
         private static int RequiredFieldIndex(string key)
@@ -255,6 +286,11 @@ namespace Milkfrog.CombatDemo
                 case "posture": return 5;
                 case "defeatedEnemyIds": return 6;
                 case "bossDefeated": return 7;
+                case "activeCheckpointId": return 8;
+                case "experience": return 9;
+                case "vitality": return 10;
+                case "resolve": return 11;
+                case "power": return 12;
                 default: return -1;
             }
         }
@@ -331,7 +367,7 @@ namespace Milkfrog.CombatDemo
                 index++;
         }
 
-        private static bool IsValid(PlayerSnapshot snapshot, out string message)
+        private static bool IsValid(PlayerSnapshot snapshot, out string message, bool allowLegacy = false)
         {
             if (snapshot == null)
             {
@@ -339,7 +375,7 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
-            if (snapshot.version != CurrentVersion)
+            if (snapshot.version != CurrentVersion && !(allowLegacy && snapshot.version == 1))
             {
                 message = "Unsupported save version.";
                 return false;
@@ -357,6 +393,16 @@ namespace Milkfrog.CombatDemo
                 snapshot.health <= 0 || snapshot.posture < 0)
             {
                 message = "Save values are invalid.";
+                return false;
+            }
+
+            if (snapshot.version == CurrentVersion &&
+                (string.IsNullOrEmpty(snapshot.activeCheckpointId) || snapshot.experience < 0 ||
+                 snapshot.vitality < 0 || snapshot.vitality > PlayerProgression.MaximumRank ||
+                 snapshot.resolve < 0 || snapshot.resolve > PlayerProgression.MaximumRank ||
+                 snapshot.power < 0 || snapshot.power > PlayerProgression.MaximumRank))
+            {
+                message = "Save growth values are invalid.";
                 return false;
             }
 
@@ -424,6 +470,7 @@ namespace Milkfrog.CombatDemo
         {
             public SnapshotReadStatus status;
             public PlayerSnapshot snapshot;
+            public int sourceVersion;
             public string message;
 
             public static SnapshotReadResult Missing()
@@ -441,9 +488,9 @@ namespace Milkfrog.CombatDemo
                 return new SnapshotReadResult { status = SnapshotReadStatus.Unreadable, message = message };
             }
 
-            public static SnapshotReadResult Valid(PlayerSnapshot snapshot)
+            public static SnapshotReadResult Valid(PlayerSnapshot snapshot, int sourceVersion)
             {
-                return new SnapshotReadResult { status = SnapshotReadStatus.Valid, snapshot = snapshot };
+                return new SnapshotReadResult { status = SnapshotReadStatus.Valid, snapshot = snapshot, sourceVersion = sourceVersion };
             }
         }
     }

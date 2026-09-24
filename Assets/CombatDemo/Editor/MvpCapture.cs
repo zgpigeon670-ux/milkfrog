@@ -30,6 +30,18 @@ namespace Milkfrog.CombatDemo.Editor
             view.ShowUtility(); view.position=new Rect(0,0,1280,741);
             SessionState.SetBool(Key,true); Hook(); EditorApplication.isPlaying=true;
         }
+        public static void RunBonfire()
+        {
+            if (!Application.isBatchMode) throw new InvalidOperationException("Use a validation copy in batch mode.");
+            stage=10; posed=requested=false; world=null;
+            Directory.CreateDirectory("Evidence/MVP");
+            SessionState.SetString(Key+"Save",Path.Combine(Path.GetTempPath(),"MilkfrogMvpCapture-"+Guid.NewGuid().ToString("N")));
+            EditorSceneManager.OpenScene(MvpSceneBuilder.Level);
+            ShaderUtil.allowAsyncCompilation=false;
+            view=ScriptableObject.CreateInstance(typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.GameView")) as EditorWindow;
+            view.ShowUtility(); view.position=new Rect(0,0,1280,741);
+            SessionState.SetBool(Key,true); Hook(); EditorApplication.isPlaying=true;
+        }
         public static void BuildAndCapture() { MvpSceneBuilder.BuildPlayer(); Run(); }
         static void Hook()
         {
@@ -44,7 +56,7 @@ namespace Milkfrog.CombatDemo.Editor
         }
         static void Update()
         {
-            if(EditorApplication.timeSinceStartup-started>160){Finish(1);return;}
+            if(EditorApplication.timeSinceStartup-started>300){Finish(1);return;}
             if(!EditorApplication.isPlaying)return;
             var flow=UnityEngine.Object.FindAnyObjectByType<GameFlowController>();
             if(flow==null || flow.Store==null || flow.State==GameFlowState.Loading)return;
@@ -87,6 +99,15 @@ namespace Milkfrog.CombatDemo.Editor
                         world.Restore(new PlayerSnapshot{position=world.spawn});
                         if(stage==10)SetSize(640,360);else SetSize(1280,800);
                     }
+                    if(stage==12)
+                    {
+                        var camp=world.FindBonfire(BonfireCheckpoint.StartId);
+                        MovePlayer(camp.transform.position+Vector3.forward);
+                        if(!world.TryRest(camp))throw new InvalidOperationException("Bonfire capture could not open menu: "+world.Flow.Message);
+                        SetSize(640,360);
+                    }
+                    if(stage==13)SetSize(1280,800);
+                    if(stage==14){world.Flow.OpenAttributes();SetSize(1280,720);}
                     world.GetComponent<MvpHud>().Refresh();
                 }
                 posed=true;poseTime=EditorApplication.timeSinceStartup;requested=false;
@@ -99,7 +120,7 @@ namespace Milkfrog.CombatDemo.Editor
             {
                 if(stage==2)Click("Start Game / Continue");
                 stage++;posed=false;
-                if(stage>=12)Finish(0);
+                if(stage>=15)Finish(0);
             }
         }
         static void Place(CombatActor actor,Vector3 position)

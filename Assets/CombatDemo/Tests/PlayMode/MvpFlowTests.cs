@@ -89,12 +89,180 @@ namespace Milkfrog.CombatDemo.Tests
         [UnityTest] public IEnumerator FreshStartHasThreeMobsBossAndSafeSave()
         {
             Assert.That(world.enemies.Length, Is.EqualTo(4));
+            Assert.That(world.FindBonfire(BonfireCheckpoint.StartId), Is.Not.Null);
+            Assert.That(world.FindBonfire(BonfireCheckpoint.BossApproachId), Is.Not.Null);
+            Assert.That(world.bonfires, Has.Length.EqualTo(2));
             Assert.That(world.Director.State, Is.EqualTo(EncounterState.Exploration)); Assert.That(world.Lock.Target, Is.Null);
             Assert.That(world.player.Core.State, Is.EqualTo(CombatState.Neutral));
             Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True); Assert.That(saved.health, Is.EqualTo(100));
             Assert.That(world.enemies[3].Actor.Core.Health, Is.EqualTo(750));
             Assert.That(world.enemies[3].Actor.Core.Tuning.maxPosture, Is.EqualTo(350));
             Assert.That(world.enemies[0].Actor.Core.ActiveAttack.Damage, Is.EqualTo(10));
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator BonfireRestSwitchesCheckpointHealsAndResetsReturningMobs()
+        {
+            var camp = world.FindBonfire(BonfireCheckpoint.BossApproachId);
+            Assert.That(camp, Is.Not.Null);
+            Place(world.player, camp.transform.position + Vector3.forward);
+            world.player.Core.RestoreVitals(63, 35);
+
+            var mob = world.enemies[0];
+            Place(mob.Actor, mob.Home + Vector3.right);
+            mob.ReturnHome(true);
+            Assert.That(mob.Activity, Is.EqualTo(EnemyActivity.Returning));
+
+            Assert.That(world.TryRest(camp), Is.True, world.Flow.Message);
+            Assert.That(world.ActiveCheckpointId, Is.EqualTo(BonfireCheckpoint.BossApproachId));
+            Assert.That(world.Flow.ActiveBonfire, Is.EqualTo(camp));
+            Assert.That(world.Flow.Paused, Is.True);
+            Assert.That(world.player.Core.Health, Is.EqualTo(world.player.Core.Tuning.maxHealth));
+            Assert.That(world.player.Core.Posture, Is.Zero);
+            Assert.That(mob.Activity, Is.EqualTo(EnemyActivity.Patrol));
+            Assert.That(mob.transform.position, Is.EqualTo(mob.Home));
+
+            Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True, world.Flow.Store.LastMessage);
+            Assert.That(saved.activeCheckpointId, Is.EqualTo(BonfireCheckpoint.BossApproachId));
+            Assert.That(saved.health, Is.EqualTo(world.player.Core.Tuning.maxHealth));
+            Assert.That(saved.posture, Is.Zero);
+            Assert.That(saved.defeatedEnemyIds, Is.Empty);
+
+            world.Flow.TogglePause();
+            var start = world.FindBonfire(BonfireCheckpoint.StartId);
+            Place(world.player, start.transform.position + Vector3.forward);
+            Assert.That(world.TryRest(start), Is.True, world.Flow.Message);
+            Assert.That(world.ActiveCheckpointId, Is.EqualTo(BonfireCheckpoint.StartId));
+            Assert.That(world.Flow.Store.TryLoad(out saved), Is.True, world.Flow.Store.LastMessage);
+            Assert.That(saved.activeCheckpointId, Is.EqualTo(BonfireCheckpoint.StartId));
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator RestIsRejectedDuringCombatOrWhilePlayerIsNotNeutral()
+        {
+            var camp = world.FindBonfire(BonfireCheckpoint.BossApproachId);
+            Place(world.player, camp.transform.position + Vector3.forward);
+            world.player.Core.RestoreVitals(61, 27);
+            Assert.That(world.player.Core.BeginPreparation(), Is.True);
+            Assert.That(world.TryRest(camp), Is.False);
+            Assert.That(world.ActiveCheckpointId, Is.EqualTo(BonfireCheckpoint.StartId));
+            Assert.That(world.Flow.ActiveBonfire, Is.Null);
+            Assert.That(world.player.Core.Health, Is.EqualTo(61));
+            Assert.That(world.player.Core.Posture, Is.EqualTo(27));
+
+            world.player.Core.CancelPreparation();
+            world.Director.Engage(world.enemies[2]);
+            Assert.That(world.Director.State, Is.EqualTo(EncounterState.NormalCombat));
+            Assert.That(world.TryRest(camp), Is.False);
+            Assert.That(world.ActiveCheckpointId, Is.EqualTo(BonfireCheckpoint.StartId));
+            Assert.That(world.Flow.ActiveBonfire, Is.Null);
+            Assert.That(world.player.Core.Health, Is.EqualTo(61));
+            Assert.That(world.player.Core.Posture, Is.EqualTo(27));
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator RestIsRejectedDuringBossCombatEvenAtBonfireRange()
+        {
+            var camp = world.FindBonfire(BonfireCheckpoint.BossApproachId);
+            var boss = world.enemies[3];
+            Place(world.player, boss.Home + Vector3.back * 7);
+            world.Director.Tick(.01f);
+            Assert.That(world.Director.State, Is.EqualTo(EncounterState.BossCombat));
+
+            Place(world.player, camp.transform.position + Vector3.forward);
+            Assert.That(world.TryRest(camp), Is.False);
+            Assert.That(world.ActiveCheckpointId, Is.EqualTo(BonfireCheckpoint.StartId));
+            Assert.That(world.Flow.ActiveBonfire, Is.Null);
+            Assert.That(world.Flow.Paused, Is.False);
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator FailedBonfireSaveDoesNotActivateOrApplyRest()
+        {
+            var camp = world.FindBonfire(BonfireCheckpoint.BossApproachId);
+            Place(world.player, camp.transform.position + Vector3.forward);
+            world.player.Core.RestoreVitals(62, 29);
+            var mob = world.enemies[0];
+            Place(mob.Actor, mob.Home + Vector3.right);
+            mob.ReturnHome(true);
+
+            string savePath = Path.Combine(directory, "save.json");
+            if (File.Exists(savePath)) File.Delete(savePath);
+            if (Directory.Exists(savePath)) Directory.Delete(savePath, true);
+            Directory.CreateDirectory(savePath); // SaveService cannot replace a directory with the primary file.
+
+            Assert.That(world.TryRest(camp), Is.False);
+            Assert.That(world.ActiveCheckpointId, Is.EqualTo(BonfireCheckpoint.StartId));
+            Assert.That(world.Flow.ActiveBonfire, Is.Null);
+            Assert.That(world.Flow.Paused, Is.False);
+            Assert.That(world.player.Core.Health, Is.EqualTo(62));
+            Assert.That(world.player.Core.Posture, Is.EqualTo(29));
+            Assert.That(mob.Activity, Is.EqualTo(EnemyActivity.Returning));
+            Assert.That(mob.transform.position, Is.EqualTo(mob.Home + Vector3.right));
+            Directory.Delete(savePath, true);
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator BonfireUpgradeConsumesExperienceAndUpdatesPlayerCaps()
+        {
+            var first = world.enemies[0];
+            var second = world.enemies[1];
+            first.Actor.Core.RestoreVitals(0, 0);
+            second.Actor.Core.RestoreVitals(0, 0);
+            Advance(.02f);
+            Assert.That(world.Progression.Experience, Is.EqualTo(40));
+
+            var camp = world.FindBonfire(BonfireCheckpoint.StartId);
+            Place(world.player, camp.transform.position + Vector3.forward);
+            Assert.That(world.TryRest(camp), Is.True, world.Flow.Message);
+            Assert.That(world.TryUpgrade(GrowthStat.Vitality), Is.True, world.Flow.Message);
+            Assert.That(world.Progression.Vitality, Is.EqualTo(1));
+            Assert.That(world.Progression.Level, Is.EqualTo(2));
+            Assert.That(world.Progression.Experience, Is.Zero);
+            Assert.That(world.player.Core.Tuning.maxHealth, Is.EqualTo(110));
+            Assert.That(world.player.Core.Health, Is.EqualTo(110));
+
+            Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True, world.Flow.Store.LastMessage);
+            Assert.That(saved.vitality, Is.EqualTo(1));
+            Assert.That(saved.experience, Is.Zero);
+            Assert.That(saved.health, Is.EqualTo(110));
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator FailedUpgradeSaveKeepsExperienceAndAttributes()
+        {
+            world.Progression.Grant(40);
+            var camp = world.FindBonfire(BonfireCheckpoint.StartId);
+            Place(world.player, camp.transform.position + Vector3.forward);
+            Assert.That(world.TryRest(camp), Is.True);
+            string savePath = Path.Combine(directory, "save.json");
+            File.Delete(savePath);
+            Directory.CreateDirectory(savePath);
+            Assert.That(world.TryUpgrade(GrowthStat.Vitality), Is.False);
+            Assert.That(world.Progression.Experience, Is.EqualTo(40));
+            Assert.That(world.Progression.Vitality, Is.Zero);
+            Assert.That(world.player.Core.Tuning.maxHealth, Is.EqualTo(100));
+            Directory.Delete(savePath, true);
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator CombatMobRewardUpdatesSafeSaveWithoutSavingCombatPosition()
+        {
+            var mob = world.enemies[0];
+            Vector3 safePosition = world.player.transform.position;
+            Place(world.player, new Vector3(0, .02f, -8));
+            world.Director.Engage(mob);
+            world.Director.Engage(world.enemies[1]);
+            Assert.That(world.Director.Count, Is.EqualTo(2));
+            mob.Actor.Core.RestoreVitals(0, 0);
+            Advance(.02f);
+            Assert.That(world.Director.State, Is.EqualTo(EncounterState.NormalCombat));
+
+            Assert.That(world.Progression.Experience, Is.EqualTo(20));
+            Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True, world.Flow.Store.LastMessage);
+            Assert.That(saved.experience, Is.EqualTo(20));
+            Assert.That(saved.position, Is.EqualTo(safePosition));
+            Assert.That(saved.defeatedEnemyIds, Is.Empty, "combat reward persistence must not write encounter state into the safe snapshot");
             yield return null;
         }
         [UnityTest] public IEnumerator RecoveryIsFrameRateIndependentAndPauseFreezesIt()
@@ -196,19 +364,43 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.Victory)); Assert.That(world.arena.activeSelf, Is.False);
             Assert.That(world.Lock.Target, Is.Null); Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True);
             Assert.That(saved.bossDefeated, Is.True); Assert.That(saved.defeatedEnemyIds, Does.Contain("boss-guardian"));
+            Assert.That(saved.experience, Is.EqualTo(200));
             world.Flow.ContinueExploring(); Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.Playing));
+            var camp = world.FindBonfire(BonfireCheckpoint.BossApproachId);
+            Place(world.player, camp.transform.position + Vector3.forward);
+            Assert.That(world.TryRest(camp), Is.True);
+            Assert.That(boss.gameObject.activeSelf, Is.False, "rest must not revive the defeated boss");
+            Assert.That(world.Flow.Store.TryLoad(out saved), Is.True);
+            Assert.That(saved.bossDefeated, Is.True);
+            Assert.That(saved.experience, Is.EqualTo(200));
             yield return null;
         }
         [UnityTest] public IEnumerator PlayerDeathKeepsSafeSaveAndRetryLoadsIt()
         {
+            var mob = world.enemies[0];
+            mob.Actor.Core.RestoreVitals(0, 0); Advance(.02f);
+            Assert.That(world.Progression.Experience, Is.EqualTo(20));
             world.player.Core.RestoreVitals(70,20); Assert.That(world.Flow.Save(), Is.True);
             world.player.Core.RestoreVitals(0,0); Advance(.01f);
             Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.PlayerDead));
             Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True); Assert.That(saved.health, Is.EqualTo(70));
             world.Flow.Retry();
+            Assert.That(world.Flow.Store.TryLoad(out var respawnSave), Is.True);
+            Assert.That(respawnSave.health, Is.EqualTo(100));
+            Assert.That(respawnSave.posture, Is.Zero);
+            Assert.That(respawnSave.experience, Is.EqualTo(20));
+            Assert.That(respawnSave.activeCheckpointId, Is.EqualTo(BonfireCheckpoint.StartId));
+            Assert.That(respawnSave.defeatedEnemyIds, Is.Empty, "normal enemies reset on death");
             for(int i=0;i<120;i++) { yield return null; var next=UnityEngine.Object.FindAnyObjectByType<MvpWorld>(); if(next!=null && next!=world && next.Flow.State==GameFlowState.Playing){world=next;break;} }
             world.manualSimulation=true;
-            Assert.That(world.Flow.State,Is.EqualTo(GameFlowState.Playing)); Assert.That(world.player.Core.Health,Is.EqualTo(70).Within(.2));
+            Assert.That(world.Flow.State,Is.EqualTo(GameFlowState.Playing)); Assert.That(world.player.Core.Health,Is.EqualTo(100).Within(.2));
+            Assert.That(world.player.Core.Posture, Is.Zero);
+            Assert.That(world.Progression.Experience, Is.EqualTo(20));
+            Assert.That(world.ActiveCheckpointId, Is.EqualTo(BonfireCheckpoint.StartId));
+            Vector3 spawnOffset = Vector3.ProjectOnPlane(world.player.transform.position -
+                world.FindBonfire(BonfireCheckpoint.StartId).RespawnPosition, Vector3.up);
+            Assert.That(spawnOffset.magnitude, Is.LessThan(.01f));
+            Assert.That(world.enemies[0].gameObject.activeSelf, Is.True, "the mob defeated before death should respawn");
             Assert.That(UnityEngine.Object.FindObjectsByType<MvpWorld>().Length,Is.EqualTo(1));
         }
 

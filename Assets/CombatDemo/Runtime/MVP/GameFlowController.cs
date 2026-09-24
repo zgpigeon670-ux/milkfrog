@@ -16,6 +16,8 @@ namespace Milkfrog.CombatDemo
         public SaveService Store { get; private set; }
         MvpWorld world;
         MvpMenuView menu;
+        public BonfireCheckpoint ActiveBonfire { get; private set; }
+        bool attributesFromBonfire;
         float messageTime;
 
         void Start()
@@ -86,6 +88,7 @@ namespace Milkfrog.CombatDemo
         public void TogglePause()
         {
             if (State != GameFlowState.Playing) return;
+            if (Paused && ActiveBonfire != null) { ActiveBonfire = null; Paused = false; world.ClearInput(); SetCursor(false); menu.Hide(); return; }
             Paused = !Paused; world.ClearInput(); SetCursor(Paused);
             if (!Paused) { menu.Hide(); return; }
             ShowPause();
@@ -94,7 +97,48 @@ namespace Milkfrog.CombatDemo
         {
             menu.Show("PAUSED", world.CanSave ? "Safe exploration - saving is available." : "In combat / action: returning or quitting keeps the last safe save.",
                 new MenuAction("Resume", TogglePause), new MenuAction("Save", () => { Save(); ShowPauseMessage(); }, world.CanSave),
-                new MenuAction("Return to Home", ReturnHome), new MenuAction("Quit", Quit));
+                new MenuAction("Attributes", OpenAttributes), new MenuAction("Return to Home", ReturnHome), new MenuAction("Quit", Quit));
+        }
+        public void OpenBonfire(BonfireCheckpoint bonfire)
+        {
+            if (State != GameFlowState.Playing || bonfire == null) return;
+            ActiveBonfire = bonfire; Paused = true; world.ClearInput(); SetCursor(true); ShowBonfire();
+        }
+        void ShowBonfire()
+        {
+            var growth = world.Progression;
+            string healthPreview = growth.Vitality >= PlayerProgression.MaximumRank ? "已满" :
+                (world.settings.player.maxHealth + 10 * (growth.Vitality + 1)).ToString("F0");
+            string posturePreview = growth.Resolve >= PlayerProgression.MaximumRank ? "已满" :
+                (world.settings.player.maxPosture + 10 * (growth.Resolve + 1)).ToString("F0");
+            string powerPreview = growth.Power >= PlayerProgression.MaximumRank ? "已满" :
+                (1f + .05f * (growth.Power + 1)).ToString("P0");
+            menu.Show(ActiveBonfire.displayName,
+                $"等级 {growth.Level}  经验 {growth.Experience}  下次消耗 {growth.NextCost}\n" +
+                $"体魄 {growth.Vitality}/10 → 最大生命 {healthPreview}\n" +
+                $"定力 {growth.Resolve}/10 → 最大架势 {posturePreview}\n" +
+                $"攻击 {growth.Power}/10 → 伤害倍率 {powerPreview}",
+                new MenuAction("体魄 +1", () => Upgrade(GrowthStat.Vitality), growth.CanUpgrade(GrowthStat.Vitality)),
+                new MenuAction("定力 +1", () => Upgrade(GrowthStat.Resolve), growth.CanUpgrade(GrowthStat.Resolve)),
+                new MenuAction("攻击 +1", () => Upgrade(GrowthStat.Power), growth.CanUpgrade(GrowthStat.Power)),
+                new MenuAction("查看属性", OpenAttributes), new MenuAction("离开篝火", TogglePause));
+        }
+        void Upgrade(GrowthStat stat)
+        {
+            if (!world.TryUpgrade(stat)) { ShowBonfire(); Notify(Store.LastMessage); return; }
+            ShowBonfire();
+        }
+        public void OpenAttributes()
+        {
+            if (State != GameFlowState.Playing) return;
+            attributesFromBonfire = ActiveBonfire != null;
+            Paused = true; world.ClearInput(); SetCursor(true);
+            var growth = world.Progression;
+            menu.Show("角色属性", $"等级 {growth.Level}  经验 {growth.Experience}  下次消耗 {growth.NextCost}\n" +
+                $"体魄 {growth.Vitality}/10  生命 {world.player.Core.Health:F0}/{world.player.Core.Tuning.maxHealth:F0}\n" +
+                $"定力 {growth.Resolve}/10  架势 {world.player.Core.Posture:F0}/{world.player.Core.Tuning.maxPosture:F0}\n" +
+                $"攻击 {growth.Power}/10  伤害倍率 {growth.AttackMultiplier:P0}",
+                new MenuAction("返回", () => { if (attributesFromBonfire) ShowBonfire(); else ShowPause(); }));
         }
         void ShowPauseMessage()
         { menu.Show("SAVE", Message, new MenuAction("Back", ShowPause)); }
@@ -114,12 +158,13 @@ namespace Milkfrog.CombatDemo
         public void PlayerDied()
         {
             State = GameFlowState.PlayerDead; world.ClearInput(); SetCursor(true);
-            menu.Show("DEATH", "Return to your last safe save.", new MenuAction("Retry", Retry), new MenuAction("Return to Home", ReturnHome));
+            menu.Show("DEATH", "在最近篝火复活，保留成长与经验。", new MenuAction("Retry", Retry), new MenuAction("Return to Home", ReturnHome));
         }
         public void Retry()
         {
-            if (Store.TryLoad(out var snapshot)) LoadLevel(snapshot);
-            else menu.Show("SAVE UNAVAILABLE", Store.LastMessage, new MenuAction("Return to Home", ReturnHome));
+            var snapshot = world.DeathRespawnSnapshot();
+            if (!Store.TrySave(snapshot)) Notify(Store.LastMessage);
+            LoadLevel(snapshot);
         }
         public void Won()
         {

@@ -2,19 +2,21 @@
 
 Unity 6000.6.2f1 / URP / Input System。所有新增资产位于 `Assets/CombatDemo`。第四阶段将首页和 MVP 关卡加入构建场景列表，保留原始 SampleScene 与训练场，不修改项目输入设置。
 
-当前 Windows 构建位于 [MilkfrogMVP-Phase6](../../Builds/MilkfrogMVP-Phase6/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。本轮测试与待真人验收项见 [格挡动画、随机出招与霸体验证报告](Validation/ArmorRandom/Report.md)；[定向与镜头报告](Validation/TargetingCameraBoss/Report.md)保留为前一阶段记录。
+当前 Windows 构建位于 [MilkfrogMVP-Phase7](../../Builds/MilkfrogMVP-Phase7/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。本轮验证见 [篝火与成长报告](Validation/BonfireGrowth/Report.md)；旧版 [格挡动画、随机出招与霸体验证报告](Validation/ArmorRandom/Report.md)保留为历史记录。
 
 ## MVP：从首页开始
 
-打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP-Phase6/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
+打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP-Phase7/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
 
-WASD 移动、鼠标转动自由过肩镜头、中键锁定／解锁最靠近准星的小怪。普通锁定只选择攻击目标，不强迫角色或镜头转向；挥刀提交时优先面向该目标。未锁定时依次选择攻击范围内的准星附近敌人、最近敌人或准星方向。空格垫步、左键斩击／连击或按住蓄力、右键格挡／弹反。已进入防御时，普通攻击到达前会自动转向攻击者；红色“危”突刺不能格挡或弹反，需要闪避。Esc 暂停，F2 调试。MVP 不使用训练场的 R／F1。
+WASD 移动、鼠标转动自由过肩镜头、中键锁定／解锁最靠近准星的小怪。普通锁定只选择攻击目标，不强迫角色或镜头转向；挥刀提交时优先面向该目标。未锁定时依次选择攻击范围内的准星附近敌人、最近敌人或准星方向。空格垫步、左键斩击／连击或按住蓄力、右键格挡／弹反。已进入防御时，普通攻击到达前会自动转向攻击者；红色“危”突刺不能格挡或弹反，需要闪避。脱战时靠近篝火按 E 休息并打开加点菜单，脱战按 C 或从暂停菜单查看属性。Esc 暂停，F2 调试。MVP 不使用训练场的 R／F1。
 
 平地从南向北依次布置三名巡逻小怪和训练守卫 BOSS。探索时每秒恢复 5 生命、20 架势；普通交战连续 10 秒无有效攻防或离开追击区域后结束。BOSS 在 8m 内触发，自动锁定并封闭场地，直到一方死亡。
 
 小怪和 BOSS 分别使用 `MobEnemy` / `BossEnemy` 类、`Prefabs/MVP` 下的 Prefab，以及 `Settings/MobEnemy.asset` / `BossEnemy.asset`。BOSS 使用独立快刀、慢刀、危突刺资产，默认按 5:3:2 权重随机出招；慢刀或危招后下一次主动出招必为快刀，弹反反击也是快刀。BOSS 默认生命 750、最大架势 350，普通受击不断招，但弹反、架势崩溃和死亡仍能打断。BOSS 战仍强制锁定并持续跟随双方。每个敌人的 stableId 必须唯一且不能随意改名，否则历史存档无法对应死亡记录。
 
-存档位于 `Application.persistentDataPath/MilkfrogMVP/save.json`，另有备份文件；记录位置、朝向、生命、架势、击败敌人 ID 和通关标志。仅脱战且动作 Neutral 时保存。战斗退出、死亡重试会回到最近安全档；不恢复攻击、锁定和仇恨等瞬间状态。新游戏、脱战、BOSS 胜利自动保存，探索中每 15 秒保存，Esc 菜单也提供手动保存。失败会显示提示；损坏文件保留，优先恢复备份。
+关卡有起点和 BOSS 区域外两处篝火。休息时补满生命、清空架势并重置普通小怪；死亡后在最近激活的篝火以满血复活，保留经验与加点，普通小怪重生，已击败的 BOSS 不会重生。小怪每次击败给 20 经验，BOSS 首次击败给 200。篝火菜单可加体魄（每点最大生命 +10）、定力（每点最大架势 +10）和攻击（每点进攻生命与架势伤害 +5%）；每项最多 10 点，消耗为 `40 + 20 ×（当前等级 − 1）`。
+
+v2 存档位于 `Application.persistentDataPath/MilkfrogMVP/save.json`，另有备份文件；记录安全位置、朝向、生命、架势、击败敌人 ID、通关标志、篝火 ID 和成长数据。仅脱战且动作 Neutral 时保存位置；战斗奖励只更新最近安全档的成长数据。死亡重试改为篝火复活，不恢复攻击、锁定和仇恨等瞬间状态。新游戏、脱战、篝火休息、加点、BOSS 胜利自动保存，探索中每 15 秒保存，Esc 菜单也提供手动保存。失败会显示提示；损坏文件保留，优先恢复备份。旧 v1 档读取时保留位置与资源、默认起点篝火，已通关档补发一次 200 经验；成功写入 v2 后不再重复补发。
 
 独立场景 `MVP_TestLevel` 也可直接 Play，加载有效存档或初始化安全出生点。建议正式验收从首页开始。无有效存档且直接 Play 关卡时会建立默认存档。开发构建支持 `--mvp-save-dir <独立目录>`，用于隔离验收存档，普通运行无需此参数。
 
