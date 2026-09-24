@@ -170,9 +170,11 @@ namespace Milkfrog.CombatDemo.Tests
                 Assert.That(Vector3.Distance(expected,blade.TransformPoint(Vector3.up*.5f)),Is.LessThan(.035f),"Rendered sword must follow its baked hit trajectory.");
                 session.Simulate(.009f);
             }
-            session.Simulate(.34f); double outgoing=presentation.AttackPoseTime;
+            session.Simulate(.34f);
             session.Simulate(.035f);
             Assert.That(player.Core.State,Is.EqualTo(CombatState.Neutral));
+            double outgoing=presentation.AttackPoseTime;
+            session.Simulate(.035f);
             Assert.That(presentation.AttackPoseTime,Is.EqualTo(outgoing),"Fading attack must not restart at frame zero.");
             yield return null;
         }

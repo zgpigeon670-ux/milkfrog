@@ -465,7 +465,7 @@ namespace Milkfrog.CombatDemo.Tests
             float beforeCommit = boss.definition.wait * .9f;
             boss.Brain.Tick(beforeCommit);
             Assert.That(boss.Actor.Core.AttackId, Is.EqualTo(attackId));
-            Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.Neutral));
+            Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.Guard));
             Assert.That(boss.Brain.NextPattern, Is.EqualTo(waitingPattern), "An uncommitted wait must not consume or publish a random pick.");
 
             boss.Brain.Tick(boss.definition.wait - beforeCommit + .01f);

@@ -2,11 +2,11 @@
 
 Unity 6000.6.2f1 / URP / Input System。所有新增资产位于 `Assets/CombatDemo`。第四阶段将首页和 MVP 关卡加入构建场景列表，保留原始 SampleScene 与训练场，不修改项目输入设置。
 
-本轮 Windows 构建位于 [MilkfrogMVP-Phase5](../../Builds/MilkfrogMVP-Phase5/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。旧构建目录因程序正在运行而无法可靠更新，请只用新目录验收；本轮测试与限制见 [定向、镜头与 BOSS 验证报告](Validation/TargetingCameraBoss/Report.md)。
+当前 Windows 构建位于 [MilkfrogMVP-Phase6](../../Builds/MilkfrogMVP-Phase6/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。本轮测试与待真人验收项见 [格挡动画、随机出招与霸体验证报告](Validation/ArmorRandom/Report.md)；[定向与镜头报告](Validation/TargetingCameraBoss/Report.md)保留为前一阶段记录。
 
 ## MVP：从首页开始
 
-打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP-Phase5/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
+打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP-Phase6/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
 
 WASD 移动、鼠标转动自由过肩镜头、中键锁定／解锁最靠近准星的小怪。普通锁定只选择攻击目标，不强迫角色或镜头转向；挥刀提交时优先面向该目标。未锁定时依次选择攻击范围内的准星附近敌人、最近敌人或准星方向。空格垫步、左键斩击／连击或按住蓄力、右键格挡／弹反。已进入防御时，普通攻击到达前会自动转向攻击者；红色“危”突刺不能格挡或弹反，需要闪避。Esc 暂停，F2 调试。MVP 不使用训练场的 R／F1。
 
@@ -18,7 +18,7 @@ WASD 移动、鼠标转动自由过肩镜头、中键锁定／解锁最靠近准
 
 独立场景 `MVP_TestLevel` 也可直接 Play，加载有效存档或初始化安全出生点。建议正式验收从首页开始。无有效存档且直接 Play 关卡时会建立默认存档。开发构建支持 `--mvp-save-dir <独立目录>`，用于隔离验收存档，普通运行无需此参数。
 
-此前的 MVP 交付记录见 [第四阶段报告](Validation/MVP/Report.md)；本轮实测见 [定向、镜头与 BOSS 验证报告](Validation/TargetingCameraBoss/Report.md)。下面的操作说明保留为原双人训练场文档。
+此前的 MVP 交付记录见 [第四阶段报告](Validation/MVP/Report.md)；当前实测见 [格挡动画、随机出招与霸体验证报告](Validation/ArmorRandom/Report.md)。下面的操作说明保留为原双人训练场文档。
 
 ## 原训练场开始方式
 
