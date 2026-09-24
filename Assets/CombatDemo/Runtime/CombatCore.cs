@@ -20,6 +20,7 @@ namespace Milkfrog.CombatDemo
         public float invulnerableStart = .08f, invulnerableEnd = .16f;
         public float prepareThreshold = .18f, fullChargeTime = .80f;
         public float recoveryCancel = .16f;
+        public bool ignoreOrdinaryHitStun;
     }
 
     public readonly struct HitEvent
@@ -302,6 +303,7 @@ namespace Milkfrog.CombatDemo
             // Further hits cannot renew an existing break or downgrade it to HitStun.
             if (State == CombatState.PostureBroken) return;
             if (Posture >= Tuning.maxPosture) { Change(CombatState.PostureBroken, Tuning.brokenDuration); return; }
+            if (ordinary == CombatState.HitStun && Tuning.ignoreOrdinaryHitStun) return;
             Change(ordinary, duration);
         }
 

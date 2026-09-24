@@ -25,9 +25,9 @@ namespace Milkfrog.CombatDemo
         public AnimationClip CurrentPoseClip => initialized && previousTrack >= 0 ? clips[previousTrack] : null;
         AnimationClipPlayable[] tracks;
         AnimationClip[] clips;
-        readonly float[] weights = new float[24];
-        readonly double[] poseTimes = new double[24];
-        readonly float[] blendFrom = new float[24];
+        readonly float[] weights = new float[25];
+        readonly double[] poseTimes = new double[25];
+        readonly float[] blendFrom = new float[25];
         int previousTrack = -1;
         float blendElapsed;
         float visualSpeed;
@@ -55,7 +55,8 @@ namespace Milkfrog.CombatDemo
                 profile.dodgeLeft != null ? profile.dodgeLeft : profile.idle, profile.dodgeRight != null ? profile.dodgeRight : profile.idle,
                 profile.charge != null ? profile.charge : profile.idle, actor.thrustAttack!=null?actor.thrustAttack.clip:profile.thrust != null ? profile.thrust : profile.attack,
                 actor.slowAttack != null && actor.slowAttack.clip != null ? actor.slowAttack.clip : profile.attack,
-                actor.perilousAttack != null && actor.perilousAttack.clip != null ? actor.perilousAttack.clip : profile.attack };
+                actor.perilousAttack != null && actor.perilousAttack.clip != null ? actor.perilousAttack.clip : profile.attack,
+                actor.followupAttack != null && actor.followupAttack.clip != null ? actor.followupAttack.clip : profile.attack };
             graph = PlayableGraph.Create(actor.name + " Combat Visuals");
             graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
             mixer = AnimationMixerPlayable.Create(graph, clips.Length);
@@ -143,7 +144,8 @@ namespace Milkfrog.CombatDemo
             int selected = 0;
             var core = actor.Core;
             if (core.IsAttacking)
-                selected = core.ActiveAttack.Kind == AttackKind.Thrust ? 21 :
+                selected = core.ActiveAttack.Kind == AttackKind.Followup ? 24 :
+                    core.ActiveAttack.Kind == AttackKind.Thrust ? 21 :
                     core.ActiveAttack.Kind == AttackKind.Slow ? 22 :
                     core.ActiveAttack.Kind == AttackKind.Perilous ? 23 : 3;
             else if(core.State==CombatState.AttackPrepare)selected=3;
@@ -197,7 +199,7 @@ namespace Milkfrog.CombatDemo
                 if(i==3 && core.State==CombatState.AttackPrepare)time=Mathf.Clamp01(core.ChargeElapsed/Mathf.Max(.001f,core.ActiveAttack.Startup))*(actor.lightAttack!=null?actor.lightAttack.activeStart:profile.attackActiveStart)*clips[3].length;
                 if(i>=16 && i<=19)time=core.DodgeProgress*clips[i].length;
                 if(i==20)time=core.ChargeRatio*clips[i].length;
-                if ((i == 21 || i == 22 || i == 23) && selected == i) time = AttackPose(core, i);
+                if ((i == 21 || i == 22 || i == 23 || i == 24) && selected == i) time = AttackPose(core, i);
                 if (i == 4 || i == 8) time = core.StateProgress * clips[i].length;
                 if (i == 5) time = Mathf.Min(deathTime, clips[i].length - .001f);
                 if (i == 6 || i == 9) time = clips[i].length * .5f;
@@ -205,7 +207,7 @@ namespace Milkfrog.CombatDemo
                 // An outgoing action keeps its final sampled pose instead of jumping back to frame zero.
                 if (i <= 2 || i >= 10 && i <=15 || i == selected || selected==16 && i>=16 && i<=19 || force) poseTimes[i] = time;
                 tracks[i].SetTime(poseTimes[i]);
-                if (i == selected && (i == 3 || i == 21 || i == 22 || i == 23)) SampledAttackTime = (float)poseTimes[i];
+                if (i == selected && (i == 3 || i == 21 || i == 22 || i == 23 || i == 24)) SampledAttackTime = (float)poseTimes[i];
             }
             // Legs keep stepping while guarding; attack and all interrupts own the full body immediately.
             UpperGuardWeight = core.State == CombatState.Guard ? 1 : 0;
@@ -227,7 +229,9 @@ namespace Milkfrog.CombatDemo
             if (definition == null || definition.clip == null) return profile.AttackTime(core);
             if (core.ActiveAttack.Kind == AttackKind.Followup)
             {
-                float start = Mathf.Lerp(definition.activeStart, definition.activeEnd, .35f);
+                // The follow-up has a shorter wind-up, but its sampled clip time must never
+                // run backwards when Startup enters Active (especially on a blocked contact).
+                float start = definition.activeStart * .35f;
                 float a = start, b = definition.activeStart;
                 if (core.State == CombatState.AttackActive) { a = definition.activeStart; b = definition.activeEnd; }
                 if (core.State == CombatState.AttackRecovery) { a = definition.activeEnd; b = 1; }

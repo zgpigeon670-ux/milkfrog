@@ -46,6 +46,46 @@ namespace Milkfrog.CombatDemo.Tests
         static void Place(CombatActor actor, Vector3 position)
         { actor.Motor.enabled = false; actor.transform.position = position; actor.Motor.enabled = true; Physics.SyncTransforms(); }
 
+        static AttackPattern PatternFor(AttackKind kind)
+        {
+            switch (kind)
+            {
+                case AttackKind.Slow: return AttackPattern.Slow;
+                case AttackKind.Perilous: return AttackPattern.Perilous;
+                default: return AttackPattern.Slash;
+            }
+        }
+
+        static AttackPattern[] CollectBossPatterns(EnemyController boss, int seed, int count)
+        {
+            var result = new AttackPattern[count];
+            boss.Brain.Reset(EnemyMode.Duel);
+            boss.Actor.Core.Reset();
+            boss.Brain.SetRandomSeed(seed);
+            for (int i = 0; i < count; i++)
+            {
+                boss.Brain.Tick(boss.definition.wait + .01f);
+                result[i] = PatternFor(boss.Actor.Core.ActiveAttack.Kind);
+                Assert.That(boss.Brain.NextPattern, Is.EqualTo(result[i]), "The chosen pattern should describe the committed attack.");
+                boss.Actor.Core.Reset();
+            }
+            return result;
+        }
+
+        static int FindFirstBossPatternSeed(EnemyController boss, AttackPattern pattern)
+        {
+            for (int seed = 1; seed <= 128; seed++)
+            {
+                boss.Brain.Reset(EnemyMode.Duel);
+                boss.Actor.Core.Reset();
+                boss.Brain.SetRandomSeed(seed);
+                boss.Brain.Tick(boss.definition.wait + .01f);
+                if (PatternFor(boss.Actor.Core.ActiveAttack.Kind) == pattern) return seed;
+            }
+            Assert.Fail("No fixed seed selected " + pattern + " within the expected sample range.");
+            return -1;
+        }
+
         [UnityTest] public IEnumerator FreshStartHasThreeMobsBossAndSafeSave()
         {
             Assert.That(world.enemies.Length, Is.EqualTo(4));
@@ -359,34 +399,79 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(world.player.Core.Health, Is.LessThan(100));
             yield return null;
         }
-        [UnityTest] public IEnumerator BossCyclesDedicatedClipsAndWarningClearsWithState()
+        [UnityTest] public IEnumerator BossUsesReproducibleWeightedAttacksAndWarningTracksPerilousStartup()
         {
             var boss = world.enemies[3];
             Place(world.player, boss.Home + Vector3.back * 1f);
             world.Director.Tick(.01f);
             Assert.That(world.Lock.Target, Is.EqualTo(boss));
             Assert.That(world.cameraRig.lockOn, Is.True);
-            Assert.That(boss.definition.attackPattern, Is.EqualTo(new[] { AttackPattern.Slash, AttackPattern.Slow, AttackPattern.Slash, AttackPattern.Perilous }));
-            var presenter = boss.GetComponent<CombatAnimationPresenter>();
-            var expected = new[] { AttackKind.Light, AttackKind.Slow, AttackKind.Light, AttackKind.Perilous };
-            foreach (var kind in expected)
+            Assert.That(boss.definition.randomAttacks, Is.True);
+            Assert.That(boss.definition.slashWeight, Is.EqualTo(5));
+            Assert.That(boss.definition.slowWeight, Is.EqualTo(3));
+            Assert.That(boss.definition.perilousWeight, Is.EqualTo(2));
+            Assert.That(world.enemies[0].definition.randomAttacks, Is.False, "Regular MVP enemies should retain their deterministic attack selection.");
+
+            AttackPattern[] first = CollectBossPatterns(boss, 7319, 500);
+            AttackPattern[] second = CollectBossPatterns(boss, 7319, 500);
+            Assert.That(second, Is.EqualTo(first), "A fixed random seed should reproduce the same attack sequence.");
+            int slash = 0, slow = 0, perilous = 0;
+            for (int i = 0; i < first.Length; i++)
             {
-                boss.Brain.Tick(boss.definition.wait + .01f);
-                Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.AttackStartup));
-                Assert.That(boss.Actor.Core.ActiveAttack.Kind, Is.EqualTo(kind));
-                presenter.AdvanceVisual(.01f);
-                Assert.That(presenter.CurrentPoseClip, Is.EqualTo(boss.Actor.AttackFor(kind).clip));
-                if (kind == AttackKind.Perilous)
+                switch (first[i])
                 {
-                    var hud = world.GetComponent<MvpHud>(); hud.Refresh();
-                    Assert.That(hud.PerilousWarningVisible, Is.True);
-                    world.Flow.TogglePause(); hud.Refresh(); Assert.That(hud.PerilousWarningVisible, Is.False);
-                    world.Flow.TogglePause();
+                    case AttackPattern.Slash: slash++; break;
+                    case AttackPattern.Slow: slow++; break;
+                    case AttackPattern.Perilous: perilous++; break;
                 }
-                boss.Actor.Core.Reset();
+                if (i > 0 && (first[i - 1] == AttackPattern.Slow || first[i - 1] == AttackPattern.Perilous))
+                    Assert.That(first[i], Is.EqualTo(AttackPattern.Slash), "A strong attack must be followed by a fast attack.");
             }
-            var finalHud = world.GetComponent<MvpHud>(); finalHud.Refresh();
+            Assert.That(slash, Is.InRange(290, 390));
+            Assert.That(slow, Is.InRange(65, 145));
+            Assert.That(perilous, Is.InRange(40, 105));
+
+            var presenter = boss.GetComponent<CombatAnimationPresenter>();
+            int perilousSeed = FindFirstBossPatternSeed(boss, AttackPattern.Perilous);
+            boss.Brain.Reset(EnemyMode.Duel);
+            boss.Actor.Core.Reset();
+            boss.Brain.SetRandomSeed(perilousSeed);
+            boss.Brain.Tick(boss.definition.wait + .01f);
+            Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.AttackStartup));
+            Assert.That(boss.Actor.Core.ActiveAttack.Kind, Is.EqualTo(AttackKind.Perilous));
+            presenter.AdvanceVisual(.01f);
+            Assert.That(presenter.CurrentPoseClip, Is.EqualTo(boss.Actor.perilousAttack.clip));
+            var hud = world.GetComponent<MvpHud>(); hud.Refresh();
+            Assert.That(hud.PerilousWarningVisible, Is.True);
+            world.Flow.TogglePause(); hud.Refresh(); Assert.That(hud.PerilousWarningVisible, Is.False);
+            world.Flow.TogglePause();
+            boss.Actor.Core.Reset();
+            hud.Refresh();
+            var finalHud = hud;
             Assert.That(finalHud.PerilousWarningVisible, Is.False);
+            yield return null;
+        }
+        [UnityTest] public IEnumerator BossDoesNotRerollWhileWaitingForItsAttackCommit()
+        {
+            var boss = world.enemies[3];
+            Place(world.player, boss.Home + Vector3.back * 1f);
+            world.Director.Tick(.01f);
+            boss.Brain.Reset(EnemyMode.Duel);
+            boss.Actor.Core.Reset();
+            boss.Brain.SetRandomSeed(13);
+            AttackPattern waitingPattern = boss.Brain.NextPattern;
+            int attackId = boss.Actor.Core.AttackId;
+
+            float beforeCommit = boss.definition.wait * .9f;
+            boss.Brain.Tick(beforeCommit);
+            Assert.That(boss.Actor.Core.AttackId, Is.EqualTo(attackId));
+            Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.Neutral));
+            Assert.That(boss.Brain.NextPattern, Is.EqualTo(waitingPattern), "An uncommitted wait must not consume or publish a random pick.");
+
+            boss.Brain.Tick(boss.definition.wait - beforeCommit + .01f);
+            Assert.That(boss.Actor.Core.AttackId, Is.EqualTo(attackId + 1));
+            Assert.That(boss.Actor.Core.State, Is.EqualTo(CombatState.AttackStartup));
+            Assert.That(boss.Brain.NextPattern, Is.EqualTo(AttackPattern.Slow), "The first seeded weighted pick should be committed once the wait completes.");
             yield return null;
         }
         [UnityTest] public IEnumerator OverShoulderCameraAvoidsWallAndBossLockFramesTarget()

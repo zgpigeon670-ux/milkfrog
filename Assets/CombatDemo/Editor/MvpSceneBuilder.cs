@@ -34,8 +34,10 @@ namespace Milkfrog.CombatDemo.Editor
             AssetDatabase.CreateAsset(mobDefinition, Root + "/Settings/MobEnemy.asset");
             var bossDefinition = Object.Instantiate(mobDefinition); bossDefinition.displayName = "THE TRAINING GUARDIAN";
             bossDefinition.tuning.maxHealth = 750; bossDefinition.tuning.maxPosture = 350;
+            bossDefinition.tuning.ignoreOrdinaryHitStun = true;
             bossDefinition.speed = 3.2f; bossDefinition.wait = .85f;
-            bossDefinition.attackPattern = new[] { AttackPattern.Slash, AttackPattern.Slow, AttackPattern.Slash, AttackPattern.Perilous };
+            bossDefinition.randomAttacks = true;
+            bossDefinition.slashWeight = 5; bossDefinition.slowWeight = 3; bossDefinition.perilousWeight = 2;
             var bossAttack = Object.Instantiate(source.enemy.lightAttack);
             bossAttack.rules = JsonUtility.FromJson<AttackParameters>(JsonUtility.ToJson(source.enemy.lightAttack.rules));
             bossAttack.rules.startup = .35f; bossAttack.rules.damage = bossAttack.rules.maxDamage = 28;

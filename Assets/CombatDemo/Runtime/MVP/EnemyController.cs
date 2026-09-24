@@ -35,6 +35,10 @@ namespace Milkfrog.CombatDemo
             brainSettings.counterDelay = definition.counterDelay; brainSettings.blocksBeforeDeflect = definition.blocksBeforeDeflect;
             brainSettings.usePatternInDuel = IsBoss && definition.attackPattern != null && definition.attackPattern.Length > 0;
             brainSettings.enemyPattern = definition.attackPattern;
+            brainSettings.randomAttacks = IsBoss && definition.randomAttacks;
+            brainSettings.slashWeight = definition.slashWeight;
+            brainSettings.slowWeight = definition.slowWeight;
+            brainSettings.perilousWeight = definition.perilousWeight;
             Brain = new EnemyBrain(Actor, brainSettings); Brain.Reset(EnemyMode.Duel);
             Activity = IsBoss ? EnemyActivity.Dormant : EnemyActivity.Patrol;
         }

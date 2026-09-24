@@ -105,7 +105,6 @@ namespace Milkfrog.CombatDemo
         {
             if (dt < 0 || float.IsNaN(dt) || float.IsInfinity(dt)) throw new ArgumentOutOfRangeException(nameof(dt));
             // Small shared slices keep the defender window and attacker timing close under variable frame rates.
-            float visualDelta = 0;
             while (dt > 0)
             {
                 float step = Mathf.Min(dt, 1f / 120f);
@@ -115,7 +114,6 @@ namespace Milkfrog.CombatDemo
                     feedback.TickReal(step);
                     step = feedback.Clock.Consume(step);
                 }
-                visualDelta += step;
                 if (step <= 0 || Finished) continue;
                 if (hasFrozenGuard) { player.Core.SetGuard(guardAfterFreeze, false); hasFrozenGuard = false; }
                 if (LockedOn) player.FaceTarget();
@@ -128,9 +126,9 @@ namespace Milkfrog.CombatDemo
                 Physics.SyncTransforms();
                 player.Core.Tick(step);
                 if (!Finished) enemy.Core.Tick(step);
+                if (playerAnimation != null) playerAnimation.AdvanceVisual(step);
+                if (enemyAnimation != null) enemyAnimation.AdvanceVisual(step);
             }
-            if (playerAnimation != null) playerAnimation.AdvanceVisual(visualDelta);
-            if (enemyAnimation != null) enemyAnimation.AdvanceVisual(visualDelta);
         }
 
         public void ResetRound()

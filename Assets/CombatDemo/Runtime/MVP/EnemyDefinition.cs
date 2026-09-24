@@ -10,6 +10,8 @@ namespace Milkfrog.CombatDemo
         public CombatAttackDefinition slash;
         public CombatAttackDefinition slow, perilous;
         public AttackPattern[] attackPattern;
+        public bool randomAttacks;
+        public float slashWeight = 5, slowWeight = 3, perilousWeight = 2;
         public float speed = 2.5f, wait = 1.35f, counterDelay = .1f;
         public int blocksBeforeDeflect = 2;
         public float alertRadius = 6, patrolRadius = 3, leashMargin = 12;

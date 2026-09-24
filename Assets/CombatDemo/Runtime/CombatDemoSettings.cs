@@ -15,5 +15,7 @@ namespace Milkfrog.CombatDemo
         public bool logEvents = true;
         public AttackPattern[] enemyPattern = { AttackPattern.Slash, AttackPattern.Slow, AttackPattern.Perilous };
         public bool usePatternInDuel;
+        public bool randomAttacks;
+        public float slashWeight = 5, slowWeight = 3, perilousWeight = 2;
     }
 }

@@ -24,6 +24,60 @@ namespace Milkfrog.CombatDemo.Tests
         }
         void PlaceEnemy(Vector3 position)
         { session.enemy.Motor.enabled=false; session.enemy.transform.position=position; session.enemy.Motor.enabled=true; Physics.SyncTransforms(); }
+        [UnityTest] public IEnumerator BlockedLightAndFollowupKeepTheirAttackPoseThroughRecovery()
+        {
+            session.SetMode(EnemyMode.Duel);
+            session.feedback.hitStop = true;
+            PlaceEnemy(session.player.transform.position + Vector3.forward * 1.2f);
+            int blocks = 0;
+            session.CombatEvent += hit => { if (hit.Attacker == session.player.Core && hit.Result == HitResult.Block) blocks++; };
+            session.player.Core.RequestAttack();
+            for (int i = 0; i < 120 && blocks == 0; i++) session.Simulate(1f / 120);
+            Assert.That(blocks, Is.EqualTo(1));
+            Assert.That(session.player.Core.IsAttacking, Is.True, "An ordinary block must not interrupt the attacker.");
+            float held = session.playerAnimation.SampledAttackTime;
+            session.Simulate(.006f);
+            Assert.That(session.playerAnimation.SampledAttackTime, Is.EqualTo(held), "Hit stop must hold the sampled pose.");
+            for (int i = 0; i < 120 && !session.player.Core.CanAct; i++) session.Simulate(1f / 120);
+            Assert.That(session.player.Core.State, Is.EqualTo(CombatState.Neutral));
+            Assert.That(session.player.Core.RequestFollowup(), Is.True);
+            Assert.That(session.player.Core.ActiveAttack.Kind, Is.EqualTo(AttackKind.Followup));
+            float previous = -1;
+            for (int i = 0; i < 100 && blocks < 2; i++)
+            {
+                session.Simulate(1f / 120);
+                float sampled = session.playerAnimation.SampledAttackTime;
+                Assert.That(sampled + .0001f, Is.GreaterThanOrEqualTo(previous), "Follow-up clip sampling must not jump backward at a phase boundary.");
+                previous = sampled;
+            }
+            Assert.That(blocks, Is.EqualTo(2));
+            Assert.That(session.player.Core.IsAttacking, Is.True);
+            for (int i = 0; i < 120 && !session.player.Core.CanAct; i++) session.Simulate(1f / 120);
+            Assert.That(session.player.Core.State, Is.EqualTo(CombatState.Neutral));
+            Assert.That(session.enemy.Core.Health, Is.EqualTo(session.enemy.Core.Tuning.maxHealth));
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator EnemyDeflectInterruptsAttackAndShowsDeflectedPoseAfterHitStop()
+        {
+            session.SetMode(EnemyMode.Duel);
+            session.feedback.hitStop = true;
+            PlaceEnemy(session.player.transform.position + Vector3.forward * 1.2f);
+            HitResult last = HitResult.Ignore;
+            session.CombatEvent += hit => { if (hit.Attacker == session.player.Core) last = hit.Result; };
+            for (int attack = 0; attack < 3; attack++)
+            {
+                Assert.That(session.player.Core.RequestAttack(), Is.True);
+                for (int i = 0; i < 130 && session.player.Core.IsAttacking; i++) session.Simulate(1f / 120);
+                if (attack < 2) Assert.That(last, Is.EqualTo(HitResult.Block));
+            }
+            Assert.That(last, Is.EqualTo(HitResult.Deflect));
+            Assert.That(session.player.Core.State, Is.EqualTo(CombatState.DeflectedStun));
+            session.Simulate(session.feedback.deflectFreeze + .02f);
+            Assert.That(session.playerAnimation.CurrentPoseClip, Is.EqualTo(session.playerAnimation.profile.deflected));
+            Assert.That(session.enemy.Core.Health, Is.EqualTo(session.enemy.Core.Tuning.maxHealth));
+            yield return null;
+        }
         [UnityTest] public IEnumerator CenteredBladeHitsOnlyWhenItReachesTheTarget()
         {
             var player=session.player; var enemy=session.enemy;

@@ -40,10 +40,15 @@ MonoBehaviour:
     prepareThreshold: 0.18
     fullChargeTime: 0.8
     recoveryCancel: 0.16
+    ignoreOrdinaryHitStun: 1
   slash: {fileID: 11400000, guid: 1d49493a91795164ea73d003db3bb659, type: 2}
   slow: {fileID: 11400000, guid: d9b6c936fa8342d6a0f5c48846134175, type: 2}
   perilous: {fileID: 11400000, guid: ac4d8d36c3c7462eb9344b5403d590f0, type: 2}
   attackPattern: 00000000010000000000000002000000
+  randomAttacks: 1
+  slashWeight: 5
+  slowWeight: 3
+  perilousWeight: 2
   speed: 3.2
   wait: 0.85
   counterDelay: 0.1

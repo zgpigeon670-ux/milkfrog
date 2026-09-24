@@ -219,11 +219,10 @@ namespace Milkfrog.CombatDemo
         {
             if (dt < 0 || float.IsNaN(dt) || float.IsInfinity(dt)) throw new ArgumentOutOfRangeException(nameof(dt));
             if (!Running) return;
-            float visual = 0;
             while (dt > .000001f && Running)
             {
                 float step = Mathf.Min(dt, 1f / 120); dt -= step;
-                feedback.TickReal(step); step = feedback.Clock.Consume(step); visual += step;
+                feedback.TickReal(step); step = feedback.Clock.Consume(step);
                 if (step <= 0) continue;
                 if (hasFrozenGuard) { player.Core.SetGuard(frozenGuard, false); hasFrozenGuard = false; }
                 Director.Tick(step); Lock.Tick(step);
@@ -238,6 +237,8 @@ namespace Milkfrog.CombatDemo
                 player.Core.AutomaticPostureRecovery = !exploring;
                 player.Core.Tick(step);
                 foreach (var enemy in enemies) if (enemy.gameObject.activeInHierarchy) enemy.Actor.Core.Tick(step);
+                // Sample every simulation slice so a blocked swing cannot skip its active/recovery pose.
+                foreach (var animation in animations) if (animation.gameObject.activeInHierarchy) animation.AdvanceVisual(step);
                 if (player.Core.State == CombatState.Dead) { Flow.PlayerDied(); break; }
                 foreach (var enemy in enemies)
                 {
@@ -257,7 +258,6 @@ namespace Milkfrog.CombatDemo
                 saveClock += step;
                 if ((pendingSave || saveClock >= 15) && CanSave) { Flow.Save(); pendingSave = false; saveClock = 0; }
             }
-            foreach (var animation in animations) if (animation.gameObject.activeInHierarchy) animation.AdvanceVisual(visual);
         }
         public void RequestSave() { pendingSave = true; }
         void OnHit(HitEvent hit)
