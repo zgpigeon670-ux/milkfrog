@@ -79,7 +79,7 @@ namespace Milkfrog.CombatDemo.Editor
             var camera = new GameObject("Main Camera", typeof(Camera),typeof(AudioListener),typeof(DemoCamera)).GetComponent<Camera>();
             camera.tag = "MainCamera"; camera.fieldOfView = 60; camera.farClipPlane = 180;
             camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = new Color(.055f,.075f,.10f);
-            var rig = camera.GetComponent<DemoCamera>(); rig.freeOrbit = true; rig.lockOn = false; rig.avoidObstacles = true;
+            var rig = camera.GetComponent<DemoCamera>(); rig.freeOrbit = true; rig.lockOn = false; rig.avoidObstacles = true; rig.pitch = 8; rig.orbitDistance = 2.7f; rig.orbitShoulder = new Vector3(.45f, .05f, 0);
             var root = new GameObject("MVP Session");
             var flow = root.AddComponent<GameFlowController>(); root.AddComponent<MvpMenuView>(); root.AddComponent<MvpHud>();
             var world = root.AddComponent<MvpWorld>();

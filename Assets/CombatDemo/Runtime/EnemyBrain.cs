@@ -67,9 +67,9 @@ namespace Milkfrog.CombatDemo
         {
             if (actor.Core.State == CombatState.Dead || actor.Target.Core.State == CombatState.Dead)
             { Decision = "Finished"; return; }
-            if (!actor.Core.CanAct) { Decision = actor.Core.State.ToString(); return; }
+            if (!actor.Core.CanAct) { actor.Move(Vector3.zero, 0, dt); Decision = actor.Core.State.ToString(); return; }
             if (Mode == EnemyMode.Dummy)
-            { actor.Core.SetGuard(false, false); Decision = "Training dummy"; return; }
+            { actor.Move(Vector3.zero, 0, dt); actor.Core.SetGuard(false, false); Decision = "Training dummy"; return; }
             actor.FaceTarget();
             bool near = actor.DistanceToTarget <= actor.EngageDistance;
             if (counterRemaining >= 0)

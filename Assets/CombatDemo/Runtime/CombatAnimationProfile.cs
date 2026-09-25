@@ -8,6 +8,7 @@ namespace Milkfrog.CombatDemo
         public AnimationClip idle, walk, jog, attack, hit, death, guard, parry, deflected, broken;
         public AnimationClip walkBack, jogBack, walkLeft, jogLeft, walkRight, jogRight;
         public AnimationClip dodgeForward, dodgeBack, dodgeLeft, dodgeRight, charge, thrust;
+        public AnimationClip jump, fall, land;
         [Range(0, 1)] public float attackActiveStart = .35f;
         [Range(0, 1)] public float attackActiveEnd = .55f;
         [Min(0)] public float blendTime = .07f;

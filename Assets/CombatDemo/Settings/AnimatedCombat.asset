@@ -31,12 +31,12 @@ MonoBehaviour:
     brokenDuration: 2
     postureRecoveryDelay: 2
     postureRecoveryRate: 15
-    dodgeDuration: 0.38
-    dodgeMoveDuration: 0.24
-    dodgeDistance: 1.6
+    dodgeDuration: 0.75
+    dodgeMoveDuration: 0.42
+    dodgeDistance: 2.6
     invulnerableStart: 0.08
     invulnerableEnd: 0.16
-    prepareThreshold: 0.18
+    prepareThreshold: 0.45
     fullChargeTime: 0.8
     recoveryCancel: 0.16
   enemy:

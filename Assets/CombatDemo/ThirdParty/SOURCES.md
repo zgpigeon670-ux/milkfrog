@@ -22,7 +22,7 @@
 
 `Animations/Guard.anim`、`Parry.anim`、`Deflected.anim`、`Broken.anim` 是从 CC0 动作采样并调整 Humanoid 肌肉曲线的姿势适配：格挡/弹反基于 Sword_Idle，后仰基于 Hit_Head，失衡基于 Crouch_Idle_Loop。不是作者提供的专用弹反或双人处决成品。其余必要片段直接引用 FBX 子资源。剑、池化闪光、短音效由本项目代码生成，不含外来模型、录音或音乐。
 
-第三阶段新增 `Animations/Directional` 下的六个后退／侧移走跑片段、四个垫步、蓄力和突刺片段：在上述 CC0 Mannequin / Sword_Idle 基础上，由本项目 `CombatMotionAuthoring` 通过腿部／手臂逆运动学和 Humanoid 肌肉关键帧制作。不是额外下载的动画或只狼资产；没有增加外部代码或素材许可证依赖。
+第三阶段新增 `Animations/Directional` 下的六个后退／侧移走跑片段：在上述 CC0 Mannequin / Sword_Idle 基础上，由本项目 `CombatMotionAuthoring` 通过腿部逆运动学和 Humanoid 肌肉关键帧制作。跳跃使用原包 `Jump_Start`、`Jump_Loop`、`Jump_Land`，四向闪避共用原包 `Roll`，点按与蓄力挥砍都使用 `Sword_Attack`。这些片段都来自同一 CC0 FBX，没有额外下载动画。
 
 ## 只作研究参考，未复制代码或资源
 

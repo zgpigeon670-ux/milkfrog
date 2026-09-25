@@ -673,7 +673,7 @@ namespace Milkfrog.CombatDemo.Tests
             wall.transform.position = new Vector3(0, 1.8f, -36.8f);
             wall.transform.localScale = new Vector3(4, 3, .2f);
             Physics.SyncTransforms();
-            world.cameraRig.yaw = 0; world.cameraRig.pitch = 12; world.cameraRig.ResetImpulse();
+            world.cameraRig.yaw = 0; world.cameraRig.pitch = 8; world.cameraRig.ResetImpulse();
             world.cameraRig.Step(.1f);
             Assert.That(world.gameplayCamera.transform.position.z, Is.GreaterThan(-36.6f));
             UnityEngine.Object.Destroy(wall);

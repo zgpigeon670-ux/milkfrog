@@ -21,7 +21,7 @@ namespace Milkfrog.CombatDemo.Tests
             core.DodgeInterval+=(a,b)=>travelled+=b-a;
             Assert.That(core.RequestDodge(),Is.True);Assert.That(core.RequestDodge(),Is.False);
             Assert.That(core.RequestAttack(),Is.False);core.SetGuard(true,true);Assert.That(core.State,Is.EqualTo(CombatState.Dodge));
-            core.Tick(1);Assert.That(travelled,Is.EqualTo(.38f).Within(.00001f));
+            core.Tick(1);Assert.That(travelled,Is.EqualTo(core.Tuning.dodgeDuration).Within(.00001f));
             Assert.That(core.State,Is.EqualTo(CombatState.Guard));Assert.That(core.DeflectOpen,Is.False);
             core.Reset();Assert.That(core.DodgeProgress,Is.Zero);Assert.That(core.IsInvulnerable,Is.False);
         }

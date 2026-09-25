@@ -6,12 +6,12 @@ namespace Milkfrog.CombatDemo
     public struct CombatInputFrame
     {
         public Vector2 move;
-        public bool attackPressed,attackHeld,attackReleased,guardHeld,guardPressed,dodgePressed,resetPressed,lockPressed;
+        public bool attackPressed,attackHeld,attackReleased,guardHeld,guardPressed,dodgePressed,jumpPressed,resetPressed,lockPressed;
     }
     public sealed class DemoInput : System.IDisposable
     {
         readonly InputActionMap map = new InputActionMap("CombatDemo");
-        readonly InputAction move, attack, guard, reset, mode, dodge, lockOn, look, pause, interact, attributes;
+        readonly InputAction move, attack, guard, reset, mode, dodge, jump, lockOn, look, pause, interact, attributes;
         public DemoInput(string lockBinding = "<Keyboard>/tab")
         {
             move = map.AddAction("Move", InputActionType.Value);
@@ -21,7 +21,8 @@ namespace Milkfrog.CombatDemo
             guard = map.AddAction("Guard", InputActionType.Button, "<Mouse>/rightButton");
             reset = map.AddAction("Reset", InputActionType.Button, "<Keyboard>/r");
             mode = map.AddAction("NextMode", InputActionType.Button, "<Keyboard>/f1");
-            dodge = map.AddAction("Dodge",InputActionType.Button,"<Keyboard>/space");
+            dodge = map.AddAction("Dodge",InputActionType.Button,"<Keyboard>/leftShift");
+            jump = map.AddAction("Jump",InputActionType.Button,"<Keyboard>/space");
             var lockOn = map.AddAction("Lock",InputActionType.Button,lockBinding);
             this.lockOn = lockOn;
             look = map.AddAction("Look", InputActionType.Value, "<Mouse>/delta");
@@ -40,7 +41,7 @@ namespace Milkfrog.CombatDemo
         public bool GuardPressed => guard.WasPressedThisFrame();
         public bool ResetPressed => reset.WasPressedThisFrame();
         public bool ModePressed => mode.WasPressedThisFrame();
-        public CombatInputFrame Snapshot => new CombatInputFrame {move=Move,attackPressed=AttackPressed,attackHeld=attack.IsPressed(),attackReleased=attack.WasReleasedThisFrame(),guardHeld=GuardHeld,guardPressed=GuardPressed,dodgePressed=dodge.WasPressedThisFrame(),resetPressed=ResetPressed,lockPressed=lockOn.WasPressedThisFrame()};
+        public CombatInputFrame Snapshot => new CombatInputFrame {move=Move,attackPressed=AttackPressed,attackHeld=attack.IsPressed(),attackReleased=attack.WasReleasedThisFrame(),guardHeld=GuardHeld,guardPressed=GuardPressed,dodgePressed=dodge.WasPressedThisFrame(),jumpPressed=jump.WasPressedThisFrame(),resetPressed=ResetPressed,lockPressed=lockOn.WasPressedThisFrame()};
         public void Dispose() => map.Dispose();
     }
 }
