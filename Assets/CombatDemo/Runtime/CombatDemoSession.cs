@@ -19,7 +19,7 @@ namespace Milkfrog.CombatDemo
         DemoInput input;
         Vector2 movement;
         bool guardAfterFreeze, hasFrozenGuard;
-        bool attackNeedsRelease;
+        bool attackNeedsRelease, attackQueued;
         public event Action<HitEvent> CombatEvent;
         public event Action<CombatContact> ContactResolved;
         public event Action RoundReset;
@@ -65,24 +65,22 @@ namespace Milkfrog.CombatDemo
             movement=Vector2.ClampMagnitude(frame.move,1);
             if(frame.lockPressed)LockedOn=!LockedOn;
             if(!frame.attackHeld)attackNeedsRelease=false;
+            if(frame.attackPressed)attackQueued=true;
+            player.Core.SetAttackHeld(frame.attackHeld);
             if(IsFrozen)
             {
                 guardAfterFreeze=frame.guardHeld;hasFrozenGuard=true;
-                if(frame.attackPressed)attackNeedsRelease=true;
-                if(frame.attackReleased || !frame.attackHeld)player.Core.CancelPreparation();
                 return;
             }
             hasFrozenGuard=false;
             if(LockedOn)player.FaceTarget();
             if(frame.dodgePressed && player.RequestDodge(CameraDirection(movement)))
-            {player.Core.SetGuard(frame.guardHeld,false);attackNeedsRelease=frame.attackHeld;return;}
+            {attackQueued=false;player.Core.SetGuard(frame.guardHeld,false);attackNeedsRelease=frame.attackHeld;return;}
+            if(frame.jumpPressed) player.TryJump();
             player.Core.SetGuard(frame.guardHeld,frame.guardPressed);
-            if(frame.guardHeld)return;
-            if(frame.attackPressed && player.Core.ComboOpen && (player.Target==null || player.Target.Core.State!=CombatState.PostureBroken) && player.Core.RequestFollowup())
-            {attackNeedsRelease=true;return;}
-            if(frame.attackPressed && !attackNeedsRelease)
-            {player.BeginPlayerAttack();attackNeedsRelease=true;}
-            if(frame.attackReleased)player.Core.ReleaseAttack();
+            if(frame.guardHeld){attackQueued=false;return;}
+            if(attackQueued && player.Core.CanAct)
+            {player.BeginPlayerAttack();attackQueued=false;attackNeedsRelease=true;}
         }
         Vector3 CameraDirection(Vector2 direction)
         {

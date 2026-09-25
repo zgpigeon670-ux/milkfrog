@@ -98,7 +98,7 @@ namespace Milkfrog.CombatDemo
                 else if (protectedReturn) Actor.AcceptsDamage = false;
                 return;
             }
-            if (pause > 0) { pause -= dt; return; }
+            if (pause > 0) { pause -= dt; Actor.Move(Vector3.zero, 0, dt); return; }
             float angle = waypoint * Mathf.PI * 2 / 3;
             Vector3 point = Home + new Vector3(Mathf.Sin(angle), 0, Mathf.Cos(angle)) * definition.patrolRadius;
             MoveToward(point, dt);
@@ -108,7 +108,7 @@ namespace Milkfrog.CombatDemo
         void MoveToward(Vector3 point, float dt)
         {
             Vector3 delta = Vector3.ProjectOnPlane(point - transform.position, Vector3.up);
-            if (delta.sqrMagnitude < .001f || !Actor.Core.CanAct) return;
+            if (delta.sqrMagnitude < .001f || !Actor.Core.CanAct) { Actor.Move(Vector3.zero, 0, dt); return; }
             transform.rotation = Quaternion.LookRotation(delta);
             Actor.Move(delta.normalized, Mathf.Min(definition.speed, delta.magnitude / Mathf.Max(dt, .0001f)), dt);
         }

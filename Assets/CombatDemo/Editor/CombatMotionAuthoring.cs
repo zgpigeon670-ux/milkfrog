@@ -22,6 +22,9 @@ namespace Milkfrog.CombatDemo.Editor
             p.dodgeLeft=Dodge(presenter,"Dodge_Left",Vector3.left);
             p.dodgeRight=Dodge(presenter,"Dodge_Right",Vector3.right);
             p.charge=Author(presenter,"Charge_Thrust",.62f,false,(anim,t)=>ThrustPose(presenter,t/.62f,0));
+            p.jump=Author(presenter,"Jump",.30f,false,(anim,t)=>AirPose(presenter,Mathf.Lerp(.15f,.85f,t/.30f),false));
+            p.fall=Author(presenter,"Fall",.24f,true,(anim,t)=>AirPose(presenter,.9f,false));
+            p.land=Author(presenter,"Land",.12f,false,(anim,t)=>AirPose(presenter,Mathf.Lerp(.35f,0,t/.12f),true));
             p.thrust=Author(presenter,"Sword_Thrust",.66f,false,(anim,t)=>
             {
                 float extension=t<.12f?Mathf.Lerp(0,.15f,t/.12f):t<.24f?Mathf.Lerp(.15f,1,(t-.12f)/.12f):1-Mathf.SmoothStep(0,1,(t-.24f)/.42f);
@@ -59,6 +62,25 @@ namespace Milkfrog.CombatDemo.Editor
                 var spine=anim.GetBoneTransform(HumanBodyBones.Spine);
                 spine.rotation=Quaternion.AngleAxis(direction.z*18*pulse,p.actor.transform.right)*Quaternion.AngleAxis(-direction.x*18*pulse,p.actor.transform.forward)*spine.rotation;
             });
+        }
+        static void AirPose(CombatAnimationPresenter p,float tuck,bool landing)
+        {
+            var actor=p.actor.transform;
+            float bend=landing?Mathf.Lerp(28f,8f,tuck):Mathf.Lerp(8f,42f,tuck);
+            for(int side=0;side<2;side++)
+            {
+                bool left=side==0;
+                var hip=p.animator.GetBoneTransform(left?HumanBodyBones.LeftUpperLeg:HumanBodyBones.RightUpperLeg);
+                var knee=p.animator.GetBoneTransform(left?HumanBodyBones.LeftLowerLeg:HumanBodyBones.RightLowerLeg);
+                var foot=p.animator.GetBoneTransform(left?HumanBodyBones.LeftFoot:HumanBodyBones.RightFoot);
+                float spread=left?-1f:1f;
+                Vector3 target=hip.position+actor.TransformDirection(new Vector3(spread*.12f,-.72f+bend*.004f,.08f+tuck*.12f));
+                Quaternion rotation=foot.rotation;
+                SolveLimb(hip,knee,foot,target,actor.forward);
+                foot.rotation=rotation;
+            }
+            var spine=p.animator.GetBoneTransform(HumanBodyBones.Spine);
+            spine.rotation=Quaternion.AngleAxis(landing?-6f:8f*tuck,actor.right)*spine.rotation;
         }
         static void ThrustPose(CombatAnimationPresenter p,float charge,float extension)
         {

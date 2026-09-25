@@ -34,7 +34,7 @@ namespace Milkfrog.CombatDemo
         readonly RaycastHit[] sightHits = new RaycastHit[32];
         DemoInput input;
         Vector2 movement;
-        bool needsRelease, pendingSave, frozenGuard, hasFrozenGuard;
+        bool needsRelease, attackQueued, pendingSave, frozenGuard, hasFrozenGuard;
         float saveClock;
         MvpHud hud;
 
@@ -54,7 +54,7 @@ namespace Milkfrog.CombatDemo
             }
             feedback.actors = new List<CombatActor>(actors.Values).ToArray();
             feedback.ResolveActor = core => actors.TryGetValue(core, out var actor) ? actor : null;
-            cameraRig.freeOrbit = true; cameraRig.lockOn = false; cameraRig.enemy = null;
+            cameraRig.freeOrbit = true; cameraRig.lockOn = false; cameraRig.enemy = null; cameraRig.pitch = 8; cameraRig.orbitDistance = 2.7f; cameraRig.orbitShoulder = new Vector3(.45f, .05f, 0);
             hud = GetComponent<MvpHud>();
             if (hud != null)
             {
@@ -94,7 +94,7 @@ namespace Milkfrog.CombatDemo
                 if (Defeated.Contains(enemy.stableId) || (enemy.IsBoss && BossDefeated))
                 { enemy.Actor.Core.RestoreVitals(0, 0); enemy.MarkDead(); enemy.gameObject.SetActive(false); }
             if (arena != null) arena.SetActive(false);
-            Lock.Clear(); cameraRig.yaw = player.transform.eulerAngles.y; cameraRig.pitch = 12; cameraRig.ResetImpulse();
+            Lock.Clear(); cameraRig.yaw = player.transform.eulerAngles.y; cameraRig.pitch = 8; cameraRig.ResetImpulse();
             ClearInput(); feedback.ResetFeedback();
             foreach (var animation in animations) if (animation.gameObject.activeInHierarchy) animation.ResetVisuals();
             Physics.SyncTransforms(); hud?.Refresh();
@@ -230,35 +230,25 @@ namespace Milkfrog.CombatDemo
             movement = Vector2.ClampMagnitude(frame.move, 1);
             if (frame.lockPressed) Lock.Toggle();
             if (!frame.attackHeld) needsRelease = false;
+            if (frame.attackPressed) attackQueued = true;
+            player.Core.SetAttackHeld(frame.attackHeld);
             if (feedback.Clock.Remaining > 0)
             {
                 frozenGuard = frame.guardHeld; hasFrozenGuard = true;
-                if (frame.attackPressed) needsRelease = true;
-                if (frame.attackReleased || !frame.attackHeld) player.Core.CancelPreparation();
                 return;
             }
             hasFrozenGuard = false;
             if (frame.dodgePressed && player.RequestDodge(MoveDirection()))
-            { player.Core.SetGuard(frame.guardHeld, false); needsRelease = frame.attackHeld; return; }
+            { attackQueued = false; player.Core.SetGuard(frame.guardHeld, false); needsRelease = frame.attackHeld; return; }
+            if (frame.jumpPressed) player.TryJump();
             player.Core.SetGuard(frame.guardHeld, frame.guardPressed);
-            if (frame.guardHeld) return;
-            if (frame.attackPressed)
-            {
-                if (!needsRelease && player.Core.CanAct)
-                {
-                    CombatActor target = SelectAttackTarget();
-                    bool followup = player.Core.ComboOpen && player.followupAttack != null &&
-                        (target == null || target.Core.State != CombatState.PostureBroken);
-                    FaceAttackAim(target);
-                    if (followup) player.Core.RequestFollowup();
-                    else player.BeginPlayerAttack();
-                    needsRelease = true;
-                }
-            }
-            if (frame.attackReleased && player.Core.IsPreparing)
+            if (frame.guardHeld) { attackQueued = false; return; }
+            if (attackQueued && player.Core.CanAct)
             {
                 FaceAttackAim(SelectAttackTarget());
-                player.Core.ReleaseAttack();
+                player.BeginPlayerAttack();
+                attackQueued = false;
+                needsRelease = true;
             }
             player.Target = Lock.Target == null ? null : Lock.Target.Actor;
         }

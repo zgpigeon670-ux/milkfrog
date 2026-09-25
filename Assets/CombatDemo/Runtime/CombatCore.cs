@@ -70,7 +70,7 @@ namespace Milkfrog.CombatDemo
         // AI may select a parry opportunity, but cannot bypass the shared facing/Guard checks.
         public Func<bool> DeflectPolicy;
         readonly HashSet<CombatCore> hitTargets = new HashSet<CombatCore>();
-        bool guardHeld;
+        bool guardHeld, attackHeld;
         float sinceInteraction;
 
         public CombatCore(CombatTuning tuning,AttackParameters light=null,AttackParameters thrust=null,AttackParameters followup=null)
@@ -169,6 +169,7 @@ namespace Milkfrog.CombatDemo
             Change(CombatState.AttackStartup,attack.Startup);
             Remaining=Math.Max(0,Remaining-credit);
         }
+        public void SetAttackHeld(bool held) => attackHeld = held;
         public bool BeginPreparation()
         {
             if(!CanAct)return false;
@@ -179,15 +180,16 @@ namespace Milkfrog.CombatDemo
         }
         public bool ReleaseAttack()
         {
-            if(!IsPreparing)return false;
-            if(State==CombatState.AttackPrepare) BeginAttack(ActiveAttack,chargeElapsed);
-            else {ReleasedCharge=ChargeRatio;BeginAttack((thrustDefinition??AttackParameters.Thrust()).Snapshot(ReleasedCharge),0);}
+            if(State!=CombatState.Charging)return false;
+            ReleasedCharge=ChargeRatio;
+            BeginAttack((thrustDefinition??AttackParameters.Thrust()).Snapshot(ReleasedCharge),0);
             return true;
         }
         public void CancelPreparation(){if(IsPreparing)ReturnToReady();}
 
         public bool RequestDodge()
         {
+            if (State==CombatState.AttackStartup && ActiveAttack.Kind==AttackKind.Light && chargeElapsed>=Tuning.prepareThreshold) CancelPreparation();
             if (!CanAct && !IsPreparing && !TryCancelRecovery()) return false;
             ComboRemaining = 0;
             Change(CombatState.Dodge,Tuning.dodgeDuration);
@@ -218,7 +220,6 @@ namespace Milkfrog.CombatDemo
                     if (State != CombatState.AttackActive) return;
                 }
                 float consumed = Math.Min(left, Remaining);
-                if(State==CombatState.AttackPrepare)chargeElapsed+=consumed;
                 float activeFrom = StateProgress;
                 float dodgeFrom = DodgeElapsed;
                 AdvanceClock(consumed);
@@ -264,7 +265,7 @@ namespace Milkfrog.CombatDemo
         {
             var previous = State;
             State = next;
-            if(next!=CombatState.AttackPrepare && next!=CombatState.Charging)chargeElapsed=0;
+            if(next!=CombatState.AttackPrepare && next!=CombatState.Charging && next!=CombatState.AttackStartup)chargeElapsed=0;
             Remaining = Math.Max(0, duration);
             StateDuration = Remaining;
             DeflectRemaining = 0;

@@ -3933,13 +3933,13 @@ MonoBehaviour:
   lockOn: 0
   freeOrbit: 1
   yaw: 0
-  pitch: 12
+  pitch: 8
   sensitivity: 0.12
   enemyFocusWeight: 0.2
   headingSmooth: 7
   collisionRadius: 0.25
-  orbitShoulder: {x: 0.55, y: 0.2, z: 0}
-  orbitDistance: 3.6
+  orbitShoulder: {x: 0.45, y: 0.05, z: 0}
+  orbitDistance: 2.7
   collisionReturnSmooth: 6
   obstacleMask:
     serializedVersion: 2

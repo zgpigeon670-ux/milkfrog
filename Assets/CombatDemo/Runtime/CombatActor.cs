@@ -41,6 +41,13 @@ namespace Milkfrog.CombatDemo
         public CharacterController Motor { get; private set; }
         public Vector3 AttackForward { get; private set; }
         public Vector3 DodgeDirection { get; private set; }
+        public bool Grounded { get; private set; } = true;
+        public bool Jumping => verticalVelocity > 0;
+        public bool Falling => !Grounded && verticalVelocity <= 0;
+        public float AirTime { get; private set; }
+        public float LandRemaining { get; private set; }
+        public const float JumpSpeed = 5.5f, Gravity = 18f, LandDuration = .12f;
+        float verticalVelocity;
         public Vector3 LastContactPoint { get; private set; }
         public bool HasContactPoint { get; private set; }
         public float EngageDistance => bladeTrace != null ? Mathf.Min(Core.Tuning.range, bladeTrace.engageDistance) : Core.Tuning.range;
@@ -80,14 +87,39 @@ namespace Milkfrog.CombatDemo
             AttackForward = transform.forward;
             HasContactPoint = false;
             DodgeDirection = -transform.forward;
+            verticalVelocity = 0; Grounded = true; LandRemaining = 0;
             Core.Reset();
+        }
+
+        public bool TryJump()
+        {
+            if (Core == null || !Core.CanAct || !Grounded) return false;
+            verticalVelocity = JumpSpeed; Grounded = false; LandRemaining = 0; AirTime = 0;
+            return true;
         }
 
         public void Move(Vector3 direction, float speed, float deltaTime)
         {
-            if (!Core.CanAct) return;
+            if (Core == null || deltaTime <= 0) return;
             direction.y = 0;
-            Motor.Move((Vector3.ClampMagnitude(direction, 1) * speed + Vector3.down * 2) * deltaTime);
+            bool airborneAction = !Grounded && (Core.IsAttacking || Core.IsPreparing || Core.State == CombatState.Dodge);
+            Vector3 planar = Core.CanAct || airborneAction ? Vector3.ClampMagnitude(direction, 1) * speed : Vector3.zero;
+            LandRemaining = Mathf.Max(0, LandRemaining - deltaTime);
+            if (!Grounded || verticalVelocity > 0)
+            {
+                AirTime += deltaTime;
+                verticalVelocity -= Gravity * deltaTime;
+                if (verticalVelocity < -20f) verticalVelocity = -20f;
+            }
+            else verticalVelocity = -2f;
+            var flags = Motor.Move((planar + Vector3.up * verticalVelocity) * deltaTime);
+            bool wasGrounded = Grounded;
+            Grounded = (flags & CollisionFlags.Below) != 0 || Motor.isGrounded;
+            if (Grounded && verticalVelocity <= 0)
+            {
+                if (!wasGrounded) LandRemaining = LandDuration;
+                verticalVelocity = -2f; AirTime = 0;
+            }
         }
 
         public void FaceTarget()
@@ -132,7 +164,7 @@ namespace Milkfrog.CombatDemo
         public bool BeginPlayerAttack()
         {
             if(TryExecute())return true;
-            return Core.BeginPreparation();
+            return Core.RequestAttack();
         }
         bool TryExecute()
         {

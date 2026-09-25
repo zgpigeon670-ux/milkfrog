@@ -29,7 +29,8 @@ namespace Milkfrog.CombatDemo.Tests
             {
                 session.ResetRound();Press();Advance(.8f,fps);Assert.That(session.player.Core.ChargeRatio,Is.EqualTo(1).Within(.001));Release();
                 Assert.That(session.player.Core.ActiveAttack.Kind,Is.EqualTo(AttackKind.Thrust));
-                Advance(.7f,fps);Assert.That(session.enemy.Core.Health,Is.EqualTo(78).Within(.001),"Thrust failed at "+fps+" fps");
+                Assert.That(session.player.Core.ActiveAttack.Damage,Is.EqualTo(22).Within(.001));
+                Advance(.8f,fps);Assert.That(session.enemy.Core.Health,Is.EqualTo(78).Within(.001),"Charged slash failed at "+fps+" fps");
                 Assert.That(session.enemy.Core.Posture,Is.EqualTo(28).Within(.001));
             }
             yield return null;
@@ -41,7 +42,7 @@ namespace Milkfrog.CombatDemo.Tests
                 session.ResetRound();Vector3 start=session.player.transform.position;
                 session.SubmitInput(new CombatInputFrame{dodgePressed=true});
                 Assert.That(Vector3.Dot(session.player.DodgeDirection,session.player.transform.forward),Is.LessThan(-.99f));
-                Advance(.4f,fps);Assert.That(Vector3.Distance(start,session.player.transform.position),Is.EqualTo(1.6f).Within(.04));
+                Advance(.8f,fps);Assert.That(Vector3.Distance(start,session.player.transform.position),Is.EqualTo(2.6f).Within(.06));
             }
             session.ResetRound();Vector3 origin=session.player.transform.position;
             var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=origin+Vector3.back*.95f+Vector3.up;wall.transform.localScale=new Vector3(4,3,.2f);Physics.SyncTransforms();
@@ -84,7 +85,7 @@ namespace Milkfrog.CombatDemo.Tests
         [UnityTest] public IEnumerator ThrustVisualMatchesBakedTraceAndResetClearsTrail()
         {
             session.enemy.Motor.enabled=false;session.enemy.transform.position+=Vector3.forward*5;session.enemy.Motor.enabled=true;
-            Press();Advance(.8f);Release();Advance(.12f);
+            Press();Advance(.8f);Release();Advance(.25f);
             Assert.That(session.player.Core.State,Is.EqualTo(CombatState.AttackActive));
             var player=session.player;var blade=session.playerAnimation.animator.GetBoneTransform(HumanBodyBones.RightHand).Find("Training Sword/Blade");
             for(int i=0;i<10;i++)
@@ -94,6 +95,35 @@ namespace Milkfrog.CombatDemo.Tests
                 Assert.That(Vector3.Distance(expected,blade.TransformPoint(Vector3.up*.5f)),Is.LessThan(.04f),"Sample "+i+" phase="+player.Core.StateProgress);Advance(.01f);
             }
             session.ResetRound();Assert.That(session.playerAnimation.swordTrail.emitting,Is.False);Assert.That(player.Core.ChargeRatio,Is.Zero);
+            yield return null;
+        }
+        [UnityTest] public IEnumerator TapSlashesHoldThrustsAndShiftDodgesWhileSpaceJumps()
+        {
+            session.enemy.Motor.enabled=false;session.enemy.transform.position+=Vector3.forward*6;
+            Press();Advance(.05f);
+            Assert.That(session.player.Core.State,Is.EqualTo(CombatState.AttackStartup));
+            Assert.That(session.player.Core.ActiveAttack.Kind,Is.EqualTo(AttackKind.Light));
+            Assert.That(session.playerAnimation.CurrentPoseClip,Is.EqualTo(session.player.lightAttack.clip));
+            Advance(.3f);
+            Assert.That(session.player.Core.IsAttacking,Is.True);
+            Assert.That(session.player.Core.State,Is.Not.EqualTo(CombatState.Charging));
+            session.ResetRound();Press();Advance(.8f);
+            Assert.That(session.player.Core.ActiveAttack.Kind,Is.EqualTo(AttackKind.Light));
+            Assert.That(session.player.Core.State,Is.Not.EqualTo(CombatState.Charging));
+            session.ResetRound();session.SubmitInput(new CombatInputFrame{dodgePressed=true,move=Vector2.left});
+            Assert.That(session.player.Core.State,Is.EqualTo(CombatState.Dodge));
+            Assert.That(session.playerAnimation.CurrentPoseClip.name,Is.EqualTo("Armature|Roll"));
+            session.SubmitInput(new CombatInputFrame{jumpPressed=true});
+            Assert.That(session.player.Core.State,Is.EqualTo(CombatState.Dodge));
+            Assert.That(session.player.Grounded,Is.True);
+            session.ResetRound();float ground=session.player.transform.position.y;
+            session.SubmitInput(new CombatInputFrame{jumpPressed=true});Advance(.2f);
+            Assert.That(session.player.transform.position.y,Is.GreaterThan(ground+.2f));
+            Assert.That(session.playerAnimation.CurrentPoseClip.name,Does.StartWith("Armature|Jump"));
+            Assert.That(session.player.Core.State,Is.EqualTo(CombatState.Neutral));
+            float airborne=session.player.transform.position.y;
+            session.SubmitInput(new CombatInputFrame{jumpPressed=true});Advance(.02f);
+            Assert.That(session.player.transform.position.y,Is.LessThan(airborne+.02f));
             yield return null;
         }
     }

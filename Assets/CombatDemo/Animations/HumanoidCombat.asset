@@ -28,12 +28,15 @@ MonoBehaviour:
   jogLeft: {fileID: 7400000, guid: bdaeaab344e0a1949bf267c1e41b69ed, type: 2}
   walkRight: {fileID: 7400000, guid: ef209e8b85f4f8148be74b84de1c97d6, type: 2}
   jogRight: {fileID: 7400000, guid: f32d66ed6af8d5343abc60021e416794, type: 2}
-  dodgeForward: {fileID: 7400000, guid: 1c5648360db274842b99a9e4a58e0137, type: 2}
-  dodgeBack: {fileID: 7400000, guid: ed41e50da1c9e5546927f9c73af1f0d4, type: 2}
-  dodgeLeft: {fileID: 7400000, guid: b38dff555daf7d14da833c4c7159925a, type: 2}
-  dodgeRight: {fileID: 7400000, guid: 7f8d195ace848de4f917ea4f0013ccf5, type: 2}
-  charge: {fileID: 7400000, guid: bd62e7970d0b2af43abce7820be27fe5, type: 2}
-  thrust: {fileID: 7400000, guid: 705f55bede31d33428f6389a93d0662b, type: 2}
+  dodgeForward: {fileID: 3031411921458128146, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  dodgeBack: {fileID: 3031411921458128146, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  dodgeLeft: {fileID: 3031411921458128146, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  dodgeRight: {fileID: 3031411921458128146, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  charge: {fileID: -2807887025256620907, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  thrust: {fileID: -2807887025256620907, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  jump: {fileID: -1862932125039169580, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  fall: {fileID: -3659967873887649963, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
+  land: {fileID: 4832780573735333345, guid: 75aaaa5f01961fe4d94bcd152ee5c43e, type: 3}
   attackActiveStart: 0.25
   attackActiveEnd: 0.38
   blendTime: 0.07
