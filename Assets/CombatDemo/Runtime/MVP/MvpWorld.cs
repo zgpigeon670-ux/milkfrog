@@ -16,6 +16,16 @@ namespace Milkfrog.CombatDemo
         public CombatFeedback feedback;
         public GameObject arena;
         public BonfireCheckpoint[] bonfires;
+        public QuestDefinition quest;
+        public WorldStateService WorldState { get; } = new WorldStateService();
+        public QuestProgressService Quests { get; private set; }
+        public InteractionController Interactions { get; private set; }
+        WorldInteractable[] worldObjects;
+        bool ownsQuest;
+        public bool BossUnlocked => WorldState.IsDoorOpen(WorldStateService.GateId);
+        public string InteractionBlockReason => !Running ? "当前无法交互" :
+            feedback.Clock.Remaining > 0 ? "请稍候" : Director.State != EncounterState.Exploration ? "战斗中无法交互" :
+            player.Core.State != CombatState.Neutral ? "请先结束当前动作" : null;
         public Vector3 spawn = new Vector3(0, .02f, -35);
         public EncounterDirector Director { get; private set; }
         public LockOnController Lock { get; private set; }
@@ -24,6 +34,7 @@ namespace Milkfrog.CombatDemo
         public bool BossDefeated { get; private set; }
         public PlayerProgression Progression { get; private set; } = new PlayerProgression();
         public string ActiveCheckpointId { get; private set; } = BonfireCheckpoint.StartId;
+        public readonly HashSet<string> UnlockedCheckpointIds = new HashSet<string>(StringComparer.Ordinal);
         public int ContactCount { get; private set; }
         public string AimDecision { get; private set; } = "None";
         public readonly HashSet<string> Defeated = new HashSet<string>();
@@ -35,12 +46,16 @@ namespace Milkfrog.CombatDemo
         DemoInput input;
         Vector2 movement;
         bool needsRelease, attackQueued, pendingSave, frozenGuard, hasFrozenGuard;
-        float saveClock;
+        float saveClock, saveRetryClock;
         MvpHud hud;
 
         void Awake()
         {
             Flow = GetComponent<GameFlowController>();
+            if (quest == null) { quest = ScriptableObject.CreateInstance<QuestDefinition>(); ownsQuest = true; }
+            Quests = new QuestProgressService(quest);
+            WorldState.Changed += OnWorldChanged;
+            worldObjects = FindObjectsByType<WorldInteractable>();
             player.enforceFactions = true;
             player.autoFaceGuardAttacks = true;
             player.Initialize(JsonUtility.FromJson<CombatTuning>(JsonUtility.ToJson(settings.player)));
@@ -59,11 +74,13 @@ namespace Milkfrog.CombatDemo
             if (hud != null)
             {
                 hud.Read = HudData;
+                hud.ReadInteractionPrompt = () => Interactions?.Prompt;
                 hud.ReadPerilousWarning = IsBossPerilousStartup;
                 hud.ReadVisible = () => Flow.State == GameFlowState.Playing && !Flow.Paused;
             }
             input = new DemoInput("<Mouse>/middleButton");
             if (bonfires == null || bonfires.Length == 0) bonfires = FindObjectsByType<BonfireCheckpoint>();
+            Interactions = new InteractionController(this);
         }
         void Register(CombatActor actor)
         {
@@ -73,16 +90,27 @@ namespace Milkfrog.CombatDemo
         }
         public void Restore(PlayerSnapshot snapshot)
         {
-            Director = new EncounterDirector(this); saveClock = 0; pendingSave = false;
+            Director = new EncounterDirector(this); saveClock = saveRetryClock = 0; pendingSave = false;
             AimDecision = "None";
             foreach (var enemy in enemies) enemy.ResetForLoad();
             Defeated.Clear(); BossDefeated = snapshot != null && snapshot.bossDefeated;
             Progression.Restore(snapshot);
+            WorldState.Restore(snapshot?.worldState);
             ActiveCheckpointId = FindBonfire(snapshot?.activeCheckpointId) != null ? snapshot.activeCheckpointId : BonfireCheckpoint.StartId;
+            UnlockedCheckpointIds.Clear();
+            UnlockedCheckpointIds.Add(BonfireCheckpoint.StartId);
+            UnlockedCheckpointIds.Add(ActiveCheckpointId);
+            if (snapshot?.unlockedCheckpointIds != null)
+                foreach (string id in snapshot.unlockedCheckpointIds)
+                    if (FindBonfire(id) != null) UnlockedCheckpointIds.Add(id);
             if (snapshot?.defeatedEnemyIds != null) foreach (string id in snapshot.defeatedEnemyIds) Defeated.Add(id);
             Vector3 position = snapshot == null ? spawn : snapshot.position;
-            if (Mathf.Abs(position.x) > 38 || Mathf.Abs(position.z) > 48 || position.y < -1 || position.y > 4 ||
-                (!BossDefeated && enemies.Length > 0 && InBossTrigger(position))) position = spawn;
+            if (Mathf.Abs(position.x) > 38 || Mathf.Abs(position.z) > 48 || position.y < -1 || position.y > 4) position = spawn;
+            else if (!BossDefeated && enemies.Length > 0 && InBossTrigger(position))
+            {
+                var camp = FindBonfire(ActiveCheckpointId);
+                position = camp != null && !InBossTrigger(camp.RespawnPosition) ? camp.RespawnPosition : spawn;
+            }
             position.y = .02f;
             player.Motor.enabled = false;
             player.transform.SetPositionAndRotation(position, Quaternion.Euler(0, snapshot?.yaw ?? 0, 0));
@@ -97,7 +125,7 @@ namespace Milkfrog.CombatDemo
             Lock.Clear(); cameraRig.yaw = player.transform.eulerAngles.y; cameraRig.pitch = 8; cameraRig.ResetImpulse();
             ClearInput(); feedback.ResetFeedback();
             foreach (var animation in animations) if (animation.gameObject.activeInHierarchy) animation.ResetVisuals();
-            Physics.SyncTransforms(); hud?.Refresh();
+            ApplyWorldObjects(); Physics.SyncTransforms(); Interactions.Refresh(); hud?.Refresh();
         }
         bool InBossTrigger(Vector3 position)
         {
@@ -105,27 +133,52 @@ namespace Milkfrog.CombatDemo
                 EnemyController.FlatDistance(position, enemy.Home) <= enemy.definition.bossTriggerRadius) return true;
             return false;
         }
-        public PlayerSnapshot Snapshot() => new PlayerSnapshot
+        public PlayerSnapshot Snapshot()
+        {
+            var snapshot = new PlayerSnapshot
         {
             position = player.transform.position, yaw = player.transform.eulerAngles.y,
             health = player.Core.Health, posture = player.Core.Posture,
             defeatedEnemyIds = new List<string>(Defeated).ToArray(), bossDefeated = BossDefeated,
             activeCheckpointId = ActiveCheckpointId,
+            unlockedCheckpointIds = SortedCheckpointIds(),
             experience = Progression.Experience, vitality = Progression.Vitality,
             resolve = Progression.Resolve, power = Progression.Power
         };
+            MergeWorldProgress(snapshot); return snapshot;
+        }
+        public void MergeWorldProgress(PlayerSnapshot snapshot)
+        { WorldState.WriteTo(snapshot); Quests.WriteTo(snapshot); }
+        void OnWorldChanged(WorldEventKind kind, string id)
+        { ApplyWorldObjects(); Flow.Notify("进度更新 · " + Quests.Objective(Snapshot())); hud?.Refresh(); }
+        void ApplyWorldObjects()
+        { foreach (var obj in worldObjects) if (obj != null) obj.ApplyState(this); }
+        public bool TryWorldInteraction(WorldInteractable target)
+        {
+            if (InteractionBlockReason != null || target == null || !target.Available(this) || target.BlockReason(this) != null ||
+                EnemyController.FlatDistance(player.transform.position, target.InteractionPoint) > target.Radius ||
+                Mathf.Abs(player.transform.position.y - target.InteractionPoint.y) > 1.5f) return false;
+            var proposed = Snapshot(); var next = new WorldStateService(); next.Restore(proposed.worldState);
+            var kind = target.kind == WorldInteractionKind.KeyPickup ? WorldEventKind.ItemAcquired : WorldEventKind.DoorOpened;
+            next.Apply(kind, target.stableId, target.itemId); next.WriteTo(proposed); Quests.WriteTo(proposed);
+            if (!Flow.Store.TrySave(proposed)) { Flow.Notify("保存失败，请重试。" + Flow.Store.LastMessage); return false; }
+            WorldState.Apply(kind, target.stableId, target.itemId);
+            return true;
+        }
         public BonfireCheckpoint FindBonfire(string id)
         {
             if (bonfires == null) return null;
             foreach (var bonfire in bonfires) if (bonfire != null && bonfire.stableId == id) return bonfire;
             return null;
         }
-        BonfireCheckpoint NearbyBonfire()
+        public bool IsBonfireUnlocked(string id) => id != null && UnlockedCheckpointIds.Contains(id);
+        string[] SortedCheckpointIds(string additionalId = null)
         {
-            if (bonfires == null) return null;
-            foreach (var bonfire in bonfires)
-                if (bonfire != null && bonfire.InRange(player.transform.position)) return bonfire;
-            return null;
+            var ids = new HashSet<string>(UnlockedCheckpointIds, StringComparer.Ordinal);
+            ids.Add(BonfireCheckpoint.StartId);
+            if (!string.IsNullOrEmpty(additionalId)) ids.Add(additionalId);
+            var result = new string[ids.Count]; ids.CopyTo(result); Array.Sort(result, StringComparer.Ordinal);
+            return result;
         }
         void ApplyProgression()
         {
@@ -134,13 +187,44 @@ namespace Milkfrog.CombatDemo
         }
         public bool TryRest(BonfireCheckpoint bonfire)
         {
-            if (!Running || !CanSave || bonfire == null || !bonfire.InRange(player.transform.position)) return false;
+            if (InteractionBlockReason != null || bonfire == null || !bonfire.InRange(player.transform.position)) return false;
             var save = Snapshot();
             save.activeCheckpointId = bonfire.stableId;
+            save.unlockedCheckpointIds = SortedCheckpointIds(bonfire.stableId);
+            Quests.WriteTo(save);
             save.health = player.Core.Tuning.maxHealth; save.posture = 0;
             save.defeatedEnemyIds = BossDefeatedIds();
             if (!Flow.Store.TrySave(save)) { Flow.Notify(Flow.Store.LastMessage); return false; }
             ActiveCheckpointId = bonfire.stableId;
+            if (UnlockedCheckpointIds.Add(bonfire.stableId)) WorldState.Apply(WorldEventKind.BonfireLit, bonfire.stableId);
+            ResetAfterBonfireUse();
+            Flow.OpenBonfire(bonfire);
+            return true;
+        }
+        public bool TryFastTravel(BonfireCheckpoint destination)
+        {
+            if (Flow == null || Flow.State != GameFlowState.Playing || !Flow.Paused ||
+                Flow.ActiveBonfire == null || !Flow.ActiveBonfire.InRange(player.transform.position) ||
+                !CanSave || destination == null || destination.stableId == ActiveCheckpointId ||
+                !IsBonfireUnlocked(destination.stableId) ||
+                (!BossDefeated && InBossTrigger(destination.RespawnPosition))) return false;
+            var save = Snapshot();
+            save.position = destination.RespawnPosition; save.yaw = destination.RespawnYaw;
+            save.health = player.Core.Tuning.maxHealth; save.posture = 0;
+            save.activeCheckpointId = destination.stableId;
+            save.defeatedEnemyIds = BossDefeatedIds();
+            if (!Flow.Store.TrySave(save)) { Flow.Notify(Flow.Store.LastMessage); return false; }
+            ActiveCheckpointId = destination.stableId;
+            player.Motor.enabled = false;
+            player.transform.SetPositionAndRotation(save.position, Quaternion.Euler(0, save.yaw, 0));
+            player.Motor.enabled = true;
+            ResetAfterBonfireUse();
+            cameraRig.yaw = save.yaw; cameraRig.pitch = 12; cameraRig.ResetImpulse(); cameraRig.Step(1);
+            Flow.OpenBonfire(destination);
+            return true;
+        }
+        void ResetAfterBonfireUse()
+        {
             foreach (var enemy in enemies)
                 if (!enemy.IsBoss) enemy.ResetForLoad();
                 else if (BossDefeated) enemy.gameObject.SetActive(false);
@@ -149,8 +233,7 @@ namespace Milkfrog.CombatDemo
             Director = new EncounterDirector(this); Lock.Clear();
             player.Core.RestoreVitals(player.Core.Tuning.maxHealth, 0);
             feedback.ResetFeedback(); ClearInput(); Physics.SyncTransforms();
-            Flow.OpenBonfire(bonfire);
-            return true;
+            hud?.Refresh();
         }
         public bool TryUpgrade(GrowthStat stat)
         {
@@ -173,16 +256,19 @@ namespace Milkfrog.CombatDemo
             safe.yaw = camp != null ? camp.RespawnYaw : 0;
             safe.health = settings.player.maxHealth + 10 * Progression.Vitality; safe.posture = 0;
             safe.activeCheckpointId = ActiveCheckpointId; safe.bossDefeated = BossDefeated;
+            safe.unlockedCheckpointIds = SortedCheckpointIds();
             safe.defeatedEnemyIds = BossDefeatedIds();
-            Progression.WriteTo(safe); return safe;
+            Progression.WriteTo(safe); MergeWorldProgress(safe); return safe;
         }
         void PersistCombatRewards()
         {
-            if (!Flow.Store.TryLoad(out var safe)) { Flow.Notify(Flow.Store.LastMessage); return; }
+            if (!Flow.Store.TryLoad(out var safe)) { Flow.Notify(Flow.Store.LastMessage); pendingSave = true; return; }
             Progression.WriteTo(safe);
             safe.bossDefeated = BossDefeated;
             if (BossDefeated) safe.defeatedEnemyIds = BossDefeatedIds();
-            if (!Flow.Store.TrySave(safe)) Flow.Notify(Flow.Store.LastMessage);
+            safe.unlockedCheckpointIds = SortedCheckpointIds();
+            MergeWorldProgress(safe);
+            if (!Flow.Store.TrySave(safe)) { Flow.Notify("进度尚未保存，请重试。" + Flow.Store.LastMessage); pendingSave = true; }
         }
         string[] BossDefeatedIds()
         {
@@ -197,7 +283,8 @@ namespace Milkfrog.CombatDemo
             if (input.PausePressed && Flow.State == GameFlowState.Playing) { Flow.TogglePause(); return; }
             if (Running && input.AttributesPressed && Director.State == EncounterState.Exploration)
             { Flow.OpenAttributes(); return; }
-            if (Running && input.InteractPressed && TryRest(NearbyBonfire())) return;
+            // Use the previous rendered focus; TryInteract revalidates it before committing.
+            if (Running && input.InteractPressed && Interactions.TryInteract()) { ClearInput(); return; }
             if (!Running)
             {
                 if (Flow.State == GameFlowState.PlayerDead || Flow.State == GameFlowState.Victory)
@@ -209,9 +296,10 @@ namespace Milkfrog.CombatDemo
             }
             cameraRig.Look(input.Look); SubmitInput(input.Snapshot); Simulate(Time.unscaledDeltaTime);
         }
+        void LateUpdate() { Interactions?.Refresh(); }
         public void ClearInput()
         {
-            movement = Vector2.zero; needsRelease = true; hasFrozenGuard = frozenGuard = false;
+            movement = Vector2.zero; attackQueued = false; needsRelease = true; hasFrozenGuard = frozenGuard = false;
             if (player.Core == null) return;
             player.Core.SetGuard(false, false); player.Core.CancelPreparation();
         }
@@ -328,7 +416,7 @@ namespace Milkfrog.CombatDemo
                         Progression.Grant(enemy.IsBoss ? 200 : 20);
                         if (enemy.IsBoss)
                         {
-                            BossDefeated = true; Director.FinishBoss();
+                            BossDefeated = true; WorldState.Apply(WorldEventKind.BossDefeated, enemy.stableId); Director.FinishBoss();
                             PersistCombatRewards();
                             player.Core.RestoreVitals(player.Core.Health, player.Core.Posture);
                             Flow.Won(); break;
@@ -339,7 +427,9 @@ namespace Milkfrog.CombatDemo
                 if (!Running) break;
                 if (exploring) player.Core.RecoverExploration(step);
                 saveClock += step;
-                if ((pendingSave || saveClock >= 15) && CanSave) { Flow.Save(); pendingSave = false; saveClock = 0; }
+                saveRetryClock = Mathf.Max(0, saveRetryClock - step);
+                if ((pendingSave || saveClock >= 15) && CanSave && saveRetryClock <= 0)
+                { pendingSave = !Flow.Save(); saveClock = 0; saveRetryClock = pendingSave ? 3 : 0; }
             }
         }
         public void RequestSave() { pendingSave = true; }
@@ -371,14 +461,15 @@ namespace Milkfrog.CombatDemo
         MvpHudData HudData()
         {
             var core = player.Core;
+
             var data = new MvpHudData { visible = Flow.State == GameFlowState.Playing && !Flow.Paused,
                 health = core.Health, maxHealth = core.Tuning.maxHealth, posture = core.Posture, maxPosture = core.Tuning.maxPosture,
                 charge = core.ChargeRatio, charging = core.IsPreparing, camera = gameplayCamera,
                 level = Progression.Level, experience = Progression.Experience, nextLevelCost = Progression.NextCost,
                 vitality = Progression.Vitality, resolve = Progression.Resolve, power = Progression.Power,
                 attackMultiplier = Progression.AttackMultiplier,
-                bonfirePrompt = Director.State == EncounterState.Exploration && core.State == CombatState.Neutral && NearbyBonfire() != null ?
-                    "E 休息 · " + NearbyBonfire().displayName : null,
+                bonfirePrompt = Interactions?.Prompt,
+                objective = Quests.Objective(Snapshot()),
                 encounter = Director.State.ToString().ToUpperInvariant(), message = Flow.Message,
                 debug = $"{core.State} | Enemies: {Director.Count} | Disengage: {Director.Remaining:F1}s | Contacts: {ContactCount} | Aim: {AimDecision}" };
             if (Lock.Target != null) data.lockPoint = Lock.Target.transform.position + Vector3.up * 1.35f;
@@ -405,6 +496,7 @@ namespace Milkfrog.CombatDemo
         }
         void OnDestroy()
         {
+            WorldState.Changed -= OnWorldChanged; if (ownsQuest) Destroy(quest);
             input?.Dispose(); if (player != null && player.Core != null) player.Core.HitResolved -= OnHit;
         }
     }

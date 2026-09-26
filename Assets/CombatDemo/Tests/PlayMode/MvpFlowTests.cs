@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -43,6 +44,16 @@ namespace Milkfrog.CombatDemo.Tests
         }
         void Advance(float seconds, int fps = 60)
         { while (seconds > .000001f) { float dt = Mathf.Min(seconds, 1f / fps); world.Simulate(dt); seconds -= dt; } }
+        // Explicit prerequisite fixture for tests of existing boss combat rules.
+        void UnlockBossFixture()
+        {
+            var snapshot = world.Snapshot();
+            snapshot.unlockedCheckpointIds = new[] { BonfireCheckpoint.StartId, BonfireCheckpoint.BossApproachId };
+            snapshot.worldState.collectedObjects = new[] { WorldStateService.KeyObjectId };
+            snapshot.worldState.keyItems = new[] { WorldStateService.KeyItemId };
+            snapshot.worldState.openedDoors = new[] { WorldStateService.GateId };
+            world.Restore(snapshot);
+        }
         static void Place(CombatActor actor, Vector3 position)
         { actor.Motor.enabled = false; actor.transform.position = position; actor.Motor.enabled = true; Physics.SyncTransforms(); }
 
@@ -138,6 +149,60 @@ namespace Milkfrog.CombatDemo.Tests
             yield return null;
         }
 
+        [UnityTest] public IEnumerator FastTravelUsesOnlyUnlockedBonfiresAndMakesDestinationRespawnPoint()
+        {
+            var start = world.FindBonfire(BonfireCheckpoint.StartId);
+            var approach = world.FindBonfire(BonfireCheckpoint.BossApproachId);
+            Place(world.player, start.transform.position + Vector3.forward);
+            Assert.That(world.TryRest(start), Is.True);
+            Assert.That(world.IsBonfireUnlocked(start.stableId), Is.True);
+            Assert.That(world.IsBonfireUnlocked(approach.stableId), Is.False);
+            Assert.That(world.TryFastTravel(approach), Is.False);
+            Click("快速传送");
+            Assert.That(UnityEngine.Object.FindObjectsByType<Button>().Any(b =>
+                b.gameObject.activeInHierarchy && b.GetComponentInChildren<Text>().text == approach.displayName), Is.False);
+            Click("返回篝火");
+
+            world.Flow.TogglePause();
+            Place(world.player, approach.transform.position + Vector3.forward);
+            Assert.That(world.TryRest(approach), Is.True);
+            Assert.That(world.IsBonfireUnlocked(approach.stableId), Is.True);
+            world.player.Core.RestoreVitals(47, 31);
+            var mob = world.enemies[0]; mob.ReturnHome(true);
+            Click("快速传送"); Click(start.displayName);
+            Assert.That(world.ActiveCheckpointId, Is.EqualTo(start.stableId));
+            Assert.That(world.Flow.ActiveBonfire, Is.EqualTo(start));
+            Assert.That(world.player.transform.position, Is.EqualTo(start.RespawnPosition));
+            Assert.That(world.player.Core.Health, Is.EqualTo(world.player.Core.Tuning.maxHealth));
+            Assert.That(world.player.Core.Posture, Is.Zero);
+            Assert.That(mob.Activity, Is.EqualTo(EnemyActivity.Patrol));
+            Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True);
+            Assert.That(saved.position, Is.EqualTo(start.RespawnPosition));
+            Assert.That(saved.activeCheckpointId, Is.EqualTo(start.stableId));
+            Assert.That(saved.unlockedCheckpointIds, Does.Contain(start.stableId));
+            Assert.That(saved.unlockedCheckpointIds, Does.Contain(approach.stableId));
+            yield return null;
+        }
+
+        [UnityTest] public IEnumerator FailedFastTravelSaveDoesNotMoveOrChangeCheckpoint()
+        {
+            var start = world.FindBonfire(BonfireCheckpoint.StartId);
+            var approach = world.FindBonfire(BonfireCheckpoint.BossApproachId);
+            Place(world.player, approach.transform.position + Vector3.forward);
+            Assert.That(world.TryRest(approach), Is.True);
+            world.player.Core.RestoreVitals(59, 22);
+            Vector3 before = world.player.transform.position;
+            string savePath = Path.Combine(directory, "save.json");
+            File.Delete(savePath); Directory.CreateDirectory(savePath);
+            Assert.That(world.TryFastTravel(start), Is.False);
+            Assert.That(world.ActiveCheckpointId, Is.EqualTo(approach.stableId));
+            Assert.That(world.player.transform.position, Is.EqualTo(before));
+            Assert.That(world.player.Core.Health, Is.EqualTo(59));
+            Assert.That(world.player.Core.Posture, Is.EqualTo(22));
+            Directory.Delete(savePath, true);
+            yield return null;
+        }
+
         [UnityTest] public IEnumerator RestIsRejectedDuringCombatOrWhilePlayerIsNotNeutral()
         {
             var camp = world.FindBonfire(BonfireCheckpoint.BossApproachId);
@@ -164,6 +229,7 @@ namespace Milkfrog.CombatDemo.Tests
         [UnityTest] public IEnumerator RestIsRejectedDuringBossCombatEvenAtBonfireRange()
         {
             var camp = world.FindBonfire(BonfireCheckpoint.BossApproachId);
+            UnlockBossFixture();
             var boss = world.enemies[3];
             Place(world.player, boss.Home + Vector3.back * 7);
             world.Director.Tick(.01f);
@@ -355,6 +421,7 @@ namespace Milkfrog.CombatDemo.Tests
         }
         [UnityTest] public IEnumerator BossForcesLockCannotDisengageAndVictoryPersists()
         {
+            UnlockBossFixture();
             var boss = world.enemies[3]; Place(world.player,boss.Home+Vector3.back*7);
             world.Director.Tick(.01f); Assert.That(world.Director.State, Is.EqualTo(EncounterState.BossCombat));
             Assert.That(world.Lock.Target, Is.EqualTo(boss)); Assert.That(world.arena.activeSelf, Is.True);
@@ -451,6 +518,7 @@ namespace Milkfrog.CombatDemo.Tests
         }
         [UnityTest] public IEnumerator BossBoundaryBlocksEscapeAndSimultaneousDeathIsFailure()
         {
+            UnlockBossFixture();
             var boss=world.enemies[3]; Place(world.player,boss.Home+Vector3.back*7);world.Director.Tick(.01f);
             Place(world.player,boss.Home+Vector3.right*12); Physics.SyncTransforms();
             world.player.Move(Vector3.right,10,1); Assert.That(world.player.transform.position.x-boss.Home.x,Is.LessThan(14));
@@ -593,6 +661,7 @@ namespace Milkfrog.CombatDemo.Tests
         }
         [UnityTest] public IEnumerator BossUsesReproducibleWeightedAttacksAndWarningTracksPerilousStartup()
         {
+            UnlockBossFixture();
             var boss = world.enemies[3];
             Place(world.player, boss.Home + Vector3.back * 1f);
             world.Director.Tick(.01f);
@@ -645,6 +714,7 @@ namespace Milkfrog.CombatDemo.Tests
         }
         [UnityTest] public IEnumerator BossDoesNotRerollWhileWaitingForItsAttackCommit()
         {
+            UnlockBossFixture();
             var boss = world.enemies[3];
             Place(world.player, boss.Home + Vector3.back * 1f);
             world.Director.Tick(.01f);
@@ -678,6 +748,7 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(world.gameplayCamera.transform.position.z, Is.GreaterThan(-36.6f));
             UnityEngine.Object.Destroy(wall);
             yield return null;
+            UnlockBossFixture();
             var boss = world.enemies[3];
             Place(world.player, boss.Home + Vector3.back * 7);
             world.Director.Tick(.01f);

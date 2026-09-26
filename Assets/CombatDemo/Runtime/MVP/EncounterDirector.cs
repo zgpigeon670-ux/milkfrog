@@ -22,7 +22,10 @@ namespace Milkfrog.CombatDemo
                 if (enemy.IsBoss)
                 {
                     if (EnemyController.FlatDistance(world.player.transform.position, enemy.Home) <= enemy.definition.bossTriggerRadius)
-                    { StartBoss((BossEnemy)enemy); return; }
+                    {
+                        if (world.BossUnlocked) { StartBoss((BossEnemy)enemy); return; }
+                        world.Flow.Notify("封印未解除，请先点亮篝火、取得钥匙并开启封印门。");
+                    }
                     continue;
                 }
                 enemy.UpdateRearm();

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Milkfrog.CombatDemo
     [Serializable]
     public sealed class PlayerSnapshot
     {
-        public int version = 2;
+        public int version = 3;
         public string levelId = "MVP_TestLevel";
         public Vector3 position;
         public float yaw;
@@ -17,13 +18,17 @@ namespace Milkfrog.CombatDemo
         public string[] defeatedEnemyIds = Array.Empty<string>();
         public bool bossDefeated;
         public string activeCheckpointId = BonfireCheckpoint.StartId;
+        // Optional in early v2 saves. The active checkpoint and start camp are recovered on load.
+        public string[] unlockedCheckpointIds = { BonfireCheckpoint.StartId };
+        public WorldStateData worldState = new WorldStateData();
+        public QuestProgressData questProgress = new QuestProgressData();
         public int experience;
         public int vitality, resolve, power;
     }
 
     public sealed class SaveService
     {
-        public const int CurrentVersion = 2;
+        public const int CurrentVersion = 3;
         private const string CurrentLevelId = "MVP_TestLevel";
         private const string SaveFileName = "save.json";
         private const string BackupFileName = "save.backup.json";
@@ -122,8 +127,8 @@ namespace Milkfrog.CombatDemo
                 if (current.status == SnapshotReadStatus.Valid)
                 {
                     backupTempPath = NewTemporaryPath(BackupFileName);
-                    // Keep the rollback point in v2 as well, so restoring it cannot re-run v1 compensation.
-                    if (current.sourceVersion == 1)
+                    // Keep the rollback point in the current version as well, so restoring it cannot re-run v1 compensation.
+                    if (current.sourceVersion < CurrentVersion)
                         File.WriteAllText(backupTempPath, JsonUtility.ToJson(current.snapshot, true), new UTF8Encoding(false));
                     else
                         File.Copy(_savePath, backupTempPath);
@@ -136,7 +141,7 @@ namespace Milkfrog.CombatDemo
                 else if (current.status == SnapshotReadStatus.Invalid)
                 {
                     SnapshotReadResult fallback = ReadSnapshot(_backupPath);
-                    if (fallback.status == SnapshotReadStatus.Valid && fallback.sourceVersion == 1)
+                    if (fallback.status == SnapshotReadStatus.Valid && fallback.sourceVersion < CurrentVersion)
                     {
                         backupTempPath = NewTemporaryPath(BackupFileName);
                         File.WriteAllText(backupTempPath, JsonUtility.ToJson(fallback.snapshot, true), new UTF8Encoding(false));
@@ -150,7 +155,7 @@ namespace Milkfrog.CombatDemo
                 else
                 {
                     SnapshotReadResult fallback = ReadSnapshot(_backupPath);
-                    if (fallback.status == SnapshotReadStatus.Valid && fallback.sourceVersion == 1)
+                    if (fallback.status == SnapshotReadStatus.Valid && fallback.sourceVersion < CurrentVersion)
                     {
                         backupTempPath = NewTemporaryPath(BackupFileName);
                         File.WriteAllText(backupTempPath, JsonUtility.ToJson(fallback.snapshot, true), new UTF8Encoding(false));
@@ -202,7 +207,7 @@ namespace Milkfrog.CombatDemo
             }
 
             string validationMessage;
-            if (!HasRequiredFields(json, snapshot.version))
+            if (snapshot == null || !HasRequiredFields(json, snapshot.version))
                 return SnapshotReadResult.Invalid("Save data is invalid.");
             if (!IsValid(snapshot, out validationMessage, true))
                 return SnapshotReadResult.Invalid(validationMessage);
@@ -219,6 +224,35 @@ namespace Milkfrog.CombatDemo
             if (snapshot.defeatedEnemyIds == null)
                 snapshot.defeatedEnemyIds = Array.Empty<string>();
 
+            var unlocked = new HashSet<string>(StringComparer.Ordinal) { BonfireCheckpoint.StartId };
+            if (!string.IsNullOrEmpty(snapshot.activeCheckpointId)) unlocked.Add(snapshot.activeCheckpointId);
+            if (snapshot.unlockedCheckpointIds != null)
+                foreach (string id in snapshot.unlockedCheckpointIds)
+                    if (!string.IsNullOrEmpty(id)) unlocked.Add(id);
+            snapshot.unlockedCheckpointIds = new string[unlocked.Count];
+            unlocked.CopyTo(snapshot.unlockedCheckpointIds);
+            Array.Sort(snapshot.unlockedCheckpointIds, StringComparer.Ordinal);
+
+            if (sourceVersion < CurrentVersion)
+            {
+                snapshot.version = CurrentVersion;
+                snapshot.worldState = new WorldStateData();
+                snapshot.questProgress = new QuestProgressData();
+                if (snapshot.bossDefeated)
+                {
+                    var camps = new HashSet<string>(snapshot.unlockedCheckpointIds, StringComparer.Ordinal) { BonfireCheckpoint.BossApproachId };
+                    snapshot.unlockedCheckpointIds = new string[camps.Count]; camps.CopyTo(snapshot.unlockedCheckpointIds);
+                    Array.Sort(snapshot.unlockedCheckpointIds, StringComparer.Ordinal);
+                    var defeated = new HashSet<string>(snapshot.defeatedEnemyIds, StringComparer.Ordinal) { WorldStateService.BossId };
+                    snapshot.defeatedEnemyIds = new string[defeated.Count]; defeated.CopyTo(snapshot.defeatedEnemyIds);
+                    Array.Sort(snapshot.defeatedEnemyIds, StringComparer.Ordinal);
+                    snapshot.worldState.collectedObjects = new[] { WorldStateService.KeyObjectId };
+                    snapshot.worldState.keyItems = new[] { WorldStateService.KeyItemId };
+                    snapshot.worldState.openedDoors = new[] { WorldStateService.GateId };
+                    snapshot.questProgress.completed = true;
+                    snapshot.questProgress.completedSteps = new[] { "light-camp", "find-key", "open-gate", "defeat-boss" };
+                }
+            }
             return SnapshotReadResult.Valid(snapshot, sourceVersion);
         }
 
@@ -232,7 +266,7 @@ namespace Milkfrog.CombatDemo
             if (index >= json.Length || json[index++] != '{')
                 return false;
 
-            bool[] found = new bool[13];
+            bool[] found = new bool[15];
             while (index < json.Length)
             {
                 SkipWhitespace(json, ref index);
@@ -270,7 +304,7 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
-            for (int i = 0; i < (version == 1 ? 8 : 13); i++) if (!found[i]) return false;
+            for (int i = 0; i < (version == 1 ? 8 : version == 2 ? 13 : 15); i++) if (!found[i]) return false;
             return true;
         }
 
@@ -291,6 +325,8 @@ namespace Milkfrog.CombatDemo
                 case "vitality": return 10;
                 case "resolve": return 11;
                 case "power": return 12;
+                case "worldState": return 13;
+                case "questProgress": return 14;
                 default: return -1;
             }
         }
@@ -375,7 +411,7 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
-            if (snapshot.version != CurrentVersion && !(allowLegacy && snapshot.version == 1))
+            if (snapshot.version != CurrentVersion && !(allowLegacy && (snapshot.version == 1 || snapshot.version == 2)))
             {
                 message = "Unsupported save version.";
                 return false;
@@ -396,7 +432,7 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
-            if (snapshot.version == CurrentVersion &&
+            if (snapshot.version >= 2 &&
                 (string.IsNullOrEmpty(snapshot.activeCheckpointId) || snapshot.experience < 0 ||
                  snapshot.vitality < 0 || snapshot.vitality > PlayerProgression.MaximumRank ||
                  snapshot.resolve < 0 || snapshot.resolve > PlayerProgression.MaximumRank ||
@@ -406,6 +442,9 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
+            if (snapshot.version == CurrentVersion && (snapshot.worldState == null || snapshot.questProgress == null ||
+                snapshot.worldState.collectedObjects == null || snapshot.worldState.keyItems == null || snapshot.worldState.openedDoors == null))
+            { message = "Save world state is invalid."; return false; }
             message = null;
             return true;
         }

@@ -22,6 +22,7 @@ namespace Milkfrog.CombatDemo.Editor
         public static void Run()
         {
             if (!Application.isBatchMode) throw new InvalidOperationException("Use a validation copy in batch mode.");
+            SessionState.SetInt(Key+"Stage",0); SessionState.SetBool(Key+"Quest",false);
             Directory.CreateDirectory("Evidence/MVP");
             SessionState.SetString(Key+"Save",Path.Combine(Path.GetTempPath(),"MilkfrogMvpCapture-"+Guid.NewGuid().ToString("N")));
             EditorSceneManager.OpenScene(MvpSceneBuilder.Home);
@@ -34,6 +35,7 @@ namespace Milkfrog.CombatDemo.Editor
         {
             if (!Application.isBatchMode) throw new InvalidOperationException("Use a validation copy in batch mode.");
             stage=10; posed=requested=false; world=null;
+            SessionState.SetInt(Key+"Stage",10); SessionState.SetBool(Key+"Quest",false);
             Directory.CreateDirectory("Evidence/MVP");
             SessionState.SetString(Key+"Save",Path.Combine(Path.GetTempPath(),"MilkfrogMvpCapture-"+Guid.NewGuid().ToString("N")));
             EditorSceneManager.OpenScene(MvpSceneBuilder.Level);
@@ -42,9 +44,33 @@ namespace Milkfrog.CombatDemo.Editor
             view.ShowUtility(); view.position=new Rect(0,0,1280,741);
             SessionState.SetBool(Key,true); Hook(); EditorApplication.isPlaying=true;
         }
+        public static void RunQuest()
+        {
+            if (!Application.isBatchMode) throw new InvalidOperationException("Use a validation copy in batch mode.");
+            stage=18; posed=requested=false; world=null;
+            SessionState.SetInt(Key+"Stage",18); SessionState.SetBool(Key+"Quest",true);
+            Directory.CreateDirectory("Evidence/MVP");
+            SessionState.SetString(Key+"Save",Path.Combine(Path.GetTempPath(),"MilkfrogQuestCapture-"+Guid.NewGuid().ToString("N")));
+            EditorSceneManager.OpenScene(MvpSceneBuilder.Level); ShaderUtil.allowAsyncCompilation=false;
+            view=ScriptableObject.CreateInstance(typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.GameView")) as EditorWindow;
+            view.ShowUtility(); view.position=new Rect(0,0,1280,741);
+            SessionState.SetBool(Key,true); Hook(); EditorApplication.isPlaying=true;
+        }
+        static void Focus(IInteractable target)
+        {
+            MovePlayer(target.Root.position + Vector3.back * 1.8f);
+            world.gameplayCamera.transform.SetPositionAndRotation(target.InteractionPoint + Vector3.back * 5, Quaternion.identity);
+            world.Interactions.Refresh();
+        }
+        static WorldInteractable QuestObject(WorldInteractionKind kind)
+        {
+            foreach(var obj in UnityEngine.Object.FindObjectsByType<WorldInteractable>()) if(obj.kind==kind)return obj;
+            throw new InvalidOperationException("Missing quest object: "+kind);
+        }
         public static void BuildAndCapture() { MvpSceneBuilder.BuildPlayer(); Run(); }
         static void Hook()
         {
+            stage=SessionState.GetInt(Key+"Stage",0);
             GameFlowController.SaveDirectoryOverride=SessionState.GetString(Key+"Save",null);
             started=EditorApplication.timeSinceStartup; EditorApplication.update-=Update;EditorApplication.update+=Update;
         }
@@ -86,7 +112,7 @@ namespace Milkfrog.CombatDemo.Editor
                     }
                     if(stage==6)
                     {
-                        world.Restore(new PlayerSnapshot{position=new Vector3(0,.02f,20)});
+                        world.Restore(new PlayerSnapshot{position=new Vector3(0,.02f,20), worldState=new WorldStateData{openedDoors=new[]{WorldStateService.GateId}}, unlockedCheckpointIds=new[]{BonfireCheckpoint.StartId,BonfireCheckpoint.BossApproachId}});
                         MovePlayer(world.enemies[3].Home+Vector3.back*6); world.Director.Tick(.01f);world.cameraRig.Step(1);
                     }
                     if(stage==7)
@@ -108,6 +134,40 @@ namespace Milkfrog.CombatDemo.Editor
                     }
                     if(stage==13)SetSize(1280,800);
                     if(stage==14){world.Flow.OpenAttributes();SetSize(1280,720);}
+                    if(stage==15){Click("返回");Click("快速传送");SetSize(640,360);}
+                    if(stage==16)
+                    {
+                        world.Flow.TogglePause();
+                        var approach=world.FindBonfire(BonfireCheckpoint.BossApproachId);
+                        MovePlayer(approach.transform.position+Vector3.forward);
+                        if(!world.TryRest(approach))throw new InvalidOperationException("Travel menu capture could not light camp.");
+                        Click("快速传送");SetSize(1280,800);
+                    }
+                    if(stage==17){Click("起点篝火");SetSize(1280,720);}
+                    if(stage==18){Focus(world.FindBonfire(BonfireCheckpoint.BossApproachId));SetSize(640,360);}
+                    if(stage==19)SetSize(1280,720);
+                    if(stage==20)SetSize(1280,800);
+                    if(stage==21)
+                    {
+                        Focus(world.FindBonfire(BonfireCheckpoint.BossApproachId));
+                        if(!world.Interactions.TryInteract())throw new InvalidOperationException("Camp interaction capture failed.");
+                        SetSize(640,360);
+                    }
+                    if(stage==22){world.Flow.TogglePause();Focus(QuestObject(WorldInteractionKind.KeyPickup));SetSize(1280,720);}
+                    if(stage==23)
+                    {
+                        Focus(QuestObject(WorldInteractionKind.KeyPickup));
+                        if(!world.Interactions.TryInteract())throw new InvalidOperationException("Key capture failed.");
+                        Focus(QuestObject(WorldInteractionKind.SealedDoor));SetSize(1280,800);
+                    }
+                    if(stage==24)
+                    {
+                        Focus(QuestObject(WorldInteractionKind.SealedDoor));
+                        if(!world.Interactions.TryInteract())throw new InvalidOperationException("Gate capture failed.");
+                        world.Flow.TogglePause();world.Flow.ShowQuest();SetSize(640,360);
+                    }
+                    if(stage==25)SetSize(1280,720);
+                    if(stage==26)SetSize(1280,800);
                     world.GetComponent<MvpHud>().Refresh();
                 }
                 posed=true;poseTime=EditorApplication.timeSinceStartup;requested=false;
@@ -119,8 +179,8 @@ namespace Milkfrog.CombatDemo.Editor
             if(requested && File.Exists(PathName) && new FileInfo(PathName).Length>1000)
             {
                 if(stage==2)Click("Start Game / Continue");
-                stage++;posed=false;
-                if(stage>=15)Finish(0);
+                stage++;SessionState.SetInt(Key+"Stage",stage);posed=false;
+                if(stage>=(SessionState.GetBool(Key+"Quest",false)?27:18))Finish(0);
             }
         }
         static void Place(CombatActor actor,Vector3 position)

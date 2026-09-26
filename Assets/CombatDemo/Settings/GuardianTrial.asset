@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 053ee1822ccc41d5bb4941d0f202984c, type: 3}
+  m_Name: GuardianTrial
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.QuestDefinition
+  stableId: guardian-trial
+  displayName: "\u5B88\u95E8\u4EBA\u7684\u8BD5\u70BC"
+  steps:
+  - id: light-camp
+    text: "\u70B9\u4EAE\u5B88\u95E8\u7BDD\u706B"
+    targetId: camp-before-boss
+    condition: 0
+  - id: find-key
+    text: "\u53D6\u5F97\u5B88\u95E8\u94A5\u5319\uFF08\u7BDD\u706B\u4E1C\u4FA7\uFF09"
+    targetId: guardian-key
+    condition: 1
+  - id: open-gate
+    text: "\u5F00\u542F\u5C01\u5370\u95E8"
+    targetId: gate-guardian
+    condition: 2
+  - id: defeat-boss
+    text: "\u51FB\u8D25\u5B88\u95E8\u4EBA"
+    targetId: boss-guardian
+    condition: 3
