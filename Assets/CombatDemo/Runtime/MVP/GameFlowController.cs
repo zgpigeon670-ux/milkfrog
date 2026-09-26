@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -97,7 +98,17 @@ namespace Milkfrog.CombatDemo
         {
             menu.Show("PAUSED", world.CanSave ? "Safe exploration - saving is available." : "In combat / action: returning or quitting keeps the last safe save.",
                 new MenuAction("Resume", TogglePause), new MenuAction("Save", () => { Save(); ShowPauseMessage(); }, world.CanSave),
-                new MenuAction("Attributes", OpenAttributes), new MenuAction("Return to Home", ReturnHome), new MenuAction("Quit", Quit));
+                new MenuAction("任务 / 属性", ShowRecords), new MenuAction("Return to Home", ReturnHome), new MenuAction("Quit", Quit));
+        }
+        void ShowRecords()
+        {
+            menu.Show("角色记录", "查看当前主线目标或角色成长。",
+                new MenuAction("任务进度", ShowQuest), new MenuAction("Attributes", OpenAttributes), new MenuAction("返回", ShowPause));
+        }
+        public void ShowQuest()
+        {
+            if (!Paused || State != GameFlowState.Playing) return;
+            menu.Show(world.quest.displayName, world.Quests.Journal(world.Snapshot()), new MenuAction("返回", ShowRecords));
         }
         public void OpenBonfire(BonfireCheckpoint bonfire)
         {
@@ -121,7 +132,36 @@ namespace Milkfrog.CombatDemo
                 new MenuAction("体魄 +1", () => Upgrade(GrowthStat.Vitality), growth.CanUpgrade(GrowthStat.Vitality)),
                 new MenuAction("定力 +1", () => Upgrade(GrowthStat.Resolve), growth.CanUpgrade(GrowthStat.Resolve)),
                 new MenuAction("攻击 +1", () => Upgrade(GrowthStat.Power), growth.CanUpgrade(GrowthStat.Power)),
-                new MenuAction("查看属性", OpenAttributes), new MenuAction("离开篝火", TogglePause));
+                new MenuAction("快速传送", () => ShowFastTravel(0)), new MenuAction("离开篝火", TogglePause));
+        }
+        void ShowFastTravel(int page)
+        {
+            if (ActiveBonfire == null) return;
+            var destinations = new List<BonfireCheckpoint>();
+            if (world.bonfires != null)
+                foreach (var bonfire in world.bonfires)
+                    if (bonfire != null && bonfire.stableId != ActiveBonfire.stableId &&
+                        world.IsBonfireUnlocked(bonfire.stableId)) destinations.Add(bonfire);
+            destinations.Sort((a, b) => string.CompareOrdinal(a.stableId, b.stableId));
+            const int pageSize = 2;
+            int start = Mathf.Clamp(page * pageSize, 0, Mathf.Max(0, destinations.Count - 1));
+            var actions = new List<MenuAction>();
+            for (int i = start; i < Mathf.Min(start + pageSize, destinations.Count); i++)
+            {
+                var destination = destinations[i];
+                actions.Add(new MenuAction(destination.displayName, () => TravelTo(destination, page)));
+            }
+            if (page > 0) actions.Add(new MenuAction("上一页", () => ShowFastTravel(page - 1)));
+            if (start + pageSize < destinations.Count) actions.Add(new MenuAction("下一页", () => ShowFastTravel(page + 1)));
+            actions.Add(new MenuAction("返回篝火", ShowBonfire));
+            menu.Show("快速传送", destinations.Count == 0 ? "暂无其它已点亮的篝火。" : "选择已点亮的篝火。抵达后将以该处为复活点。", actions.ToArray());
+        }
+        void TravelTo(BonfireCheckpoint destination, int page)
+        {
+            if (world.TryFastTravel(destination)) return;
+            string failure = Store.LastMessage == "Could not write save." ? Store.LastMessage : "当前无法传送。请确认篝火已点亮且角色处于安全状态。";
+            Notify(failure);
+            menu.Show("传送失败", failure, new MenuAction("返回", () => ShowFastTravel(page)));
         }
         void Upgrade(GrowthStat stat)
         {
@@ -168,9 +208,10 @@ namespace Milkfrog.CombatDemo
         }
         public void Won()
         {
-            world.ClearInput(); Save(); State = GameFlowState.Victory; SetCursor(true);
+            world.ClearInput(); bool saved = Save(); State = GameFlowState.Victory; SetCursor(true);
             menu.Show("VICTORY", "The guardian has fallen.\n" + Message,
-                new MenuAction("Continue Exploring", ContinueExploring), new MenuAction("Return to Home", ReturnHome));
+                new MenuAction("Continue Exploring", ContinueExploring), new MenuAction("Return to Home", ReturnHome),
+                new MenuAction("重试保存", Won, !saved));
         }
         public void ContinueExploring() { State = GameFlowState.Playing; world.ClearInput(); menu.Hide(); SetCursor(false); }
         void Quit()

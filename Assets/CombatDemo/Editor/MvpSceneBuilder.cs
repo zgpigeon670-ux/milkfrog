@@ -219,7 +219,7 @@ namespace Milkfrog.CombatDemo.Editor
         }
         public static void BuildPlayer()
         {
-            UpgradeBonfires();
+            MvpQuestUpgrade.Upgrade();
             string requested = Environment.GetEnvironmentVariable("MILKFROG_BUILD_OUTPUT");
             string path = Path.GetFullPath(string.IsNullOrEmpty(requested) ? "Builds/MilkfrogMVP/MilkfrogMVP.exe" : requested);
             Directory.CreateDirectory(Path.GetDirectoryName(path));

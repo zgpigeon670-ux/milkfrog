@@ -127,6 +127,22 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(File.ReadAllText(backupPath), Is.EqualTo(legacyJson), "recovery must not rewrite the source backup");
         }
 
+        [Test]
+        public void EarlyV2SaveWithoutUnlockListRecoversStartAndActiveBonfires()
+        {
+            const string earlyV2 = "{\"version\":2,\"levelId\":\"MVP_TestLevel\",\"position\":{\"x\":0,\"y\":0,\"z\":0}," +
+                                   "\"yaw\":0,\"health\":100,\"posture\":0,\"defeatedEnemyIds\":[],\"bossDefeated\":false," +
+                                   "\"activeCheckpointId\":\"camp-before-boss\",\"experience\":40,\"vitality\":0,\"resolve\":0,\"power\":0}";
+            File.WriteAllText(Path.Combine(_testDirectory, "save.json"), earlyV2);
+            var service = new SaveService(_testDirectory);
+            Assert.That(service.TryLoad(out var loaded), Is.True, service.LastMessage);
+            Assert.That(loaded.unlockedCheckpointIds, Does.Contain(BonfireCheckpoint.StartId));
+            Assert.That(loaded.unlockedCheckpointIds, Does.Contain(BonfireCheckpoint.BossApproachId));
+            Assert.That(service.TrySave(loaded), Is.True, service.LastMessage);
+            Assert.That(service.TryLoad(out loaded), Is.True, service.LastMessage);
+            Assert.That(loaded.unlockedCheckpointIds, Has.Length.EqualTo(2));
+        }
+
         private string WriteLegacySave(bool bossDefeated, float health, float posture)
         {
             string json = LegacyJson(bossDefeated, health, posture);

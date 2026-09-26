@@ -1,0 +1,1443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="78" result="Failed(Child)" total="78" passed="7" failed="71" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:33Z" duration="4.4536754">
+  <test-suite type="TestSuite" id="1095" name="milkfrog" fullname="milkfrog" runstate="Runnable" testcasecount="78" result="Failed" site="Child" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:33Z" duration="4.453675" total="78" passed="7" failed="71" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1183" name="Milkfrog.CombatDemo.PlayTests.dll" fullname="E:/UNITY/PROJECTS/milkfrog/Builds/QuestValidation/Library/ScriptAssemblies/Milkfrog.CombatDemo.PlayTests.dll" runstate="Runnable" testcasecount="78" result="Failed" site="Child" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:33Z" duration="4.445738" total="78" passed="7" failed="71" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="44968" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1184" name="Milkfrog" fullname="Milkfrog" runstate="Runnable" testcasecount="78" result="Failed" site="Child" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:33Z" duration="4.444505" total="78" passed="7" failed="71" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1185" name="CombatDemo" fullname="Milkfrog.CombatDemo" runstate="Runnable" testcasecount="78" result="Failed" site="Child" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:33Z" duration="4.443559" total="78" passed="7" failed="71" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1186" name="Tests" fullname="Milkfrog.CombatDemo.Tests" runstate="Runnable" testcasecount="78" result="Failed" site="Child" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:33Z" duration="4.442306" total="78" passed="7" failed="71" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1096" name="AnimatedSceneTests" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:30Z" duration="0.799228" total="8" passed="0" failed="8" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1101" name="CameraSphereCastKeepsCameraInFrontOfWall" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.CameraSphereCastKeepsCameraInFrontOfWall" methodname="CameraSphereCastKeepsCameraInFrontOfWall" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="1453462328" result="Failed" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:29Z" duration="0.419089" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1098" name="FreezeIgnoresFreshInputsAndResetClearsAllFeedback" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FreezeIgnoresFreshInputsAndResetClearsAllFeedback" methodname="FreezeIgnoresFreshInputsAndResetClearsAllFeedback" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="879925494" result="Failed" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:29Z" duration="0.063506" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1100" name="FreshGuardAfterExactFreezeBoundaryIsNotOverwritten" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FreshGuardAfterExactFreezeBoundaryIsNotOverwritten" methodname="FreshGuardAfterExactFreezeBoundaryIsNotOverwritten" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="82364949" result="Failed" start-time="2026-09-26 06:48:29Z" end-time="2026-09-26 06:48:30Z" duration="0.060344" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1104" name="FullExchangeAt120Fps" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FullExchangeAt120Fps" methodname="FullExchangeAt120Fps" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="1177973713" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.050127" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1102" name="FullExchangeAt30Fps" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FullExchangeAt30Fps" methodname="FullExchangeAt30Fps" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="1683171675" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.048155" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1103" name="FullExchangeAt60Fps" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FullExchangeAt60Fps" methodname="FullExchangeAt60Fps" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="1122388367" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.050035" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1097" name="HumanoidClipsAnimateWithoutControllerOrRootDrift" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.HumanoidClipsAnimateWithoutControllerOrRootDrift" methodname="HumanoidClipsAnimateWithoutControllerOrRootDrift" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="686463150" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.051634" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1099" name="InterruptedAttackCannotLeaveDamageOrTrail" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.InterruptedAttackCannotLeaveDamageOrTrail" methodname="InterruptedAttackCannotLeaveDamageOrTrail" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="704158472" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.042722" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1105" name="BladeContactTests" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" testcasecount="10" result="Failed" site="Child" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.422534" total="10" passed="0" failed="10" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1114" name="BakedBladeAgreesWithRenderedWeaponAndOutgoingPoseIsRetained" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.BakedBladeAgreesWithRenderedWeaponAndOutgoingPoseIsRetained" methodname="BakedBladeAgreesWithRenderedWeaponAndOutgoingPoseIsRetained" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1341494526" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.043971" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1113" name="BladeContactUsesDefenderFacingForParry" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.BladeContactUsesDefenderFacingForParry" methodname="BladeContactUsesDefenderFacingForParry" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1950291889" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.044116" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1106" name="BlockedLightAndFollowupKeepTheirAttackPoseThroughRecovery" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.BlockedLightAndFollowupKeepTheirAttackPoseThroughRecovery" methodname="BlockedLightAndFollowupKeepTheirAttackPoseThroughRecovery" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1242684038" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.041967" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1108" name="CenteredBladeHitsOnlyWhenItReachesTheTarget" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.CenteredBladeHitsOnlyWhenItReachesTheTarget" methodname="CenteredBladeHitsOnlyWhenItReachesTheTarget" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1956545040" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.042150" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1107" name="EnemyDeflectInterruptsAttackAndShowsDeflectedPoseAfterHitStop" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.EnemyDeflectInterruptsAttackAndShowsDeflectedPoseAfterHitStop" methodname="EnemyDeflectInterruptsAttackAndShowsDeflectedPoseAfterHitStop" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1146822928" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.044352" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1112" name="HeightAndRearFacingPreventInvalidExecution" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.HeightAndRearFacingPreventInvalidExecution" methodname="HeightAndRearFacingPreventInvalidExecution" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="552067289" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.042014" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1115" name="MovingGuardKeepsLegsAnimatedAndInterruptRemovesUpperMask" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.MovingGuardKeepsLegsAnimatedAndInterruptRemovesUpperMask" methodname="MovingGuardKeepsLegsAnimatedAndInterruptRemovesUpperMask" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="846784804" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.038434" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1110" name="OldBroadBoxCannotHitOutsideTheBladeReach" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.OldBroadBoxCannotHitOutsideTheBladeReach" methodname="OldBroadBoxCannotHitOutsideTheBladeReach" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="328890148" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.040034" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1109" name="SlowFrameSweepsAndMultipleCollidersDoNotDoubleHit" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.SlowFrameSweepsAndMultipleCollidersDoNotDoubleHit" methodname="SlowFrameSweepsAndMultipleCollidersDoNotDoubleHit" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="223814340" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.040306" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1111" name="WallBlocksBothDamageAndDeathblow" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.WallBlocksBothDamageAndDeathblow" methodname="WallBlocksBothDamageAndDeathblow" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1912855568" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.042496" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1116" name="CombatFeelSceneTests" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.171061" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1118" name="PerilousDeflectFailsAndDodgeInvulnerabilityAvoidsIt" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.PerilousDeflectFailsAndDodgeInvulnerabilityAvoidsIt" methodname="PerilousDeflectFailsAndDodgeInvulnerabilityAvoidsIt" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" seed="851330250" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.042460" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1119" name="RecoveryGuardCancelAndFollowupAreAvailable" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.RecoveryGuardCancelAndFollowupAreAvailable" methodname="RecoveryGuardCancelAndFollowupAreAvailable" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" seed="327801555" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.041778" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1117" name="RhythmCyclesSlashSlowAndPerilous" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.RhythmCyclesSlashSlowAndPerilous" methodname="RhythmCyclesSlashSlowAndPerilous" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" seed="686607870" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.043513" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1120" name="TabTogglesLockAndCameraUsesEnemyHeading" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.TabTogglesLockAndCameraUsesEnemyHeading" methodname="TabTogglesLockAndCameraUsesEnemyHeading" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" seed="368265928" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.041551" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1121" name="CombatPresentationTests" fullname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" classname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:31Z" duration="0.133025" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1123" name="CameraFollowsPlayersBackAfterTurningAndReset" fullname="Milkfrog.CombatDemo.Tests.CombatPresentationTests.CameraFollowsPlayersBackAfterTurningAndReset" methodname="CameraFollowsPlayersBackAfterTurningAndReset" classname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" runstate="Runnable" seed="837722921" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.042201" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1122" name="EssentialBarsSurviveDiagnosticsToggle" fullname="Milkfrog.CombatDemo.Tests.CombatPresentationTests.EssentialBarsSurviveDiagnosticsToggle" methodname="EssentialBarsSurviveDiagnosticsToggle" classname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" runstate="Runnable" seed="520341735" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:30Z" duration="0.042756" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1124" name="PerfectDeflectFlashesAttackerAndResetClearsShader" fullname="Milkfrog.CombatDemo.Tests.CombatPresentationTests.PerfectDeflectFlashesAttackerAndResetClearsShader" methodname="PerfectDeflectFlashesAttackerAndResetClearsShader" classname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" runstate="Runnable" seed="2113340324" result="Failed" start-time="2026-09-26 06:48:30Z" end-time="2026-09-26 06:48:31Z" duration="0.046719" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1125" name="CombatSceneTests" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.424125" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1129" name="EarlyGuardBlocksLateGuardDeflectsAndPlayerCanDie" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.EarlyGuardBlocksLateGuardDeflectsAndPlayerCanDie" methodname="EarlyGuardBlocksLateGuardDeflectsAndPlayerCanDie" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="1858709134" result="Passed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.090069" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1126" name="FullExchangeBreakDeathblowAndRepeatedReset" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.FullExchangeBreakDeathblowAndRepeatedReset" methodname="FullExchangeBreakDeathblowAndRepeatedReset" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="259027674" result="Passed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.041012" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1130" name="ModeSwitchClearsPendingCounterAndResetsPositions" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.ModeSwitchClearsPendingCounterAndResetsPositions" methodname="ModeSwitchClearsPendingCounterAndResetsPositions" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="2069712519" result="Passed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.038326" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1128" name="MovementRespectsActorCollisionAndArenaFloor" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.MovementRespectsActorCollisionAndArenaFloor" methodname="MovementRespectsActorCollisionAndArenaFloor" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="2023365700" result="Passed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.045300" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1132" name="NewInputSystemBindingsReadKeyboardAndMouse" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.NewInputSystemBindingsReadKeyboardAndMouse" methodname="NewInputSystemBindingsReadKeyboardAndMouse" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="1664305735" result="Passed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.108627" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1127" name="PhysicsDetectionDeduplicatesMultipleCollidersAndCancelsInterruptedAttack" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.PhysicsDetectionDeduplicatesMultipleCollidersAndCancelsInterruptedAttack" methodname="PhysicsDetectionDeduplicatesMultipleCollidersAndCancelsInterruptedAttack" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="960724600" result="Passed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.044037" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1131" name="SustainedGuardCanBreakPlayerAndRecoverWithoutEnemyDeathblow" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.SustainedGuardCanBreakPlayerAndRecoverWithoutEnemyDeathblow" methodname="SustainedGuardCanBreakPlayerAndRecoverWithoutEnemyDeathblow" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="1997706665" result="Passed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.054141" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1133" name="DirectionalMotionTests" fullname="Milkfrog.CombatDemo.Tests.DirectionalMotionTests" classname="Milkfrog.CombatDemo.Tests.DirectionalMotionTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.165790" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1134" name="AuthoredDirectionsDriveLegsWithoutRotatingTheModel" fullname="Milkfrog.CombatDemo.Tests.DirectionalMotionTests.AuthoredDirectionsDriveLegsWithoutRotatingTheModel" methodname="AuthoredDirectionsDriveLegsWithoutRotatingTheModel" classname="Milkfrog.CombatDemo.Tests.DirectionalMotionTests" runstate="Runnable" seed="1455295813" result="Failed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.165110" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1135" name="MvpBossCombatTests" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.260899" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1137" name="DeflectInterruptsBossAndBossCounterattackIsSlashRecordedForNextSelection" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests.DeflectInterruptsBossAndBossCounterattackIsSlashRecordedForNextSelection" methodname="DeflectInterruptsBossAndBossCounterattackIsSlashRecordedForNextSelection" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" seed="1146980479" result="Failed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.097473" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1136" name="OrdinaryPlayerHitsDamageBossWithoutCancellingStartupActiveOrRecovery" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests.OrdinaryPlayerHitsDamageBossWithoutCancellingStartupActiveOrRecovery" methodname="OrdinaryPlayerHitsDamageBossWithoutCancellingStartupActiveOrRecovery" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" seed="232513582" result="Failed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.055801" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1138" name="PlayerParryStillInterruptsArmoredBossAttack" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests.PlayerParryStillInterruptsArmoredBossAttack" methodname="PlayerParryStillInterruptsArmoredBossAttack" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" seed="1108430369" result="Failed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.052439" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1139" name="PostureBreakAndDeathStillOverrideBossHitResistance" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests.PostureBreakAndDeathStillOverrideBossHitResistance" methodname="PostureBreakAndDeathStillOverrideBossHitResistance" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" seed="1063157492" result="Failed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.053306" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1140" name="MvpFlowTests" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" testcasecount="34" result="Failed" site="Child" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:33Z" duration="1.774660" total="34" passed="0" failed="34" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1165" name="AttackSelectionUsesLockThenReticleThenNearestThenCameraRay" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.AttackSelectionUsesLockThenReticleThenNearestThenCameraRay" methodname="AttackSelectionUsesLockThenReticleThenNearestThenCameraRay" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="999924616" result="Failed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.052418" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1142" name="BonfireRestSwitchesCheckpointHealsAndResetsReturningMobs" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BonfireRestSwitchesCheckpointHealsAndResetsReturningMobs" methodname="BonfireRestSwitchesCheckpointHealsAndResetsReturningMobs" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="643203657" result="Failed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:31Z" duration="0.050460" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1148" name="BonfireUpgradeConsumesExperienceAndUpdatesPlayerCaps" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BonfireUpgradeConsumesExperienceAndUpdatesPlayerCaps" methodname="BonfireUpgradeConsumesExperienceAndUpdatesPlayerCaps" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1524224849" result="Failed" start-time="2026-09-26 06:48:31Z" end-time="2026-09-26 06:48:32Z" duration="0.049826" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1162" name="BossBoundaryBlocksEscapeAndSimultaneousDeathIsFailure" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossBoundaryBlocksEscapeAndSimultaneousDeathIsFailure" methodname="BossBoundaryBlocksEscapeAndSimultaneousDeathIsFailure" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1013352318" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.050482" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1171" name="BossDoesNotRerollWhileWaitingForItsAttackCommit" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossDoesNotRerollWhileWaitingForItsAttackCommit" methodname="BossDoesNotRerollWhileWaitingForItsAttackCommit" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1515075940" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.052346" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1158" name="BossForcesLockCannotDisengageAndVictoryPersists" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossForcesLockCannotDisengageAndVictoryPersists" methodname="BossForcesLockCannotDisengageAndVictoryPersists" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1455884414" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.050162" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1173" name="BossPerilousBladeHitsThroughGuardButRespectsDodgeInvulnerability" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossPerilousBladeHitsThroughGuardButRespectsDodgeInvulnerability" methodname="BossPerilousBladeHitsThroughGuardButRespectsDodgeInvulnerability" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="581621931" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.050991" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1170" name="BossUsesReproducibleWeightedAttacksAndWarningTracksPerilousStartup" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossUsesReproducibleWeightedAttacksAndWarningTracksPerilousStartup" methodname="BossUsesReproducibleWeightedAttacksAndWarningTracksPerilousStartup" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1134776074" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.051694" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1167" name="ChargeReleaseReaimsAndKeepsBladeForwardAligned" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.ChargeReleaseReaimsAndKeepsBladeForwardAligned" methodname="ChargeReleaseReaimsAndKeepsBladeForwardAligned" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="422223347" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.055634" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1150" name="CombatMobRewardUpdatesSafeSaveWithoutSavingCombatPosition" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.CombatMobRewardUpdatesSafeSaveWithoutSavingCombatPosition" methodname="CombatMobRewardUpdatesSafeSaveWithoutSavingCombatPosition" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="358142682" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.052829" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1155" name="FactionsRejectEnemyDamageAndHitFeedbackIsDeliveredOnce" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FactionsRejectEnemyDamageAndHitFeedbackIsDeliveredOnce" methodname="FactionsRejectEnemyDamageAndHitFeedbackIsDeliveredOnce" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1999783921" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.050851" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1147" name="FailedBonfireSaveDoesNotActivateOrApplyRest" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FailedBonfireSaveDoesNotActivateOrApplyRest" methodname="FailedBonfireSaveDoesNotActivateOrApplyRest" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="568151399" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.049652" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1144" name="FailedFastTravelSaveDoesNotMoveOrChangeCheckpoint" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FailedFastTravelSaveDoesNotMoveOrChangeCheckpoint" methodname="FailedFastTravelSaveDoesNotMoveOrChangeCheckpoint" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="188447344" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.053309" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1149" name="FailedUpgradeSaveKeepsExperienceAndAttributes" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FailedUpgradeSaveKeepsExperienceAndAttributes" methodname="FailedUpgradeSaveKeepsExperienceAndAttributes" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1913869211" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.054361" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1143" name="FastTravelUsesOnlyUnlockedBonfiresAndMakesDestinationRespawnPoint" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FastTravelUsesOnlyUnlockedBonfiresAndMakesDestinationRespawnPoint" methodname="FastTravelUsesOnlyUnlockedBonfiresAndMakesDestinationRespawnPoint" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1315719844" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.051564" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1168" name="FollowupAndExecutionUseSelectedDirection" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FollowupAndExecutionUseSelectedDirection" methodname="FollowupAndExecutionUseSelectedDirection" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="337620371" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.051374" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1141" name="FreshStartHasThreeMobsBossAndSafeSave" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FreshStartHasThreeMobsBossAndSafeSave" methodname="FreshStartHasThreeMobsBossAndSafeSave" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="704555615" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.057234" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1169" name="GuardTurnsTowardEachMobButBreakAndPerilousStillHit" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.GuardTurnsTowardEachMobButBreakAndPerilousStillHit" methodname="GuardTurnsTowardEachMobButBreakAndPerilousStillHit" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="247790674" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.053602" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1174" name="HomeContinueNewGameConfirmationAndRepeatedSceneChanges" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.HomeContinueNewGameConfirmationAndRepeatedSceneChanges" methodname="HomeContinueNewGameConfirmationAndRepeatedSceneChanges" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="2137586082" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.054491" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1154" name="InteractionResetsTimerAndLeashCancelsAttack" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.InteractionResetsTimerAndLeashCancelsAttack" methodname="InteractionResetsTimerAndLeashCancelsAttack" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1389287538" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.062783" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1156" name="LockSelectsScreenCenterAndUnlocksWithoutEndingCombat" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.LockSelectsScreenCenterAndUnlocksWithoutEndingCombat" methodname="LockSelectsScreenCenterAndUnlocksWithoutEndingCombat" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1012784491" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:32Z" duration="0.053286" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1160" name="MiddleMouseBindingAndFreezeReleaseDoNotQueueAttack" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.MiddleMouseBindingAndFreezeReleaseDoNotQueueAttack" methodname="MiddleMouseBindingAndFreezeReleaseDoNotQueueAttack" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="862473144" result="Failed" start-time="2026-09-26 06:48:32Z" end-time="2026-09-26 06:48:33Z" duration="0.050650" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1164" name="MobLockDoesNotSteerMovementOrCameraButAimsCommittedAttack" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.MobLockDoesNotSteerMovementOrCameraButAimsCommittedAttack" methodname="MobLockDoesNotSteerMovementOrCameraButAimsCommittedAttack" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1022674625" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.050666" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1152" name="MultipleParticipantsAndSingleDeathDoNotStopWorld" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.MultipleParticipantsAndSingleDeathDoNotStopWorld" methodname="MultipleParticipantsAndSingleDeathDoNotStopWorld" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="2019630575" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.052044" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1161" name="OcclusionDiscardsCandidatesAndBreaksLockAfterOneSecond" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.OcclusionDiscardsCandidatesAndBreaksLockAfterOneSecond" methodname="OcclusionDiscardsCandidatesAndBreaksLockAfterOneSecond" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1769889743" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.052332" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1172" name="OverShoulderCameraAvoidsWallAndBossLockFramesTarget" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.OverShoulderCameraAvoidsWallAndBossLockFramesTarget" methodname="OverShoulderCameraAvoidsWallAndBossLockFramesTarget" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1404178428" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.053745" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1159" name="PlayerDeathKeepsSafeSaveAndRetryLoadsIt" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.PlayerDeathKeepsSafeSaveAndRetryLoadsIt" methodname="PlayerDeathKeepsSafeSaveAndRetryLoadsIt" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1616543801" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.049633" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1151" name="RecoveryIsFrameRateIndependentAndPauseFreezesIt" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.RecoveryIsFrameRateIndependentAndPauseFreezesIt" methodname="RecoveryIsFrameRateIndependentAndPauseFreezesIt" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="403387791" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.048995" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1146" name="RestIsRejectedDuringBossCombatEvenAtBonfireRange" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.RestIsRejectedDuringBossCombatEvenAtBonfireRange" methodname="RestIsRejectedDuringBossCombatEvenAtBonfireRange" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1402235302" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.049637" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1145" name="RestIsRejectedDuringCombatOrWhilePlayerIsNotNeutral" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.RestIsRejectedDuringCombatOrWhilePlayerIsNotNeutral" methodname="RestIsRejectedDuringCombatOrWhilePlayerIsNotNeutral" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1652999151" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.050325" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1157" name="SaveRestoresResourcesAndDefeatedEnemiesButClearsTransientActions" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.SaveRestoresResourcesAndDefeatedEnemiesButClearsTransientActions" methodname="SaveRestoresResourcesAndDefeatedEnemiesButClearsTransientActions" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="306137403" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.049246" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1166" name="SideLockedSlashUsesTurnedBladeAndActuallyConnects" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.SideLockedSlashUsesTurnedBladeAndActuallyConnects" methodname="SideLockedSlashUsesTurnedBladeAndActuallyConnects" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1051695857" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.050293" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1163" name="TimeoutAndFlowAreConsistentAcrossThirtySixtyAndOneTwenty" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.TimeoutAndFlowAreConsistentAcrossThirtySixtyAndOneTwenty" methodname="TimeoutAndFlowAreConsistentAcrossThirtySixtyAndOneTwenty" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1629626854" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.048630" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1153" name="TimeoutRearmsOnlyAfterLeavingAndReturning" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.TimeoutRearmsOnlyAfterLeavingAndReturning" methodname="TimeoutRearmsOnlyAfterLeavingAndReturning" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1481865015" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.050906" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.EnemyController:Initialize (Milkfrog.CombatDemo.MvpWorld) (at Assets/CombatDemo/Runtime/MVP/EnemyController.cs:31)
+Milkfrog.CombatDemo.MvpWorld:Awake () (at Assets/CombatDemo/Runtime/MVP/MvpWorld.cs:50)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Rebake the trace for BossPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1175" name="PhaseThreeTests" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" testcasecount="7" result="Failed" site="Child" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.287846" total="7" passed="0" failed="7" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1180" name="ChargedThrustCannotDamageThroughAWall" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.ChargedThrustCannotDamageThroughAWall" methodname="ChargedThrustCannotDamageThroughAWall" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="617833723" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.038153" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1179" name="DodgeCannotPassThroughEnemyAndHitInterruptsMovement" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.DodgeCannotPassThroughEnemyAndHitInterruptsMovement" methodname="DodgeCannotPassThroughEnemyAndHitInterruptsMovement" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="1840401523" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.040411" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1177" name="DodgeDistanceDirectionAndWallCollision" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.DodgeDistanceDirectionAndWallCollision" methodname="DodgeDistanceDirectionAndWallCollision" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="471952826" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.040571" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1178" name="SnapshotPriorityFreezeReleaseFocusAndResetDoNotQueueAttacks" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.SnapshotPriorityFreezeReleaseFocusAndResetDoNotQueueAttacks" methodname="SnapshotPriorityFreezeReleaseFocusAndResetDoNotQueueAttacks" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="1639881483" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.040094" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1182" name="TapSlashesHoldThrustsAndShiftDodgesWhileSpaceJumps" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.TapSlashesHoldThrustsAndShiftDodgesWhileSpaceJumps" methodname="TapSlashesHoldThrustsAndShiftDodgesWhileSpaceJumps" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="15732268" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.040597" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1176" name="ThrustFollowsItsOwnBladeAndHitsOnceAtAllFrameRates" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.ThrustFollowsItsOwnBladeAndHitsOnceAtAllFrameRates" methodname="ThrustFollowsItsOwnBladeAndHitsOnceAtAllFrameRates" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="2074911070" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.042965" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1181" name="ThrustVisualMatchesBakedTraceAndResetClearsTrail" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.ThrustVisualMatchesBakedTraceAndResetClearsTrail" methodname="ThrustVisualMatchesBakedTraceAndResetClearsTrail" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="1414831373" result="Failed" start-time="2026-09-26 06:48:33Z" end-time="2026-09-26 06:48:33Z" duration="0.043109" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[SetUp : Unhandled log message: '[Error] Rebake the trace for EnemyPerilous after changing its clip or phase markers.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                  <stack-trace><![CDATA[Milkfrog.CombatDemo.CombatActor:Initialize (Milkfrog.CombatDemo.CombatTuning) (at Assets/CombatDemo/Runtime/CombatActor.cs:74)
+Milkfrog.CombatDemo.CombatDemoSession:Awake () (at Assets/CombatDemo/Runtime/CombatDemoSession.cs:31)
+
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Rebake the trace for EnemyPerilous after changing its clip or phase markers.
+Saving results to: C:/Users/pigeon/AppData/LocalLow/DefaultCompany/milkfrog\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

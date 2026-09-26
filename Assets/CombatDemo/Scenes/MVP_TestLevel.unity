@@ -1164,7 +1164,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd0a2985f77434fbccac4e9bc618e51, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.MobEnemy
 --- !u!1 &412284554
 GameObject:
@@ -1857,6 +1857,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &881040632
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 12173436339224510, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_Name
+      value: GuardianKey
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 810712437468829370, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0f21d55d2fe7d664090e60411ce3d4bb, type: 3}
 --- !u!1 &904979487
 GameObject:
   m_ObjectHideFlags: 0
@@ -1996,7 +2053,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52c7fc9341e54d8c9b0065c2ce0f11e0, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.BonfireCheckpoint
   stableId: camp-start
   displayName: "\u8D77\u70B9\u7BDD\u706B"
@@ -2019,6 +2076,63 @@ Transform:
   - {fileID: 1045751239}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1004371976
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553174042130672080, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3985986152788987656, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
+      propertyPath: m_Name
+      value: GuardianGate
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5428db6a32803174586bd9006ac971e4, type: 3}
 --- !u!1 &1045751238
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,7 +2752,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d810d9f993964ca2b29076031dc6e1b4, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.BossEnemy
 --- !u!1 &1236187136
 GameObject:
@@ -2779,7 +2893,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52c7fc9341e54d8c9b0065c2ce0f11e0, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.BonfireCheckpoint
   stableId: camp-before-boss
   displayName: "\u5B88\u95E8\u7BDD\u706B"
@@ -3100,7 +3214,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd0a2985f77434fbccac4e9bc618e51, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.MobEnemy
 --- !u!1 &1376533831
 GameObject:
@@ -3922,12 +4036,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c6f0dc0357c9c44f88bdb31af227c44, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.DemoCamera
   player: {fileID: 1676224571}
   enemy: {fileID: 0}
   offset: {x: 3, y: 5, z: -7}
   smooth: 8
+  verticalSmooth: 3.5
   avoidObstacles: 1
   followBehindPlayer: 0
   lockOn: 0
@@ -4127,7 +4242,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c21479675121ed54dbeac7039b306ef3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatActor
 --- !u!4 &1676224571 stripped
 Transform:
@@ -5530,7 +5645,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd0a2985f77434fbccac4e9bc618e51, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.MobEnemy
 --- !u!1 &2030929294
 GameObject:
@@ -5660,7 +5775,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 742ac2c9aba36cb408c0ff45c774a71d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatFeedback
   session: {fileID: 0}
   actors: []
@@ -5685,7 +5800,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ffddd2d880645958d2cfe8ba5690047, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.MvpWorld
   settings: {fileID: 11400000, guid: 5665f7e689473ce48bdcd994e731b1f5, type: 2}
   player: {fileID: 1676224570}
@@ -5702,6 +5817,7 @@ MonoBehaviour:
   bonfires:
   - {fileID: 945827918}
   - {fileID: 1240800350}
+  quest: {fileID: 11400000, guid: bf8938a305bf415429f84113a9b26876, type: 2}
   spawn: {x: 0, y: 0.02, z: -35}
   manualSimulation: 0
 --- !u!114 &2050634376
@@ -5714,7 +5830,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50d5e394d89940569e1d051a99fb0515, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.MvpHud
   showDebug: 0
 --- !u!114 &2050634377
@@ -5727,7 +5843,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf58d623a2c84aa8bd6d10e9f95ac146, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.MvpMenuView
 --- !u!114 &2050634378
 MonoBehaviour:
@@ -5739,7 +5855,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a63b048a10484132bc64cfa42cb5865d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.GameFlowController
   mainMenu: 0
 --- !u!4 &2050634379
@@ -6208,3 +6324,5 @@ SceneRoots:
   - {fileID: 514694112}
   - {fileID: 945827919}
   - {fileID: 1240800351}
+  - {fileID: 881040632}
+  - {fileID: 1004371976}

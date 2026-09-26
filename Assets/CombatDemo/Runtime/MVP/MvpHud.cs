@@ -8,6 +8,7 @@ namespace Milkfrog.CombatDemo
         public Func<MvpHudData> Read;
         public Func<bool> ReadPerilousWarning;
         public Func<bool> ReadVisible;
+        public Func<string> ReadInteractionPrompt;
         public bool showDebug;
 
         const float RefreshInterval = .1f;
@@ -26,6 +27,7 @@ namespace Milkfrog.CombatDemo
         GUIStyle perilousHintStyle;
         GUIStyle resourceStyle;
         GUIStyle bonfirePromptStyle;
+        GUIStyle objectiveStyle;
         Font perilousFont;
         string requestedBonfirePrompt;
 
@@ -82,6 +84,10 @@ namespace Milkfrog.CombatDemo
                 DrawBoss(width);
                 DrawPlayerBars(width, height);
                 DrawBonfirePrompt(width, height);
+                if (!string.IsNullOrEmpty(data.objective))
+                {
+                    GUI.Label(new Rect(width - 405f, 118f, 365f, 64f), data.objective, objectiveStyle);
+                }
                 DrawPerilousWarning(width, height);
                 DrawReticle(width, height);
                 DrawEnemies(width, scale);
@@ -93,7 +99,7 @@ namespace Milkfrog.CombatDemo
                 }
 
                 GUI.Label(new Rect(28f, height - 31f, width - 56f, 22f),
-                    "WASD MOVE   MOUSE LOOK   MMB LOCK   SPACE DODGE   LMB ATTACK   RMB GUARD   E REST   C STATS   ESC MENU",
+                    "WASD MOVE   MOUSE LOOK   MMB LOCK   SHIFT DODGE   SPACE JUMP   LMB ATTACK   RMB GUARD   E INTERACT   C STATS   ESC MENU",
                     hintStyle);
             }
             finally
@@ -126,6 +132,7 @@ namespace Milkfrog.CombatDemo
             resourceStyle = Style(15, Text, TextAnchor.MiddleLeft);
             bonfirePromptStyle = Style(22, Text, TextAnchor.MiddleCenter);
             bonfirePromptStyle.font = perilousFont;
+            objectiveStyle = new GUIStyle(bonfirePromptStyle) { fontSize = 19, alignment = TextAnchor.UpperRight, wordWrap = true };
             perilousWarningStyle = Style(92, new Color(1f, .08f, .035f), TextAnchor.MiddleCenter);
             perilousWarningStyle.font = perilousFont;
             perilousHintStyle = Style(24, new Color(1f, .91f, .82f), TextAnchor.MiddleCenter);
@@ -214,6 +221,7 @@ namespace Milkfrog.CombatDemo
 
         void DrawBonfirePrompt(float width, float height)
         {
+            if (ReadInteractionPrompt != null) data.bonfirePrompt = ReadInteractionPrompt();
             if (string.IsNullOrEmpty(data.bonfirePrompt))
                 return;
 
@@ -387,6 +395,7 @@ namespace Milkfrog.CombatDemo
         public int resolve;
         public int power;
         public float attackMultiplier = 1f;
+        public string objective;
         public string bonfirePrompt = string.Empty;
         public float charge;
         public bool charging;

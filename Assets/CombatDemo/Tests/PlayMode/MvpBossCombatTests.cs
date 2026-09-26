@@ -47,6 +47,16 @@ namespace Milkfrog.CombatDemo.Tests
             if (!string.IsNullOrEmpty(directory) && Directory.Exists(directory)) Directory.Delete(directory, true);
         }
 
+        // Explicit prerequisite fixture for tests of existing boss combat rules.
+        void UnlockBossFixture()
+        {
+            var snapshot = world.Snapshot();
+            snapshot.unlockedCheckpointIds = new[] { BonfireCheckpoint.StartId, BonfireCheckpoint.BossApproachId };
+            snapshot.worldState.collectedObjects = new[] { WorldStateService.KeyObjectId };
+            snapshot.worldState.keyItems = new[] { WorldStateService.KeyItemId };
+            snapshot.worldState.openedDoors = new[] { WorldStateService.GateId };
+            world.Restore(snapshot);
+        }
         static void Place(CombatActor actor, Vector3 position)
         {
             actor.Motor.enabled = false;
@@ -57,6 +67,7 @@ namespace Milkfrog.CombatDemo.Tests
 
         EnemyController EngageBoss()
         {
+            UnlockBossFixture();
             var boss = world.enemies[3];
             Place(world.player, boss.Home + Vector3.back * 1f);
             world.Director.Tick(.01f);

@@ -139,7 +139,7 @@ namespace Milkfrog.CombatDemo.Tests
         public void UnsupportedVersionIsRejectedAndPreserved()
         {
             string primaryPath = Path.Combine(_testDirectory, "save.json");
-            string unsupported = JsonUtility.ToJson(new PlayerSnapshot { version = 3 });
+            string unsupported = JsonUtility.ToJson(new PlayerSnapshot { version = SaveService.CurrentVersion + 1 });
             File.WriteAllText(primaryPath, unsupported);
 
             var service = new SaveService(_testDirectory);
@@ -148,7 +148,7 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(loaded, Is.Null);
             Assert.That(service.LastMessage, Is.EqualTo("Unsupported save version."));
             Assert.That(File.ReadAllText(primaryPath), Is.EqualTo(unsupported));
-            Assert.That(service.TrySave(new PlayerSnapshot { version = 3 }), Is.False);
+            Assert.That(service.TrySave(new PlayerSnapshot { version = SaveService.CurrentVersion + 1 }), Is.False);
             Assert.That(service.LastMessage, Is.EqualTo("Unsupported save version."));
         }
 
