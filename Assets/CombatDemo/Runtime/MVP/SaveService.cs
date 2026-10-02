@@ -9,7 +9,7 @@ namespace Milkfrog.CombatDemo
     [Serializable]
     public sealed class PlayerSnapshot
     {
-        public int version = 3;
+        public int version = 4;
         public string levelId = "MVP_TestLevel";
         public Vector3 position;
         public float yaw;
@@ -22,13 +22,14 @@ namespace Milkfrog.CombatDemo
         public string[] unlockedCheckpointIds = { BonfireCheckpoint.StartId };
         public WorldStateData worldState = new WorldStateData();
         public QuestProgressData questProgress = new QuestProgressData();
+        public InventoryData inventory = new InventoryData();
         public int experience;
         public int vitality, resolve, power;
     }
 
     public sealed class SaveService
     {
-        public const int CurrentVersion = 3;
+        public const int CurrentVersion = 4;
         private const string CurrentLevelId = "MVP_TestLevel";
         private const string SaveFileName = "save.json";
         private const string BackupFileName = "save.backup.json";
@@ -233,7 +234,7 @@ namespace Milkfrog.CombatDemo
             unlocked.CopyTo(snapshot.unlockedCheckpointIds);
             Array.Sort(snapshot.unlockedCheckpointIds, StringComparer.Ordinal);
 
-            if (sourceVersion < CurrentVersion)
+            if (sourceVersion < 3)
             {
                 snapshot.version = CurrentVersion;
                 snapshot.worldState = new WorldStateData();
@@ -253,6 +254,14 @@ namespace Milkfrog.CombatDemo
                     snapshot.questProgress.completedSteps = new[] { "light-camp", "find-key", "open-gate", "defeat-boss" };
                 }
             }
+            if (sourceVersion < 4)
+            {
+                var inventory = new InventoryService();
+                foreach (string id in snapshot.worldState.keyItems)
+                    if (!string.IsNullOrWhiteSpace(id) && !inventory.HasItem(id)) inventory.TryAdd(id, 1);
+                inventory.WriteTo(snapshot);
+                snapshot.version = CurrentVersion;
+            }
             return SnapshotReadResult.Valid(snapshot, sourceVersion);
         }
 
@@ -266,7 +275,7 @@ namespace Milkfrog.CombatDemo
             if (index >= json.Length || json[index++] != '{')
                 return false;
 
-            bool[] found = new bool[15];
+            bool[] found = new bool[16];
             while (index < json.Length)
             {
                 SkipWhitespace(json, ref index);
@@ -304,7 +313,7 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
-            for (int i = 0; i < (version == 1 ? 8 : version == 2 ? 13 : 15); i++) if (!found[i]) return false;
+            for (int i = 0; i < (version == 1 ? 8 : version == 2 ? 13 : version == 3 ? 15 : 16); i++) if (!found[i]) return false;
             return true;
         }
 
@@ -327,6 +336,7 @@ namespace Milkfrog.CombatDemo
                 case "power": return 12;
                 case "worldState": return 13;
                 case "questProgress": return 14;
+                case "inventory": return 15;
                 default: return -1;
             }
         }
@@ -411,7 +421,7 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
-            if (snapshot.version != CurrentVersion && !(allowLegacy && (snapshot.version == 1 || snapshot.version == 2)))
+            if (snapshot.version != CurrentVersion && !(allowLegacy && snapshot.version >= 1 && snapshot.version <= 3))
             {
                 message = "Unsupported save version.";
                 return false;
@@ -442,9 +452,11 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
-            if (snapshot.version == CurrentVersion && (snapshot.worldState == null || snapshot.questProgress == null ||
+            if (snapshot.version >= 3 && (snapshot.worldState == null || snapshot.questProgress == null ||
                 snapshot.worldState.collectedObjects == null || snapshot.worldState.keyItems == null || snapshot.worldState.openedDoors == null))
             { message = "Save world state is invalid."; return false; }
+            if (snapshot.version >= 4 && !InventoryService.IsValid(snapshot.inventory))
+            { message = "Save inventory is invalid."; return false; }
             message = null;
             return true;
         }

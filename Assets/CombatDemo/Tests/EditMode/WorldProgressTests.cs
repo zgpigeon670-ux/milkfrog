@@ -35,7 +35,7 @@ namespace Milkfrog.CombatDemo.Tests
                 unlockedCheckpointIds = new[] { BonfireCheckpoint.StartId, BonfireCheckpoint.BossApproachId } };
             File.WriteAllText(Path.Combine(directory, "save.json"), JsonUtility.ToJson(snapshot));
             var store = new SaveService(directory); Assert.That(store.TryLoad(out var loaded), Is.True, store.LastMessage);
-            Assert.That(loaded.version, Is.EqualTo(3)); Assert.That(loaded.experience, Is.EqualTo(37)); Assert.That(loaded.vitality, Is.EqualTo(2));
+            Assert.That(loaded.version, Is.EqualTo(SaveService.CurrentVersion)); Assert.That(loaded.experience, Is.EqualTo(37)); Assert.That(loaded.vitality, Is.EqualTo(2));
             var state = new WorldStateService(); state.Restore(loaded.worldState);
             Assert.That(state.IsDoorOpen(WorldStateService.GateId), Is.EqualTo(won));
             Assert.That(new QuestProgressService(definition).Evaluate(loaded).completed, Is.EqualTo(won));

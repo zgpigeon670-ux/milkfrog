@@ -101,6 +101,21 @@ namespace Milkfrog.CombatDemo
             if (Health <= 0) Change(CombatState.Dead);
         }
 
+        public bool CanRecoverWithItem(float health, float posture)
+        {
+            return CanAct && Health > 0 && health >= 0 && posture >= 0 &&
+                !float.IsNaN(health) && !float.IsInfinity(health) && !float.IsNaN(posture) && !float.IsInfinity(posture) &&
+                ((health > 0 && Health < Tuning.maxHealth) || (posture > 0 && Posture > 0));
+        }
+
+        public bool TryRecoverWithItem(float health, float posture)
+        {
+            if (!CanRecoverWithItem(health, posture)) return false;
+            Health = Math.Min(Tuning.maxHealth, Health + health);
+            Posture = Math.Max(0, Posture - posture);
+            return true;
+        }
+
         public void ApplyGrowth(float maximumHealth, float maximumPosture, float offensiveMultiplier)
         {
             if (maximumHealth <= 0 || maximumPosture <= 0 || offensiveMultiplier <= 0 ||

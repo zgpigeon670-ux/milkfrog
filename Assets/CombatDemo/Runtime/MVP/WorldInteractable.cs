@@ -23,7 +23,7 @@ namespace Milkfrog.CombatDemo
             if (kind == WorldInteractionKind.SealedDoor)
             {
                 if (!world.IsBonfireUnlocked(BonfireCheckpoint.BossApproachId)) return "请先点亮守门篝火";
-                if (!world.WorldState.HasItem(itemId)) return "需要守门钥匙";
+                if (!world.Inventory.HasItem(itemId)) return "需要守门钥匙";
             }
             return null;
         }

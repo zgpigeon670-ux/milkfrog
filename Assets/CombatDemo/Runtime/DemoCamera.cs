@@ -12,6 +12,7 @@ namespace Milkfrog.CombatDemo
         public bool followBehindPlayer;
         public bool lockOn = true;
         public bool freeOrbit;
+        public bool Suspended { get; set; }
         public float yaw, pitch = 8, sensitivity = .12f;
         public void Look(Vector2 delta)
         {
@@ -63,6 +64,7 @@ namespace Milkfrog.CombatDemo
 
         public void Step(float dt)
         {
+            if (Suspended) return;
             if (freeOrbit) { StepOrbit(dt); return; }
             if (player == null || enemy == null) return;
             Vector3 focus = Vector3.Lerp(player.position, enemy.position, followBehindPlayer ? enemyFocusWeight : .45f) + Vector3.up * 1.2f;

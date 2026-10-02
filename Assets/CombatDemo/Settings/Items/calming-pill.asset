@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e1ac810f6645d646aff39e1307e9c08, type: 3}
+  m_Name: calming-pill
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.ItemDefinition
+  stableId: calming-pill
+  displayName: "\u5B9A\u5FC3\u4E38"
+  category: 0
+  icon: {fileID: -4329222742078750828, guid: ffa1cc4ae75faa24d9bbb7ba8b7d083e, type: 3}
+  description: "\u5E73\u590D\u547C\u5438\u3001\u7A33\u5B9A\u67B6\u52BF\u3002\u53EF\u5728\u6218\u6597\u4E2D\u4F7F\u7528\uFF0C\u67B6\u52BF\u5D29\u6E83\u671F\u95F4\u65E0\u6CD5\u4F7F\u7528\u3002"
+  restoreHealth: 0
+  reducePosture: 40

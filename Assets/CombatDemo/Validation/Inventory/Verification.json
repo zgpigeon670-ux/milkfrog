@@ -1,0 +1,115 @@
+{
+  "date": "2026-10-02",
+  "unityVersion": "6000.6.2f1",
+  "baselineCommit": "a766028adced121822717b5a1c8e6e8a2a3bd17a",
+  "branch": "codex/inventory-system",
+  "validationCopy": "E:\\UNITY\\PROJECTS\\milkfrog-inventory-validation-20261002",
+  "sourceFilesChecked": 239,
+  "sourceMismatchCount": 0,
+  "tests": [
+    {
+      "platform": "EditMode",
+      "baselinePassed": 68,
+      "baselineTotal": 75,
+      "passed": 90,
+      "total": 97,
+      "inventoryPassed": 22,
+      "inventoryTotal": 22,
+      "newFailures": [],
+      "failedCases": [
+        "Milkfrog.CombatDemo.Tests.ChargeCoreTests.FullChargeHoldsAndSnapshotsDamageInsteadOfReadingMutableDefinition",
+        "Milkfrog.CombatDemo.Tests.ChargeCoreTests.GuardAndDodgeCancelChargeButNotAReleasedSlash(False)",
+        "Milkfrog.CombatDemo.Tests.ChargeCoreTests.HoldingPastTheWindupChargesWithoutReleasingEarly(0.25f,Light,False)",
+        "Milkfrog.CombatDemo.Tests.ChargeCoreTests.ReleasedThrustCannotBeCancelled",
+        "Milkfrog.CombatDemo.Tests.ChargeCoreTests.ShortTapStartsTheSlashImmediately",
+        "Milkfrog.CombatDemo.Tests.ChargeCoreTests.ThrustCanBeBlockedOrDeflected(False)",
+        "Milkfrog.CombatDemo.Tests.ChargeCoreTests.ThrustCanBeBlockedOrDeflected(True)"
+      ]
+    },
+    {
+      "platform": "PlayMode",
+      "baselinePassed": 76,
+      "baselineTotal": 86,
+      "passed": 92,
+      "total": 102,
+      "inventoryPassed": 16,
+      "inventoryTotal": 16,
+      "newFailures": [],
+      "failedCases": [
+        "Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.PerilousDeflectFailsAndDodgeInvulnerabilityAvoidsIt",
+        "Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.RecoveryGuardCancelAndFollowupAreAvailable",
+        "Milkfrog.CombatDemo.Tests.MvpFlowTests.ChargeReleaseReaimsAndKeepsBladeForwardAligned",
+        "Milkfrog.CombatDemo.Tests.MvpFlowTests.FollowupAndExecutionUseSelectedDirection",
+        "Milkfrog.CombatDemo.Tests.MvpFlowTests.MiddleMouseBindingAndFreezeReleaseDoNotQueueAttack",
+        "Milkfrog.CombatDemo.Tests.MvpFlowTests.MobLockDoesNotSteerMovementOrCameraButAimsCommittedAttack",
+        "Milkfrog.CombatDemo.Tests.PhaseThreeTests.SnapshotPriorityFreezeReleaseFocusAndResetDoNotQueueAttacks",
+        "Milkfrog.CombatDemo.Tests.PhaseThreeTests.TapSlashesHoldThrustsAndShiftDodgesWhileSpaceJumps",
+        "Milkfrog.CombatDemo.Tests.PhaseThreeTests.ThrustFollowsItsOwnBladeAndHitsOnceAtAllFrameRates",
+        "Milkfrog.CombatDemo.Tests.PhaseThreeTests.ThrustVisualMatchesBakedTraceAndResetClearsTrail"
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "00.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "DC802CE4C111F259E475EF7743FB3D4FABB8527FF814D56F4F218829ACA68D27"
+    },
+    {
+      "file": "01.png",
+      "width": 640,
+      "height": 360,
+      "sha256": "A4A5D7CB1E89F4BBB9C39CDA01149B3DB205F5470612815E1E0CE5F7049C0BA4"
+    },
+    {
+      "file": "02.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "EBBA54122EEF6507D3BF83318A3BDB984E1E2B3A3D5B7F13D84F87D04C6C0A79"
+    },
+    {
+      "file": "03.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "D4EA0B204947DD4EADABC470FFEE8DECB1697BBF06A90CBCD6A7E0C7059EA277"
+    },
+    {
+      "file": "04.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "1D48FFACC373124D15E6B71F1D3325A20F7917E7BDDE9B875304F957840E551C"
+    },
+    {
+      "file": "05.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "496435FA95DF0671ECAA40C066A34483782D5B4C1C6FB15F3DC4F7018646191B"
+    },
+    {
+      "file": "06.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "A1B56A13A1416B8404A62BC8425C3201CDD13B0B4987F8F571ADD9029AA2E772"
+    },
+    {
+      "file": "07.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "E228C36BFB1F3A2CE91E7C752052E985EFCBD39988D49D10A2E883D1E9F533F5"
+    },
+    {
+      "file": "08.png",
+      "width": 640,
+      "height": 360,
+      "sha256": "BA954D6B7205AC7D41876660DDDF8F0863FE6415AEEF977A22D93B813FF74D7B"
+    }
+  ],
+  "buildExitCode": 0,
+  "buildExecutable": "E:\\UNITY\\PROJECTS\\milkfrog\\Builds\\MilkfrogMVP-Inventory\\MilkfrogMVP.exe",
+  "buildExecutableBytes": 667136,
+  "buildAssemblySHA256": "898669CD0B540854248ABF6F4767A9C426C3CDE87FC95A2ABF78256336F58CEE",
+  "humanPlaytestCompleted": false,
+  "computerUseUsed": false,
+  "githubPushed": false
+}

@@ -11,7 +11,7 @@ namespace Milkfrog.CombatDemo
     public sealed class DemoInput : System.IDisposable
     {
         readonly InputActionMap map = new InputActionMap("CombatDemo");
-        readonly InputAction move, attack, guard, reset, mode, dodge, jump, lockOn, look, pause, interact, attributes;
+        readonly InputAction move, attack, guard, reset, mode, dodge, jump, lockOn, look, pause, interact, attributes, inventory;
         public DemoInput(string lockBinding = "<Keyboard>/tab")
         {
             move = map.AddAction("Move", InputActionType.Value);
@@ -29,6 +29,7 @@ namespace Milkfrog.CombatDemo
             pause = map.AddAction("Pause", InputActionType.Button, "<Keyboard>/escape");
             interact = map.AddAction("Interact", InputActionType.Button, "<Keyboard>/e");
             attributes = map.AddAction("Attributes", InputActionType.Button, "<Keyboard>/c");
+            inventory = map.AddAction("Inventory", InputActionType.Button, "<Keyboard>/b");
             map.Enable();
         }
         public Vector2 Move => move.ReadValue<Vector2>();
@@ -36,6 +37,7 @@ namespace Milkfrog.CombatDemo
         public bool PausePressed => pause.WasPressedThisFrame();
         public bool InteractPressed => interact.WasPressedThisFrame();
         public bool AttributesPressed => attributes.WasPressedThisFrame();
+        public bool InventoryPressed => inventory.WasPressedThisFrame();
         public bool AttackPressed => attack.WasPressedThisFrame();
         public bool GuardHeld => guard.IsPressed();
         public bool GuardPressed => guard.WasPressedThisFrame();
