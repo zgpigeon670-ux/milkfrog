@@ -85,7 +85,7 @@ namespace Milkfrog.CombatDemo.Tests
         [UnityTest] public IEnumerator ThrustVisualMatchesBakedTraceAndResetClearsTrail()
         {
             session.enemy.Motor.enabled=false;session.enemy.transform.position+=Vector3.forward*5;session.enemy.Motor.enabled=true;
-            Press();Advance(.8f);Release();Advance(.25f);
+            Press();Advance(.8f);Release();Advance(.12f);
             Assert.That(session.player.Core.State,Is.EqualTo(CombatState.AttackActive));
             var player=session.player;var blade=session.playerAnimation.animator.GetBoneTransform(HumanBodyBones.RightHand).Find("Training Sword/Blade");
             for(int i=0;i<10;i++)
@@ -101,6 +101,8 @@ namespace Milkfrog.CombatDemo.Tests
         {
             session.enemy.Motor.enabled=false;session.enemy.transform.position+=Vector3.forward*6;
             Press();Advance(.05f);
+            Assert.That(session.player.Core.State,Is.EqualTo(CombatState.AttackPrepare));
+            Release();
             Assert.That(session.player.Core.State,Is.EqualTo(CombatState.AttackStartup));
             Assert.That(session.player.Core.ActiveAttack.Kind,Is.EqualTo(AttackKind.Light));
             Assert.That(session.playerAnimation.CurrentPoseClip,Is.EqualTo(session.player.lightAttack.clip));
@@ -108,8 +110,10 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(session.player.Core.IsAttacking,Is.True);
             Assert.That(session.player.Core.State,Is.Not.EqualTo(CombatState.Charging));
             session.ResetRound();Press();Advance(.8f);
-            Assert.That(session.player.Core.ActiveAttack.Kind,Is.EqualTo(AttackKind.Light));
-            Assert.That(session.player.Core.State,Is.Not.EqualTo(CombatState.Charging));
+            Assert.That(session.player.Core.State,Is.EqualTo(CombatState.Charging));
+            Release();
+            Assert.That(session.player.Core.ActiveAttack.Kind,Is.EqualTo(AttackKind.Thrust));
+            Assert.That(session.player.Core.ActiveAttack.Damage,Is.EqualTo(22).Within(.001));
             session.ResetRound();session.SubmitInput(new CombatInputFrame{dodgePressed=true,move=Vector2.left});
             Assert.That(session.player.Core.State,Is.EqualTo(CombatState.Dodge));
             Assert.That(session.playerAnimation.CurrentPoseClip.name,Is.EqualTo("Armature|Roll"));
@@ -122,8 +126,9 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(session.playerAnimation.CurrentPoseClip.name,Does.StartWith("Armature|Jump"));
             Assert.That(session.player.Core.State,Is.EqualTo(CombatState.Neutral));
             float airborne=session.player.transform.position.y;
+            Assert.That(session.player.TryJump(),Is.False,"An airborne actor cannot start another jump");
             session.SubmitInput(new CombatInputFrame{jumpPressed=true});Advance(.02f);
-            Assert.That(session.player.transform.position.y,Is.LessThan(airborne+.02f));
+            Assert.That(session.player.transform.position.y,Is.LessThan(airborne+.04f),"Existing ascent continues without restarting jump velocity");
             yield return null;
         }
     }

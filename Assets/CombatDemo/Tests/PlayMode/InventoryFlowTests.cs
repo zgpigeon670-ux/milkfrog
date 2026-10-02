@@ -46,6 +46,116 @@ namespace Milkfrog.CombatDemo.Tests
         }
         void Pick(InventoryPickup item) {Focus(item); Assert.That(world.Interactions.TryInteract(),Is.True,world.Flow.Message);}
         void PrepareMedicine() {Pick(Medicine); world.player.Core.RestoreVitals(20,60); Assert.That(world.Flow.Save(),Is.True);}
+        string MenuText(string name) => GameObject.Find("MvpMenuCanvas").GetComponentsInChildren<UnityEngine.UI.Text>()
+            .First(t => t.gameObject.name == name).text;
+        void ClickMenu(string label) => GameObject.Find("MvpMenuCanvas").GetComponentsInChildren<UnityEngine.UI.Button>()
+            .First(b => b.GetComponentInChildren<UnityEngine.UI.Text>().text == label).onClick.Invoke();
+
+        [UnityTest] public IEnumerator InventoryReturnsToQuestAndEscapeNavigatesOneLayerAtATime()
+        {
+            world.Flow.TogglePause(); ClickMenu("任务 / 属性"); ClickMenu("任务进度");
+            string questTitle = MenuText("Title");
+            world.Flow.OpenInventory(); world.Flow.Escape();
+            Assert.That(MenuText("Title"),Is.EqualTo(questTitle)); Assert.That(world.Flow.Paused,Is.True);
+            world.Flow.Escape(); Assert.That(MenuText("Title"),Is.EqualTo("角色记录"));
+            world.Flow.Escape(); Assert.That(MenuText("Title"),Is.EqualTo("PAUSED"));
+            world.Flow.Escape(); Assert.That(world.Running,Is.True); yield return null;
+        }
+        [UnityTest] public IEnumerator AttributeReturnRefreshesVitalsAndPreservesItsOriginalParent()
+        {
+            PrepareMedicine(); world.Flow.OpenAttributes(); world.Flow.OpenInventory();
+            Assert.That(world.TryUseItem("healing-medicine"),Is.True);
+            world.Flow.CloseInventory(); Assert.That(MenuText("Title"),Is.EqualTo("角色属性"));
+            Assert.That(MenuText("Subtitle"),Does.Contain("生命 60/100"));
+            world.Flow.Escape(); Assert.That(world.Running,Is.True);
+            world.Flow.TogglePause(); ClickMenu("任务 / 属性"); ClickMenu("Attributes");
+            world.Flow.OpenInventory(); world.Flow.CloseInventory(); world.Flow.Escape();
+            Assert.That(MenuText("Title"),Is.EqualTo("角色记录")); yield return null;
+        }
+        [UnityTest] public IEnumerator InventoryReturnsToFastTravelAndThenBonfire()
+        {
+            Focus(world.FindBonfire(BonfireCheckpoint.StartId)); Assert.That(world.Interactions.TryInteract(),Is.True);
+            ClickMenu("快速传送"); world.Flow.OpenInventory(); world.Flow.CloseInventory();
+            Assert.That(MenuText("Title"),Is.EqualTo("快速传送"));
+            world.Flow.Escape(); Assert.That(MenuText("Title"),Is.EqualTo(world.Flow.ActiveBonfire.displayName));
+            world.Flow.Escape(); Assert.That(world.Running,Is.True); yield return null;
+        }
+        [UnityTest] public IEnumerator PauseAndItsInventoryKeepTheCameraFrozenUntilResume()
+        {
+            world.cameraRig.Step(.01f); var position=world.gameplayCamera.transform.position;
+            var rotation=world.gameplayCamera.transform.rotation;
+            world.Flow.TogglePause(); world.cameraRig.Look(new Vector2(200,100)); world.cameraRig.Step(1);
+            Assert.That(world.gameplayCamera.transform.position,Is.EqualTo(position));
+            Assert.That(world.gameplayCamera.transform.rotation,Is.EqualTo(rotation));
+            world.Flow.OpenInventory(); world.Flow.CloseInventory(); Assert.That(world.cameraRig.Suspended,Is.True);
+            world.cameraRig.Step(1); Assert.That(world.gameplayCamera.transform.position,Is.EqualTo(position));
+            world.Flow.Escape(); Assert.That(world.cameraRig.Suspended,Is.False);
+            world.SubmitInput(new CombatInputFrame{attackPressed=true,attackHeld=true});
+            Assert.That(world.player.Core.IsPreparing,Is.False);
+            world.SubmitInput(new CombatInputFrame()); world.SubmitInput(new CombatInputFrame{attackPressed=true,attackHeld=true});
+            Assert.That(world.player.Core.IsPreparing,Is.True); yield return null;
+        }
+        [UnityTest] public IEnumerator QuantityRefreshReusesTilesAndKeepsUsableButtonFocus()
+        {
+            PrepareMedicine(); world.Flow.OpenInventory(); yield return null; yield return null;
+            var view=world.Flow.inventoryView;
+            var tile=view.content.GetComponentsInChildren<InventoryTile>().Single();
+            EventSystem.current.SetSelectedGameObject(view.useButton.gameObject);
+            view.useButton.onClick.Invoke(); yield return null;
+            Assert.That(view.content.GetComponentsInChildren<InventoryTile>().Single(),Is.SameAs(tile));
+            Assert.That(EventSystem.current.currentSelectedGameObject,Is.EqualTo(view.useButton.gameObject));
+            Assert.That(tile.count.text,Is.EqualTo("×2"));
+            view.useButton.onClick.Invoke(); yield return null;
+            Assert.That(world.player.Core.Health,Is.EqualTo(100)); Assert.That(view.useButton.interactable,Is.False);
+            Assert.That(EventSystem.current.currentSelectedGameObject,Is.EqualTo(tile.gameObject));
+            world.player.Core.RestoreVitals(20,0); Assert.That(world.TryUseItem("healing-medicine"),Is.True);
+            yield return null; yield return null;
+            Assert.That(view.content.GetComponentsInChildren<InventoryTile>().Length,Is.Zero);
+            Assert.That(EventSystem.current.currentSelectedGameObject,Is.EqualTo(view.categoryButtons[0].gameObject));
+        }
+        [UnityTest] public IEnumerator MissingInventoryReferencesLeaveFlowResumable()
+        {
+            var view=world.Flow.inventoryView; var button=view.useButton;
+            try
+            {
+                view.useButton=null; world.Flow.OpenInventory();
+                Assert.That(world.Flow.InventoryOpen,Is.False); Assert.That(world.Running,Is.True);
+                Assert.That(world.Flow.Message,Does.Contain("配置缺失")); Assert.That(world.cameraRig.Suspended,Is.False);
+            }
+            finally {view.useButton=button;}
+            yield return null;
+        }
+        [UnityTest] public IEnumerator PressingDuringAnActionCannotBufferAnAttackUntilRecovery()
+        {
+            world.player.Core.RequestAttack(); world.player.Core.Tick(.02f);
+            world.SubmitInput(new CombatInputFrame{attackPressed=true,attackHeld=true});
+            int before=world.player.Core.AttackId; world.player.Core.Tick(1);
+            world.SubmitInput(new CombatInputFrame{attackHeld=true});
+            Assert.That(world.player.Core.AttackId,Is.EqualTo(before)); Assert.That(world.player.Core.IsPreparing,Is.False);
+            world.SubmitInput(new CombatInputFrame()); world.SubmitInput(new CombatInputFrame{attackPressed=true,attackHeld=true});
+            Assert.That(world.player.Core.IsPreparing,Is.True); yield return null;
+        }
+        [UnityTest] public IEnumerator PressingDuringHitStopCannotBufferAnAttack()
+        {
+            world.feedback.Clock.Request(.1f); world.SubmitInput(new CombatInputFrame{attackPressed=true,attackHeld=true});
+            world.feedback.Clock.Reset(); world.SubmitInput(new CombatInputFrame{attackHeld=true});
+            Assert.That(world.player.Core.IsPreparing,Is.False); Assert.That(world.player.Core.AttackId,Is.Zero);
+            world.SubmitInput(new CombatInputFrame()); world.SubmitInput(new CombatInputFrame{attackPressed=true,attackHeld=true});
+            Assert.That(world.player.Core.IsPreparing,Is.True); yield return null;
+        }
+        [UnityTest] public IEnumerator ReleaseAndFreshPressInTheSameFrameDoNotRequireAnExtraIdleFrame()
+        {
+            world.player.Core.RequestAttack();
+            world.SubmitInput(new CombatInputFrame{attackPressed=true,attackHeld=true});
+            world.player.Core.Tick(1);
+            world.SubmitInput(new CombatInputFrame{attackReleased=true,attackPressed=true,attackHeld=true});
+            Assert.That(world.player.Core.IsPreparing,Is.True);
+            world.feedback.Clock.Request(.1f);
+            world.SubmitInput(new CombatInputFrame{attackReleased=true,attackPressed=true,attackHeld=true});
+            Assert.That(world.player.Core.IsPreparing,Is.False,"Releasing during hit stop cancels the previous preparation even if pressed again");
+            world.feedback.Clock.Reset(); world.SubmitInput(new CombatInputFrame{attackHeld=true});
+            Assert.That(world.player.Core.IsPreparing,Is.False); yield return null;
+        }
         [UnityTest] public IEnumerator PickupsStackPersistAndCannotBeCollectedTwice()
         {
             Pick(Medicine); Pick(Calming); Assert.That(world.Inventory.Quantity("healing-medicine"),Is.EqualTo(3));
@@ -175,6 +285,8 @@ namespace Milkfrog.CombatDemo.Tests
                 DispatchKeyboard(keyboard,new KeyboardState(Key.Escape));
                 Assert.That(world.Flow.InventoryOpen,Is.False); Assert.That(world.Running,Is.True);
                 world.SubmitInput(new CombatInputFrame()); world.SubmitInput(new CombatInputFrame{attackHeld=true,attackPressed=true});
+                Assert.That(world.player.Core.IsPreparing,Is.True);
+                world.SubmitInput(new CombatInputFrame{attackReleased=true});
                 Assert.That(world.player.Core.AttackId,Is.GreaterThan(before)); yield return null;
             }
             finally

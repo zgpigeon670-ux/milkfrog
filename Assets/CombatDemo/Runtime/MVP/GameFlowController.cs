@@ -12,16 +12,22 @@ namespace Milkfrog.CombatDemo
         public static string SaveDirectoryOverride;
         static PlayerSnapshot pending;
         public GameFlowState State { get; private set; }
-        public bool Paused { get; private set; }
+        bool paused;
+        public bool Paused
+        {
+            get => paused;
+            private set { paused = value; if (world != null && world.cameraRig != null) world.cameraRig.Suspended = value; }
+        }
         public string Message { get; private set; } = "";
         public SaveService Store { get; private set; }
         MvpWorld world;
         MvpMenuView menu;
         public BonfireCheckpoint ActiveBonfire { get; private set; }
-        bool attributesFromBonfire;
+        System.Action attributesBack;
         public bool InventoryOpen { get; private set; }
         public bool InventoryUseAllowed { get; private set; }
         bool inventoryFromPause;
+        System.Action pausedPage, pausedBack, inventoryReturn;
         public InventoryView inventoryView;
         float messageTime;
 
@@ -94,10 +100,22 @@ namespace Milkfrog.CombatDemo
         {
             if (State != GameFlowState.Playing) return;
             if (InventoryOpen) { CloseInventory(); return; }
-            if (Paused && ActiveBonfire != null) { ActiveBonfire = null; Paused = false; world.ClearInput(); SetCursor(false); menu.Hide(); return; }
+            if (Paused && ActiveBonfire != null) { ActiveBonfire = null; Paused = false; world.ClearInput(); world.BlockMenuAttack(); SetCursor(false); menu.Hide(); return; }
             Paused = !Paused; world.ClearInput(); SetCursor(Paused);
-            if (!Paused) { menu.Hide(); return; }
+            if (!Paused) { world.BlockMenuAttack(); menu.Hide(); return; }
             ShowPause();
+        }
+        public void Escape()
+        {
+            if (InventoryOpen) CloseInventory();
+            else if (Paused && pausedBack != null) pausedBack();
+            else TogglePause();
+        }
+        void SetPage(System.Action refresh, System.Action back) { pausedPage = refresh; pausedBack = back; }
+        void ShowDialog(string title, string text, System.Action back, params MenuAction[] actions)
+        {
+            SetPage(() => ShowDialog(title, text, back, actions), back);
+            menu.Show(title, text, actions);
         }
         public void ToggleInventory()
         {
@@ -109,9 +127,10 @@ namespace Milkfrog.CombatDemo
         {
             if (State != GameFlowState.Playing || InventoryOpen || world.player.Core.Health <= 0) return;
             inventoryFromPause = Paused;
+            inventoryReturn = inventoryFromPause ? pausedPage : null;
             InventoryUseAllowed = world.player.Core.CanAct && world.feedback.Clock.Remaining <= 0;
             Paused = true; InventoryOpen = true; world.cameraRig.Suspended = true; world.ClearInput(true); SetCursor(true); menu.Hide();
-            if (inventoryView == null)
+            if (inventoryView == null || !inventoryView.Configured)
             {
                 Notify("背包界面配置缺失。"); CloseInventory(); return;
             }
@@ -120,15 +139,18 @@ namespace Milkfrog.CombatDemo
         public void CloseInventory()
         {
             if (!InventoryOpen) return;
-            inventoryView?.Hide(); InventoryOpen = false; InventoryUseAllowed = false; world.cameraRig.Suspended = false; world.ClearInput(); world.BlockMenuAttack();
+            inventoryView?.Hide(); InventoryOpen = false; InventoryUseAllowed = false; world.ClearInput(); world.BlockMenuAttack();
             if (inventoryFromPause)
             {
-                if (ActiveBonfire != null) ShowBonfire(); else ShowPause();
+                if (inventoryReturn != null) inventoryReturn();
+                else if (ActiveBonfire != null) ShowBonfire(); else ShowPause();
             }
             else { Paused = false; SetCursor(false); menu.Hide(); }
+            inventoryReturn = null;
         }
         void ShowPause()
         {
+            SetPage(ShowPause, TogglePause);
             menu.Show("PAUSED", world.CanSave ? "Safe exploration - saving is available." : "In combat / action: returning or quitting keeps the last safe save.",
                 new MenuAction("Resume", TogglePause), new MenuAction("Save", () => { Save(); ShowPauseMessage(); }, world.CanSave),
                 new MenuAction("背包", OpenInventory),
@@ -136,12 +158,14 @@ namespace Milkfrog.CombatDemo
         }
         void ShowRecords()
         {
+            SetPage(ShowRecords, ShowPause);
             menu.Show("角色记录", "查看当前主线目标或角色成长。",
                 new MenuAction("任务进度", ShowQuest), new MenuAction("Attributes", OpenAttributes), new MenuAction("返回", ShowPause));
         }
         public void ShowQuest()
         {
             if (!Paused || State != GameFlowState.Playing) return;
+            SetPage(ShowQuest, ShowRecords);
             menu.Show(world.quest.displayName, world.Quests.Journal(world.Snapshot()), new MenuAction("返回", ShowRecords));
         }
         public void OpenBonfire(BonfireCheckpoint bonfire)
@@ -151,6 +175,7 @@ namespace Milkfrog.CombatDemo
         }
         void ShowBonfire()
         {
+            SetPage(ShowBonfire, TogglePause);
             var growth = world.Progression;
             string healthPreview = growth.Vitality >= PlayerProgression.MaximumRank ? "已满" :
                 (world.settings.player.maxHealth + 10 * (growth.Vitality + 1)).ToString("F0");
@@ -171,6 +196,7 @@ namespace Milkfrog.CombatDemo
         void ShowFastTravel(int page)
         {
             if (ActiveBonfire == null) return;
+            SetPage(() => ShowFastTravel(page), ShowBonfire);
             var destinations = new List<BonfireCheckpoint>();
             if (world.bonfires != null)
                 foreach (var bonfire in world.bonfires)
@@ -195,7 +221,7 @@ namespace Milkfrog.CombatDemo
             if (world.TryFastTravel(destination)) return;
             string failure = Store.LastMessage == "Could not write save." ? Store.LastMessage : "当前无法传送。请确认篝火已点亮且角色处于安全状态。";
             Notify(failure);
-            menu.Show("传送失败", failure, new MenuAction("返回", () => ShowFastTravel(page)));
+            ShowDialog("传送失败", failure, () => ShowFastTravel(page), new MenuAction("返回", () => ShowFastTravel(page)));
         }
         void Upgrade(GrowthStat stat)
         {
@@ -205,22 +231,27 @@ namespace Milkfrog.CombatDemo
         public void OpenAttributes()
         {
             if (State != GameFlowState.Playing) return;
-            attributesFromBonfire = ActiveBonfire != null;
+            attributesBack = ActiveBonfire != null ? (System.Action)ShowBonfire : Paused ? ShowRecords : TogglePause;
+            ShowAttributes();
+        }
+        void ShowAttributes()
+        {
             Paused = true; world.ClearInput(); SetCursor(true);
+            SetPage(ShowAttributes, attributesBack);
             var growth = world.Progression;
             menu.Show("角色属性", $"等级 {growth.Level}  经验 {growth.Experience}  下次消耗 {growth.NextCost}\n" +
                 $"体魄 {growth.Vitality}/10  生命 {world.player.Core.Health:F0}/{world.player.Core.Tuning.maxHealth:F0}\n" +
                 $"定力 {growth.Resolve}/10  架势 {world.player.Core.Posture:F0}/{world.player.Core.Tuning.maxPosture:F0}\n" +
                 $"攻击 {growth.Power}/10  伤害倍率 {growth.AttackMultiplier:P0}",
-                new MenuAction("返回", () => { if (attributesFromBonfire) ShowBonfire(); else ShowPause(); }));
+                new MenuAction("返回", pausedBack));
         }
         void ShowPauseMessage()
-        { menu.Show("SAVE", Message, new MenuAction("Back", ShowPause)); }
+        { SetPage(ShowPauseMessage, ShowPause); menu.Show("SAVE", Message, new MenuAction("Back", ShowPause)); }
         public void ReturnHome()
         {
             if (world != null && world.CanSave && !Save())
             {
-                menu.Show("SAVE FAILED", Message, new MenuAction("Retry", ReturnHome),
+                ShowDialog("SAVE FAILED", Message, pausedPage ?? ShowPause, new MenuAction("Retry", ReturnHome),
                     new MenuAction("Leave Without Saving", HomeWithoutSave)); return;
             }
             HomeWithoutSave();
@@ -252,7 +283,7 @@ namespace Milkfrog.CombatDemo
         {
             if (world != null && world.CanSave && !Save())
             {
-                menu.Show("SAVE FAILED", Message, new MenuAction("Retry", Quit),
+                ShowDialog("SAVE FAILED", Message, pausedPage ?? ShowPause, new MenuAction("Retry", Quit),
                     new MenuAction("Quit Without Saving", () => Application.Quit())); return;
             }
             Application.Quit();

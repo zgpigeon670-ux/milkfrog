@@ -9,7 +9,8 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(core.ActiveAttack.Kind,Is.EqualTo(AttackKind.Light));Assert.That(core.State,Is.EqualTo(CombatState.AttackStartup));
             core.Tick(.15f);Assert.That(core.State,Is.EqualTo(CombatState.AttackActive));Assert.That(core.AttackId,Is.EqualTo(1));
         }
-        [TestCase(.25f,AttackKind.Light,false)]
+        [TestCase(.10f,AttackKind.Light,true)]
+        [TestCase(.25f,AttackKind.Thrust,true)]
         [TestCase(.46f,AttackKind.Thrust,true)]
         [TestCase(.70f,AttackKind.Thrust,true)]
         public void HoldingPastTheWindupChargesWithoutReleasingEarly(float held,AttackKind expected,bool preparing)
@@ -23,7 +24,7 @@ namespace Milkfrog.CombatDemo.Tests
         {
             var definition=AttackParameters.Thrust();var core=new CombatCore(new CombatTuning(),null,definition);
             core.BeginPreparation();core.SetAttackHeld(true);core.Tick(10);Assert.That(core.State,Is.EqualTo(CombatState.Charging));Assert.That(core.ChargeRatio,Is.EqualTo(1));
-            core.ReleaseAttack();definition.maxDamage=99;core.Tick(.25f);
+            core.ReleaseAttack();definition.maxDamage=99;core.Tick(.12f);
             var target=new CombatCore(new CombatTuning());core.TryHit(target,false);
             Assert.That(target.Health,Is.EqualTo(78));Assert.That(target.Posture,Is.EqualTo(28));
             core.Tick(1);core.RequestAttack();Assert.That(core.ActiveAttack.Damage,Is.EqualTo(10));
@@ -45,7 +46,7 @@ namespace Milkfrog.CombatDemo.Tests
         public void ThrustCanBeBlockedOrDeflected(bool parry)
         {
             var core=new CombatCore(new CombatTuning());var target=new CombatCore(new CombatTuning());
-            core.BeginPreparation();core.SetAttackHeld(true);core.Tick(.8f);core.ReleaseAttack();core.Tick(.25f);
+            core.BeginPreparation();core.SetAttackHeld(true);core.Tick(.8f);core.ReleaseAttack();core.Tick(.12f);
             target.SetGuard(true,parry);Assert.That(core.TryHit(target,true),Is.EqualTo(parry?HitResult.Deflect:HitResult.Block));
             Assert.That(target.Health,Is.EqualTo(100));Assert.That(target.Posture,Is.EqualTo(parry?0:35));
             if(parry)Assert.That(core.State,Is.EqualTo(CombatState.DeflectedStun));

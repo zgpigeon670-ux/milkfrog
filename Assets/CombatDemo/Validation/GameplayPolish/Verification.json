@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-02",
+  "unityVersion": "6000.6.2f1",
+  "baselineCommit": "bdf79d0",
+  "branch": "codex/gameplay-polish",
+  "validationCopy": "E:\\UNITY\\PROJECTS\\milkfrog-inventory-validation-20261002",
+  "sourceCheckScope": "Assets/CombatDemo excluding Validation and unchanged ThirdParty",
+  "sourceFilesChecked": 334,
+  "sourceMismatchCount": 0,
+  "sourceMismatches": [],
+  "tests": [
+    {
+      "platform": "EditMode",
+      "baselinePassed": 90,
+      "baselineTotal": 97,
+      "passed": 108,
+      "total": 108,
+      "failed": 0
+    },
+    {
+      "platform": "PlayMode",
+      "baselinePassed": 92,
+      "baselineTotal": 102,
+      "passed": 111,
+      "total": 111,
+      "failed": 0
+    }
+  ],
+  "buildExitCode": 0,
+  "buildExecutable": "E:\\UNITY\\PROJECTS\\milkfrog\\Builds\\MilkfrogMVP-Gameplay\\MilkfrogMVP.exe",
+  "buildExecutableBytes": 667136,
+  "buildAssemblySHA256": "96DFE5555ACD6317FC7325A4B6F462293894E688E500EA74C6278FA7DB555CBE",
+  "matchesCompiledPlayerAssembly": true,
+  "validationScript": "Tools/Validate-Gameplay.ps1",
+  "validationScriptRunExitCode": 0,
+  "screenshots": [
+    {
+      "file": "Actions-0.png",
+      "width": 960,
+      "height": 600,
+      "sha256": "FD569CCB7D897880B91CFCD87F612C089EA38A80FC26D26C038B232842D3D114"
+    },
+    {
+      "file": "Actions-1.png",
+      "width": 960,
+      "height": 600,
+      "sha256": "05D0E27D2FF6808C3686CD6BB665B52843D336F2C722FDEA9C5FA58129397C61"
+    },
+    {
+      "file": "Actions-2.png",
+      "width": 960,
+      "height": 600,
+      "sha256": "32BC3192B0A1EFC4D282AB68DDC188089744813920440A1B7B8B20A02A55032E"
+    },
+    {
+      "file": "Actions-3.png",
+      "width": 960,
+      "height": 600,
+      "sha256": "BDD32A7E5635370221F1C012F7DC08A13756734FCCEE4BE2D87DF27F697CE4F0"
+    },
+    {
+      "file": "Actions-4.png",
+      "width": 960,
+      "height": 600,
+      "sha256": "A702878F5A18AF29B4AA023580B7431AAD2318AFDCB7C07196F9F072003CDE1A"
+    },
+    {
+      "file": "Inventory-00.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "3B93FC21F64114DC4F3994680B66980B38C4E794B6647F30065C55FABF5E25C2"
+    },
+    {
+      "file": "Inventory-01.png",
+      "width": 640,
+      "height": 360,
+      "sha256": "783BCD24E7806DD8513F5D575577450060B2A142428791FDEFE1CF005518124E"
+    },
+    {
+      "file": "Inventory-02.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "4DBE590D92728F481E594CA5B34A2EFB64D244E51FDD65E62D25B2B202035B09"
+    },
+    {
+      "file": "Inventory-03.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "3776E80D86BA5B0D24CCF37342ADDE09D740AE1E5DC3DBEB6609BFE517542F0A"
+    },
+    {
+      "file": "Inventory-04.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "24F4F2AC39AC0BA7E58836F01F6F0F0A42C9349DFC84E00566FB98B750DF06D1"
+    },
+    {
+      "file": "Inventory-05.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "12F01675711275F50003C2C0AE09A34DB99E3919F19BDA8E20CFF3C4B938FCC4"
+    },
+    {
+      "file": "Inventory-06.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "40B6B803A53C05D3F61D608898F33307E0BAEA78EFF56F76C85ADE03A321A587"
+    },
+    {
+      "file": "Inventory-07.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "5A0FEDF94228740B302C4C6458E3BE5077BC25C437C03D6BD5929BB3740E489D"
+    },
+    {
+      "file": "Inventory-08.png",
+      "width": 640,
+      "height": 360,
+      "sha256": "AFC7DEA576169F2DF73549E9FAF4202AF82DE0B54424ADECFC6F16A96885F0BC"
+    }
+  ],
+  "humanPlaytestCompleted": false,
+  "computerUseUsed": false,
+  "githubPushed": false
+}

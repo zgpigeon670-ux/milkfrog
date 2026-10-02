@@ -100,7 +100,7 @@ namespace Milkfrog.CombatDemo
 
         public void Move(Vector3 direction, float speed, float deltaTime)
         {
-            if (Core == null || deltaTime <= 0) return;
+            if (Core == null || deltaTime <= 0 || Motor == null || !Motor.enabled || !gameObject.activeInHierarchy) return;
             direction.y = 0;
             bool airborneAction = !Grounded && (Core.IsAttacking || Core.IsPreparing || Core.State == CombatState.Dodge);
             Vector3 planar = Core.CanAct || airborneAction ? Vector3.ClampMagnitude(direction, 1) * speed : Vector3.zero;
@@ -139,6 +139,7 @@ namespace Milkfrog.CombatDemo
         }
         void MoveDodge(float from, float to)
         {
+            if (Motor == null || !Motor.enabled || !gameObject.activeInHierarchy) return;
             float duration=Mathf.Max(.001f,Core.Tuning.dodgeMoveDuration);
             float a=Mathf.SmoothStep(0,1,Mathf.Clamp01(from/duration));
             float b=Mathf.SmoothStep(0,1,Mathf.Clamp01(to/duration));
@@ -164,7 +165,7 @@ namespace Milkfrog.CombatDemo
         public bool BeginPlayerAttack()
         {
             if(TryExecute())return true;
-            return Core.RequestAttack();
+            return Core.RequestFollowup() || Core.BeginPreparation();
         }
         bool TryExecute()
         {
