@@ -19,6 +19,10 @@ namespace Milkfrog.CombatDemo
         MvpMenuView menu;
         public BonfireCheckpoint ActiveBonfire { get; private set; }
         bool attributesFromBonfire;
+        public bool InventoryOpen { get; private set; }
+        public bool InventoryUseAllowed { get; private set; }
+        bool inventoryFromPause;
+        public InventoryView inventoryView;
         float messageTime;
 
         void Start()
@@ -89,15 +93,45 @@ namespace Milkfrog.CombatDemo
         public void TogglePause()
         {
             if (State != GameFlowState.Playing) return;
+            if (InventoryOpen) { CloseInventory(); return; }
             if (Paused && ActiveBonfire != null) { ActiveBonfire = null; Paused = false; world.ClearInput(); SetCursor(false); menu.Hide(); return; }
             Paused = !Paused; world.ClearInput(); SetCursor(Paused);
             if (!Paused) { menu.Hide(); return; }
             ShowPause();
         }
+        public void ToggleInventory()
+        {
+            if (State != GameFlowState.Playing) return;
+            if (InventoryOpen) { CloseInventory(); return; }
+            OpenInventory();
+        }
+        public void OpenInventory()
+        {
+            if (State != GameFlowState.Playing || InventoryOpen || world.player.Core.Health <= 0) return;
+            inventoryFromPause = Paused;
+            InventoryUseAllowed = world.player.Core.CanAct && world.feedback.Clock.Remaining <= 0;
+            Paused = true; InventoryOpen = true; world.cameraRig.Suspended = true; world.ClearInput(true); SetCursor(true); menu.Hide();
+            if (inventoryView == null)
+            {
+                Notify("背包界面配置缺失。"); CloseInventory(); return;
+            }
+            menu.EnsureInputSystem(); inventoryView.Show(world);
+        }
+        public void CloseInventory()
+        {
+            if (!InventoryOpen) return;
+            inventoryView?.Hide(); InventoryOpen = false; InventoryUseAllowed = false; world.cameraRig.Suspended = false; world.ClearInput(); world.BlockMenuAttack();
+            if (inventoryFromPause)
+            {
+                if (ActiveBonfire != null) ShowBonfire(); else ShowPause();
+            }
+            else { Paused = false; SetCursor(false); menu.Hide(); }
+        }
         void ShowPause()
         {
             menu.Show("PAUSED", world.CanSave ? "Safe exploration - saving is available." : "In combat / action: returning or quitting keeps the last safe save.",
                 new MenuAction("Resume", TogglePause), new MenuAction("Save", () => { Save(); ShowPauseMessage(); }, world.CanSave),
+                new MenuAction("背包", OpenInventory),
                 new MenuAction("任务 / 属性", ShowRecords), new MenuAction("Return to Home", ReturnHome), new MenuAction("Quit", Quit));
         }
         void ShowRecords()

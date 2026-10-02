@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e1ac810f6645d646aff39e1307e9c08, type: 3}
+  m_Name: guardian-key
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.ItemDefinition
+  stableId: guardian-key
+  displayName: "\u5B88\u95E8\u94A5\u5319"
+  category: 1
+  icon: {fileID: -3995469294556239906, guid: fb47c93a82e123349a1205b2086ee13e, type: 3}
+  description: "\u7528\u4E8E\u5F00\u542F\u5B88\u95E8\u4EBA\u524D\u65B9\u7684\u5C01\u5370\u95E8\u3002\u53D6\u5F97\u540E\u6C38\u4E45\u4FDD\u7559\u3002"
+  restoreHealth: 0
+  reducePosture: 0

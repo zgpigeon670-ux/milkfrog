@@ -18,6 +18,9 @@ namespace Milkfrog.CombatDemo
         public BonfireCheckpoint[] bonfires;
         public QuestDefinition quest;
         public WorldStateService WorldState { get; } = new WorldStateService();
+        public InventoryService Inventory { get; } = new InventoryService();
+        public ItemDefinition[] items;
+        InventoryPickup[] inventoryPickups;
         public QuestProgressService Quests { get; private set; }
         public InteractionController Interactions { get; private set; }
         WorldInteractable[] worldObjects;
@@ -46,6 +49,7 @@ namespace Milkfrog.CombatDemo
         DemoInput input;
         Vector2 movement;
         bool needsRelease, attackQueued, pendingSave, frozenGuard, hasFrozenGuard;
+        bool menuAttackNeedsRelease;
         float saveClock, saveRetryClock;
         MvpHud hud;
 
@@ -56,6 +60,7 @@ namespace Milkfrog.CombatDemo
             Quests = new QuestProgressService(quest);
             WorldState.Changed += OnWorldChanged;
             worldObjects = FindObjectsByType<WorldInteractable>();
+            inventoryPickups = FindObjectsByType<InventoryPickup>();
             player.enforceFactions = true;
             player.autoFaceGuardAttacks = true;
             player.Initialize(JsonUtility.FromJson<CombatTuning>(JsonUtility.ToJson(settings.player)));
@@ -96,6 +101,7 @@ namespace Milkfrog.CombatDemo
             Defeated.Clear(); BossDefeated = snapshot != null && snapshot.bossDefeated;
             Progression.Restore(snapshot);
             WorldState.Restore(snapshot?.worldState);
+            Inventory.Restore(snapshot?.inventory ?? new InventoryData());
             ActiveCheckpointId = FindBonfire(snapshot?.activeCheckpointId) != null ? snapshot.activeCheckpointId : BonfireCheckpoint.StartId;
             UnlockedCheckpointIds.Clear();
             UnlockedCheckpointIds.Add(BonfireCheckpoint.StartId);
@@ -148,11 +154,62 @@ namespace Milkfrog.CombatDemo
             MergeWorldProgress(snapshot); return snapshot;
         }
         public void MergeWorldProgress(PlayerSnapshot snapshot)
-        { WorldState.WriteTo(snapshot); Quests.WriteTo(snapshot); }
+        { WorldState.WriteTo(snapshot); Inventory.WriteTo(snapshot); Quests.WriteTo(snapshot); }
         void OnWorldChanged(WorldEventKind kind, string id)
         { ApplyWorldObjects(); Flow.Notify("进度更新 · " + Quests.Objective(Snapshot())); hud?.Refresh(); }
         void ApplyWorldObjects()
-        { foreach (var obj in worldObjects) if (obj != null) obj.ApplyState(this); }
+        {
+            foreach (var obj in worldObjects) if (obj != null) obj.ApplyState(this);
+            foreach (var obj in inventoryPickups) if (obj != null) obj.ApplyState(this);
+        }
+        public ItemDefinition FindItem(string id)
+        {
+            if (items != null) foreach (var item in items) if (item != null && item.stableId == id) return item;
+            return null;
+        }
+        public bool TryPickup(InventoryPickup target)
+        {
+            if (InteractionBlockReason != null || target == null || !target.Available(this) ||
+                EnemyController.FlatDistance(player.transform.position, target.InteractionPoint) > target.Radius ||
+                Mathf.Abs(player.transform.position.y - target.InteractionPoint.y) > 1.5f) return false;
+            var proposed = Snapshot(); var next = new InventoryService(); next.Restore(proposed.inventory);
+            if (!next.TryAdd(target.item.stableId, target.quantity)) return false;
+            next.WriteTo(proposed);
+            var facts = new WorldStateService(); facts.Restore(proposed.worldState);
+            facts.Apply(WorldEventKind.ItemAcquired, target.stableId); facts.WriteTo(proposed);
+            if (!Flow.Store.TrySave(proposed)) { Flow.Notify("保存失败，物品尚未拾取。" + Flow.Store.LastMessage); return false; }
+            Inventory.Restore(proposed.inventory); WorldState.Apply(WorldEventKind.ItemAcquired, target.stableId);
+            Flow.Notify($"获得 {target.item.displayName} ×{target.quantity}"); return true;
+        }
+        public string ItemUseBlockReason(ItemDefinition item)
+        {
+            if (!Flow.InventoryOpen || !Flow.InventoryUseAllowed || !player.Core.CanAct) return "当前动作期间只能查看背包";
+            if (item == null || !Inventory.HasItem(item.stableId)) return "物品数量不足";
+            if (!item.Usable) return "任务物品不可使用";
+            if (!player.Core.CanRecoverWithItem(item.restoreHealth, item.reducePosture))
+                return item.restoreHealth > 0 ? "生命已满" : "架势已经为零";
+            return null;
+        }
+        public bool TryUseItem(string itemId)
+        {
+            var item = FindItem(itemId); string reason = ItemUseBlockReason(item);
+            if (reason != null) { Flow.Notify(reason); return false; }
+            PlayerSnapshot proposed;
+            bool safe = CanSave;
+            if (safe) proposed = Snapshot();
+            else if (!Flow.Store.TryLoad(out proposed)) { Flow.Notify("无法读取安全存档，物品未消耗。" + Flow.Store.LastMessage); return false; }
+            var next = new InventoryService(); next.Restore(Inventory.Capture());
+            if (!next.TryConsume(itemId)) return false;
+            MergeWorldProgress(proposed); next.WriteTo(proposed);
+            if (safe)
+            {
+                proposed.health = Mathf.Min(player.Core.Tuning.maxHealth, player.Core.Health + item.restoreHealth);
+                proposed.posture = Mathf.Max(0, player.Core.Posture - item.reducePosture);
+            }
+            if (!Flow.Store.TrySave(proposed)) { Flow.Notify("保存失败，物品未消耗。" + Flow.Store.LastMessage); return false; }
+            player.Core.TryRecoverWithItem(item.restoreHealth, item.reducePosture);
+            Inventory.Restore(proposed.inventory); hud?.Refresh(); Flow.Notify("已使用 " + item.displayName); return true;
+        }
         public bool TryWorldInteraction(WorldInteractable target)
         {
             if (InteractionBlockReason != null || target == null || !target.Available(this) || target.BlockReason(this) != null ||
@@ -160,8 +217,15 @@ namespace Milkfrog.CombatDemo
                 Mathf.Abs(player.transform.position.y - target.InteractionPoint.y) > 1.5f) return false;
             var proposed = Snapshot(); var next = new WorldStateService(); next.Restore(proposed.worldState);
             var kind = target.kind == WorldInteractionKind.KeyPickup ? WorldEventKind.ItemAcquired : WorldEventKind.DoorOpened;
+            if (target.kind == WorldInteractionKind.KeyPickup)
+            {
+                var nextInventory = new InventoryService(); nextInventory.Restore(proposed.inventory);
+                if (!nextInventory.HasItem(target.itemId) && !nextInventory.TryAdd(target.itemId, 1)) return false;
+                nextInventory.WriteTo(proposed);
+            }
             next.Apply(kind, target.stableId, target.itemId); next.WriteTo(proposed); Quests.WriteTo(proposed);
             if (!Flow.Store.TrySave(proposed)) { Flow.Notify("保存失败，请重试。" + Flow.Store.LastMessage); return false; }
+            Inventory.Restore(proposed.inventory);
             WorldState.Apply(kind, target.stableId, target.itemId);
             return true;
         }
@@ -281,6 +345,7 @@ namespace Milkfrog.CombatDemo
             if (manualSimulation || input == null) return;
             if (Keyboard.current != null && Keyboard.current.f2Key.wasPressedThisFrame && hud != null) hud.showDebug = !hud.showDebug;
             if (input.PausePressed && Flow.State == GameFlowState.Playing) { Flow.TogglePause(); return; }
+            if (input.InventoryPressed && Flow.State == GameFlowState.Playing) { Flow.ToggleInventory(); return; }
             if (Running && input.AttributesPressed && Director.State == EncounterState.Exploration)
             { Flow.OpenAttributes(); return; }
             // Use the previous rendered focus; TryInteract revalidates it before committing.
@@ -297,12 +362,13 @@ namespace Milkfrog.CombatDemo
             cameraRig.Look(input.Look); SubmitInput(input.Snapshot); Simulate(Time.unscaledDeltaTime);
         }
         void LateUpdate() { Interactions?.Refresh(); }
-        public void ClearInput()
+        public void ClearInput(bool preserveAction = false)
         {
             movement = Vector2.zero; attackQueued = false; needsRelease = true; hasFrozenGuard = frozenGuard = false;
-            if (player.Core == null) return;
+            if (player.Core == null || preserveAction) return;
             player.Core.SetGuard(false, false); player.Core.CancelPreparation();
         }
+        public void BlockMenuAttack() { menuAttackNeedsRelease = true; attackQueued = false; }
         void OnApplicationFocus(bool focused)
         {
             if (!focused) { ClearInput(); if (Flow != null && Running) Flow.TogglePause(); }
@@ -315,6 +381,11 @@ namespace Milkfrog.CombatDemo
         public void SubmitInput(CombatInputFrame frame)
         {
             if (!Running) return;
+            if (menuAttackNeedsRelease)
+            {
+                if (!frame.attackHeld) menuAttackNeedsRelease = false;
+                frame.attackPressed = frame.attackReleased = frame.attackHeld = false;
+            }
             movement = Vector2.ClampMagnitude(frame.move, 1);
             if (frame.lockPressed) Lock.Toggle();
             if (!frame.attackHeld) needsRelease = false;
