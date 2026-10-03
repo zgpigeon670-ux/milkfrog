@@ -2,11 +2,11 @@
 
 Unity 6000.6.2f1 / URP / Input System。所有新增资产位于 `Assets/CombatDemo`。第四阶段将首页和 MVP 关卡加入构建场景列表，保留原始 SampleScene 与训练场，不修改项目输入设置。
 
-当前 Windows 构建位于 [MilkfrogMVP-Inventory](../../Builds/MilkfrogMVP-Inventory/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。背包说明与验证见 [背包报告](Validation/Inventory/Report.md)。完整回归仍有原有战斗测试失败，详见报告；本构建用于功能验收。此前的 [交互、任务与世界存档报告](Validation/WorldQuest/Report.md)及 [篝火快速传送报告](Validation/FastTravel/Report.md)保留为历史记录。
+当前 Windows 构建位于 [MilkfrogMVP-Gameplay](../../Builds/MilkfrogMVP-Gameplay/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。背包说明见 [背包报告](Validation/Inventory/Report.md)，当前玩法修复与完整回归见 [玩法完善报告](Validation/GameplayPolish/Report.md)：EditMode 108/108、PlayMode 111/111 通过。此前的 [交互、任务与世界存档报告](Validation/WorldQuest/Report.md)及 [篝火快速传送报告](Validation/FastTravel/Report.md)保留为历史记录。
 
 ## MVP：从首页开始
 
-打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP-Inventory/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
+打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP-Gameplay/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
 
 WASD 移动、鼠标转动自由过肩镜头、中键锁定／解锁最靠近准星的小怪。普通锁定只选择攻击目标，不强迫角色或镜头转向；挥刀提交时优先面向该目标。未锁定时依次选择攻击范围内的准星附近敌人、最近敌人或准星方向。Shift 垫步、空格跳跃、左键斩击／连击或按住蓄力、右键格挡／弹反。已进入防御时，普通攻击到达前会自动转向攻击者；红色“危”突刺不能格挡或弹反，需要闪避。脱战时靠近篝火按 E 休息并打开加点菜单，脱战按 C 或从暂停菜单查看属性。Esc 暂停，F2 调试。MVP 不使用训练场的 R／F1。
 
@@ -146,20 +146,22 @@ Unity Test Runner 中执行 `Milkfrog.CombatDemo.EditTests` 和 `Milkfrog.Combat
 ## 第三阶段操作与动画
 
 - 前进沿用原走／跑动画，后退与左右侧移使用 `Animations/Directional` 内独立关键帧动画，不倒放或整体旋转前进动作。方向权重按角色局部实际速度混合，斜向使用相邻方向；步频按脚部实测行程校准。移动防御保留上身防御、下身步行。
-- Shift 垫步总计 0.38s，前 0.24s 平滑位移最多 1.6m；无敌区间为 `[0.08,0.16)` 秒。方向在开始时锁定，无方向后撤。墙体、敌人会阻挡位移，受击可打断，无连按缓存。空格跳跃只在着地且可行动时生效。
+- `CombatTuning` 垫步默认总计 0.38s，前 0.24s 平滑位移最多 1.6m；当前动画训练场／MVP 玩家在 `AnimatedCombat.asset` 使用 0.75s／0.42s／2.6m。无敌区间均为 `[0.08,0.16)` 秒。方向在开始时锁定，无方向后撤。墙体、敌人会阻挡位移，受击可打断，无连按缓存。空格跳跃只在着地且可行动时生效。
 - 左键按下立即抬刀，0.18s 前松开为普通斩击，已经经过的准备时间抵扣 0.25s 前摇。按住超过阈值进入蓄力，0.80s 满蓄后保持，松开才突刺。
 - 普通斩击完整结束后的 0.18s 内再按左键接第二刀，伤害 12、架势 14。同一次按住不会自动连出第二刀；架势崩溃时优先处决。
 - 斩击后摇前 0.16s、突刺后摇前 0.14s 可以切到格挡或垫步。前摇和有效帧不能取消，取消也不会补发弹反窗口。
 - Rhythm 模式循环普通斩、慢斩、危险斩。慢斩前摇 0.72s，弹反奖励 42 架势；危险斩前摇 0.62s，现已修正为不能格挡或弹反，HUD 显示 `PERILOUS / DODGE`。训练场 Duel 仍保持原来的普通斩交战。
 - Tab 锁定时角色持续朝向敌人，移动仍相对镜头；镜头继续从玩家背后跟随。默认锁定开启。
 - 突刺释放后为 0.12s 前摇、0.12s 有效期、0.42s 后摇；生命伤害 10→22、命中架势 10→28、格挡架势 20→35。可以格挡或弹反，无霸体与自动破防。实际命中使用独立 `ThrustBladeTrace.asset`。
-- 准备／蓄力期间不能移动，可以转向敌人；右键或空格取消。释放后方向锁定。受击、失焦、死亡、重置清除未完成蓄力；顿帧中松开左键会取消，不在恢复后补发。
+- 准备／蓄力期间不能在地面移动，可以转向敌人；右键或 Shift 取消。释放后方向锁定。受击、失焦、死亡、重置清除未完成蓄力；顿帧中松开左键会取消，不在恢复后补发。已在空中的角色继续原跳跃运动，不能再次起跳。
 - 同帧输入优先级：重置、闪避、防御、攻击。保留原离散 `SubmitInput` 重载供 AI、历史测试和性能脚本调用，真人键鼠走完整按下／按住／松开输入快照。
 - 新动作是本项目制作的可编辑 Humanoid 肌肉关键帧，属于 Demo 适配，不是只狼提取资产或动作捕捉成品。`CombatMotionAuthoring.BuildLocomotion`、`BuildActions` 是验证副本中的显式重建工具；会覆盖本项目生成的动作或攻击默认配置，不应在手工微调后随意运行。
 - Game View 预览请用适合窗口的 Scale，Free Aspect 通常使用 1×。放大预览会裁掉边缘，即使运行时 HUD 正常缩放也是如此。
 
 ## 本阶段边界
 
-仍不包含冲刺、跳跃、体力条、技能、装备、网络、敌人闪避 AI 或付费资产。自动化验证不等于真人手感验收；动作过渡、音量、镜头距离和姿势仍需实际键鼠试玩后微调。正式项目的 Build Profile 保持原样。
+仍不包含冲刺、体力条、技能、装备、网络、敌人闪避 AI 或付费资产。自动化验证不等于真人手感验收；动作过渡、音量、镜头距离和姿势仍需实际键鼠试玩后微调。正式项目的 Build Profile 保持原样。
+
+当前玩法与操作修复、优先级及回归证据见 [玩法完善验证](Validation/GameplayPolish/Report.md)。可从项目根目录运行 `./Tools/Validate-Gameplay.ps1 -Capture -Build`，在隔离副本依次执行完整测试、自动截图及 Windows 构建；不会启动原项目或修改玩家存档。
 
 

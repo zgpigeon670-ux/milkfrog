@@ -48,7 +48,7 @@ namespace Milkfrog.CombatDemo
         readonly RaycastHit[] sightHits = new RaycastHit[32];
         DemoInput input;
         Vector2 movement;
-        bool needsRelease, attackQueued, pendingSave, frozenGuard, hasFrozenGuard;
+        bool needsRelease, pendingSave, frozenGuard, hasFrozenGuard;
         bool menuAttackNeedsRelease;
         float saveClock, saveRetryClock;
         MvpHud hud;
@@ -129,7 +129,7 @@ namespace Milkfrog.CombatDemo
                 { enemy.Actor.Core.RestoreVitals(0, 0); enemy.MarkDead(); enemy.gameObject.SetActive(false); }
             if (arena != null) arena.SetActive(false);
             Lock.Clear(); cameraRig.yaw = player.transform.eulerAngles.y; cameraRig.pitch = 8; cameraRig.ResetImpulse();
-            ClearInput(); feedback.ResetFeedback();
+            ClearInput(); needsRelease = false; feedback.ResetFeedback();
             foreach (var animation in animations) if (animation.gameObject.activeInHierarchy) animation.ResetVisuals();
             ApplyWorldObjects(); Physics.SyncTransforms(); Interactions.Refresh(); hud?.Refresh();
         }
@@ -344,7 +344,7 @@ namespace Milkfrog.CombatDemo
         {
             if (manualSimulation || input == null) return;
             if (Keyboard.current != null && Keyboard.current.f2Key.wasPressedThisFrame && hud != null) hud.showDebug = !hud.showDebug;
-            if (input.PausePressed && Flow.State == GameFlowState.Playing) { Flow.TogglePause(); return; }
+            if (input.PausePressed && Flow.State == GameFlowState.Playing) { Flow.Escape(); return; }
             if (input.InventoryPressed && Flow.State == GameFlowState.Playing) { Flow.ToggleInventory(); return; }
             if (Running && input.AttributesPressed && Director.State == EncounterState.Exploration)
             { Flow.OpenAttributes(); return; }
@@ -364,11 +364,12 @@ namespace Milkfrog.CombatDemo
         void LateUpdate() { Interactions?.Refresh(); }
         public void ClearInput(bool preserveAction = false)
         {
-            movement = Vector2.zero; attackQueued = false; needsRelease = true; hasFrozenGuard = frozenGuard = false;
+            movement = Vector2.zero; needsRelease = true; hasFrozenGuard = frozenGuard = false;
             if (player.Core == null || preserveAction) return;
+            player.Core.SetAttackHeld(false);
             player.Core.SetGuard(false, false); player.Core.CancelPreparation();
         }
-        public void BlockMenuAttack() { menuAttackNeedsRelease = true; attackQueued = false; }
+        public void BlockMenuAttack() { menuAttackNeedsRelease = true; }
         void OnApplicationFocus(bool focused)
         {
             if (!focused) { ClearInput(); if (Flow != null && Running) Flow.TogglePause(); }
@@ -381,6 +382,7 @@ namespace Milkfrog.CombatDemo
         public void SubmitInput(CombatInputFrame frame)
         {
             if (!Running) return;
+            var previousState = player.Core.State;
             if (menuAttackNeedsRelease)
             {
                 if (!frame.attackHeld) menuAttackNeedsRelease = false;
@@ -388,28 +390,39 @@ namespace Milkfrog.CombatDemo
             }
             movement = Vector2.ClampMagnitude(frame.move, 1);
             if (frame.lockPressed) Lock.Toggle();
-            if (!frame.attackHeld) needsRelease = false;
-            if (frame.attackPressed) attackQueued = true;
+            if (frame.attackReleased || !frame.attackHeld) needsRelease = false;
+            bool attackPressed = frame.attackPressed && !needsRelease;
             player.Core.SetAttackHeld(frame.attackHeld);
             if (feedback.Clock.Remaining > 0)
             {
                 frozenGuard = frame.guardHeld; hasFrozenGuard = true;
+                if (frame.attackReleased || !frame.attackHeld || frame.guardHeld || frame.dodgePressed) player.Core.CancelPreparation();
+                if (frame.attackPressed) needsRelease = frame.attackHeld;
                 return;
             }
             hasFrozenGuard = false;
             if (frame.dodgePressed && player.RequestDodge(MoveDirection()))
-            { attackQueued = false; player.Core.SetGuard(frame.guardHeld, false); needsRelease = frame.attackHeld; return; }
+            { player.Core.SetGuard(frame.guardHeld, false); needsRelease = frame.attackHeld; RefreshPlayerPose(); return; }
             if (frame.jumpPressed) player.TryJump();
             player.Core.SetGuard(frame.guardHeld, frame.guardPressed);
-            if (frame.guardHeld) { attackQueued = false; return; }
-            if (attackQueued && player.Core.CanAct)
+            if (frame.guardHeld) { needsRelease = frame.attackHeld; return; }
+            if (player.Core.IsPreparing && (frame.attackReleased || !frame.attackHeld))
             {
                 FaceAttackAim(SelectAttackTarget());
-                player.BeginPlayerAttack();
-                attackQueued = false;
-                needsRelease = true;
+                player.Core.ReleaseAttack();
             }
+            else if (attackPressed)
+            {
+                if (player.Core.CanAct) { FaceAttackAim(SelectAttackTarget()); player.BeginPlayerAttack(); }
+                needsRelease = frame.attackHeld;
+            }
+            if (player.Core.State != previousState) RefreshPlayerPose();
             player.Target = Lock.Target == null ? null : Lock.Target.Actor;
+        }
+        void RefreshPlayerPose()
+        {
+            foreach (var animation in animations)
+                if (animation.actor == player) animation.AdvanceVisual(0, true);
         }
         public CombatActor SelectAttackTarget()
         {

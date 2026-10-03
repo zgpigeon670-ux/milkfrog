@@ -60,29 +60,44 @@ namespace Milkfrog.CombatDemo
         public void Refresh()
         {
             if (world == null) return;
-            foreach (var tile in tiles) { tile.gameObject.SetActive(false); Destroy(tile.gameObject); }
+            if (selectionRoutine != null) { StopCoroutine(selectionRoutine); selectionRoutine = null; }
+            var focused = EventSystem.current != null ? EventSystem.current.currentSelectedGameObject : null;
+            int previousIndex = tiles.FindIndex(t => t.itemId == selectedId);
+            var previousTiles = new Dictionary<string, InventoryTile>(StringComparer.Ordinal);
+            foreach (var tile in tiles) previousTiles.Add(tile.itemId, tile);
             tiles.Clear();
             foreach (var entry in world.Inventory.Capture().entries)
             {
                 var definition = world.FindItem(entry.itemId);
                 if (category > 0 && (definition == null || (int)definition.category != category - 1)) continue;
-                var tile = Instantiate(tileTemplate, content); tile.gameObject.SetActive(true);
+                string id = entry.itemId;
+                bool existing = previousTiles.TryGetValue(id, out var tile);
+                if (existing) previousTiles.Remove(id);
+                else
+                {
+                    tile = Instantiate(tileTemplate, content);
+                    var created = tile;
+                    tile.itemId = id;
+                    tile.OnSelected = () => { SelectItem(id); EnsureVisible(created); };
+                    tile.button.onClick.AddListener(() => { SelectItem(id); EnsureVisible(created); });
+                }
+                tile.gameObject.SetActive(true); tile.transform.SetAsLastSibling();
                 tile.label.text = definition != null ? definition.displayName : entry.itemId;
                 tile.count.text = "×" + entry.quantity;
                 tile.icon.sprite = definition?.icon; tile.icon.enabled = tile.icon.sprite != null;
-                string id = entry.itemId; tile.OnSelected = () => { SelectItem(id); EnsureVisible(tile); };
-                tile.button.onClick.AddListener(() => { SelectItem(id); EnsureVisible(tile); });
                 tiles.Add(tile);
-                tile.itemId = id;
             }
+            foreach (var tile in previousTiles.Values) { tile.gameObject.SetActive(false); Destroy(tile.gameObject); }
             empty.text = category == 0 ? "背包空空如也\n靠近物品后按 E 拾取" : "此分类暂无物品";
             empty.gameObject.SetActive(tiles.Count == 0);
             bool found = tiles.Exists(t => t.itemId == selectedId);
-            if (!found) selectedId = tiles.Count > 0 ? tiles[0].itemId : null;
+            if (!found) selectedId = tiles.Count > 0 ? tiles[Mathf.Clamp(previousIndex, 0, tiles.Count - 1)].itemId : null;
             for (int i = 0; i < categoryButtons.Length; i++)
                 categoryButtons[i].GetComponent<Image>().color = i == category ? new Color32(89, 72, 48, 255) : new Color32(43, 52, 64, 255);
             RefreshDetail();
-            if (selectionRoutine != null) StopCoroutine(selectionRoutine);
+            var selectable = focused != null ? focused.GetComponent<Selectable>() : null;
+            if (focused != null && focused.transform.IsChildOf(transform) && focused.activeInHierarchy &&
+                selectable != null && selectable.IsInteractable()) return;
             selectionRoutine = StartCoroutine(SelectNextFrame());
         }
         IEnumerator SelectNextFrame()
@@ -91,6 +106,7 @@ namespace Milkfrog.CombatDemo
             if (!Visible || EventSystem.current == null) yield break;
             var tile = tiles.Find(t => t.itemId == selectedId);
             EventSystem.current.SetSelectedGameObject(tile != null ? tile.gameObject : categoryButtons[category].gameObject);
+            if (tile != null) EnsureVisible(tile);
         }
         void EnsureVisible(InventoryTile tile)
         {

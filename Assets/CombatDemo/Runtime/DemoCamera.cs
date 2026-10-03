@@ -16,7 +16,7 @@ namespace Milkfrog.CombatDemo
         public float yaw, pitch = 8, sensitivity = .12f;
         public void Look(Vector2 delta)
         {
-            if (!freeOrbit || lockOn) return;
+            if (Suspended || !freeOrbit || lockOn) return;
             yaw += delta.x * sensitivity;
             pitch = Mathf.Clamp(pitch - delta.y * sensitivity, -20, 65);
         }

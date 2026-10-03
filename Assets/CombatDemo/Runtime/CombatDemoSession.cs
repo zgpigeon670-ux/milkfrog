@@ -19,7 +19,7 @@ namespace Milkfrog.CombatDemo
         DemoInput input;
         Vector2 movement;
         bool guardAfterFreeze, hasFrozenGuard;
-        bool attackNeedsRelease, attackQueued;
+        bool attackNeedsRelease;
         public event Action<HitEvent> CombatEvent;
         public event Action<CombatContact> ContactResolved;
         public event Action RoundReset;
@@ -47,6 +47,7 @@ namespace Milkfrog.CombatDemo
         {
             movement=Vector2.zero;hasFrozenGuard=guardAfterFreeze=false;attackNeedsRelease=true;
             if(player==null || player.Core==null)return;
+            player.Core.SetAttackHeld(false);
             player.Core.SetGuard(false,false);player.Core.CancelPreparation();
         }
 
@@ -62,25 +63,34 @@ namespace Milkfrog.CombatDemo
         {
             if(frame.resetPressed){ResetRound();return;}
             if(Finished)return;
+            var previousState = player.Core.State;
             movement=Vector2.ClampMagnitude(frame.move,1);
             if(frame.lockPressed)LockedOn=!LockedOn;
-            if(!frame.attackHeld)attackNeedsRelease=false;
-            if(frame.attackPressed)attackQueued=true;
+            if(frame.attackReleased || !frame.attackHeld)attackNeedsRelease=false;
+            bool attackPressed = frame.attackPressed && !attackNeedsRelease;
             player.Core.SetAttackHeld(frame.attackHeld);
             if(IsFrozen)
             {
                 guardAfterFreeze=frame.guardHeld;hasFrozenGuard=true;
+                if (frame.attackReleased || !frame.attackHeld || frame.guardHeld || frame.dodgePressed) player.Core.CancelPreparation();
+                if (frame.attackPressed) attackNeedsRelease = frame.attackHeld;
                 return;
             }
             hasFrozenGuard=false;
             if(LockedOn)player.FaceTarget();
             if(frame.dodgePressed && player.RequestDodge(CameraDirection(movement)))
-            {attackQueued=false;player.Core.SetGuard(frame.guardHeld,false);attackNeedsRelease=frame.attackHeld;return;}
+            {player.Core.SetGuard(frame.guardHeld,false);attackNeedsRelease=frame.attackHeld;playerAnimation?.AdvanceVisual(0,true);return;}
             if(frame.jumpPressed) player.TryJump();
             player.Core.SetGuard(frame.guardHeld,frame.guardPressed);
-            if(frame.guardHeld){attackQueued=false;return;}
-            if(attackQueued && player.Core.CanAct)
-            {player.BeginPlayerAttack();attackQueued=false;attackNeedsRelease=true;}
+            if(frame.guardHeld){attackNeedsRelease=frame.attackHeld;return;}
+            if (player.Core.IsPreparing && (frame.attackReleased || !frame.attackHeld))
+                player.Core.ReleaseAttack();
+            else if (attackPressed)
+            {
+                if (player.Core.CanAct) player.BeginPlayerAttack();
+                attackNeedsRelease = frame.attackHeld;
+            }
+            if (player.Core.State != previousState) playerAnimation?.AdvanceVisual(0,true);
         }
         Vector3 CameraDirection(Vector2 direction)
         {

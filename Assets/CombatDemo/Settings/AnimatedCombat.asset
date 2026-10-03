@@ -36,7 +36,7 @@ MonoBehaviour:
     dodgeDistance: 2.6
     invulnerableStart: 0.08
     invulnerableEnd: 0.16
-    prepareThreshold: 0.45
+    prepareThreshold: 0.18
     fullChargeTime: 0.8
     recoveryCancel: 0.16
   enemy:

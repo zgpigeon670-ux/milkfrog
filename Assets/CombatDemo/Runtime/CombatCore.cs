@@ -78,7 +78,7 @@ namespace Milkfrog.CombatDemo
 
         public void Reset()
         {
-            guardHeld = false;
+            guardHeld = attackHeld = false;
             DeflectRemaining = 0;
             sinceInteraction = 0;
             AttackId = 0;
@@ -89,6 +89,7 @@ namespace Milkfrog.CombatDemo
             Health = Tuning.maxHealth;
             Posture = 0;
             Change(CombatState.Neutral);
+            ComboRemaining = 0;
         }
 
         public void RestoreVitals(float health, float posture)
@@ -143,11 +144,11 @@ namespace Milkfrog.CombatDemo
             bool freshPress = pressed && !guardHeld;
             guardHeld = held;
             if (held && IsPreparing) CancelPreparation();
-            if (held) TryCancelRecovery();
+            bool cancelledRecovery = held && TryCancelRecovery();
             if (!CanAct) return;
             if (!held) { if (State == CombatState.Guard) Change(CombatState.Neutral); return; }
             if (State != CombatState.Guard) Change(CombatState.Guard);
-            if (freshPress) DeflectRemaining = Math.Max(0, Tuning.deflectWindow);
+            if (freshPress && !cancelledRecovery) DeflectRemaining = Math.Max(0, Tuning.deflectWindow);
         }
 
         public bool RequestAttack()
@@ -158,7 +159,7 @@ namespace Milkfrog.CombatDemo
         }
         public bool RequestFollowup()
         {
-            if (!ComboOpen || followupDefinition == null) return false;
+            if (!CanAct || !ComboOpen || followupDefinition == null) return false;
             ComboRemaining = 0;
             BeginAttack(followupDefinition.Snapshot(0),0);
             return true;
@@ -172,8 +173,8 @@ namespace Milkfrog.CombatDemo
         public bool TryCancelRecovery()
         {
             if (!CanCancelRecovery) return false;
-            ComboRemaining = 0;
             ReturnToReady();
+            ComboRemaining = 0;
             return true;
         }
         void BeginAttack(AttackSnapshot attack,float credit)
@@ -195,6 +196,12 @@ namespace Milkfrog.CombatDemo
         }
         public bool ReleaseAttack()
         {
+            attackHeld = false;
+            if (State == CombatState.AttackPrepare)
+            {
+                BeginAttack(lightDefinition != null ? lightDefinition.Snapshot(0) : AttackSnapshot.Light(Tuning), chargeElapsed);
+                return true;
+            }
             if(State!=CombatState.Charging)return false;
             ReleasedCharge=ChargeRatio;
             BeginAttack((thrustDefinition??AttackParameters.Thrust()).Snapshot(ReleasedCharge),0);
@@ -204,7 +211,6 @@ namespace Milkfrog.CombatDemo
 
         public bool RequestDodge()
         {
-            if (State==CombatState.AttackStartup && ActiveAttack.Kind==AttackKind.Light && chargeElapsed>=Tuning.prepareThreshold) CancelPreparation();
             if (!CanAct && !IsPreparing && !TryCancelRecovery()) return false;
             ComboRemaining = 0;
             Change(CombatState.Dodge,Tuning.dodgeDuration);
@@ -216,12 +222,12 @@ namespace Milkfrog.CombatDemo
             if (deltaTime < 0 || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime))
                 throw new ArgumentOutOfRangeException(nameof(deltaTime));
             if (State == CombatState.Dead) return;
-            ComboRemaining = Math.Max(0, ComboRemaining - deltaTime);
             float left = deltaTime;
             // Consume phase boundaries instead of skipping Active on a slow frame.
             for (int transitions = 0; transitions < 12; transitions++)
             {
                 if (CanAct) { AdvanceClock(left); return; }
+                if (IsPreparing && !attackHeld) ReleaseAttack();
                 if (State==CombatState.Charging)
                 {
                     chargeElapsed=Math.Min(Tuning.fullChargeTime,chargeElapsed+left);
@@ -237,6 +243,7 @@ namespace Milkfrog.CombatDemo
                 float consumed = Math.Min(left, Remaining);
                 float activeFrom = StateProgress;
                 float dodgeFrom = DodgeElapsed;
+                if (State == CombatState.AttackPrepare) chargeElapsed += consumed;
                 AdvanceClock(consumed);
                 Remaining = Math.Max(0, Remaining - consumed);
                 if(Remaining < .000001f)Remaining=0;
@@ -264,6 +271,7 @@ namespace Milkfrog.CombatDemo
 
         void AdvanceClock(float dt)
         {
+            ComboRemaining = Math.Max(0, ComboRemaining - dt);
             float before = sinceInteraction;
             sinceInteraction += dt;
             DeflectRemaining = Math.Max(0, DeflectRemaining - dt);

@@ -146,9 +146,10 @@ namespace Milkfrog.CombatDemo
             int selected = 0;
             var core = actor.Core;
             if (core.IsAttacking)
-                selected = core.ActiveAttack.Kind == AttackKind.Followup ? 24 :
+                selected = core.ActiveAttack.Kind == AttackKind.Thrust ? 21 : core.ActiveAttack.Kind == AttackKind.Followup ? 24 :
                     core.ActiveAttack.Kind == AttackKind.Slow ? 22 :
                     core.ActiveAttack.Kind == AttackKind.Perilous ? 23 : 3;
+            else if(core.IsPreparing)selected=3;
             else if(core.State==CombatState.Dodge)selected=16;
             else if(core.CanAct && actor.Jumping)selected=25;
             else if(core.CanAct && actor.Falling)selected=26;
@@ -202,7 +203,7 @@ namespace Milkfrog.CombatDemo
                     (core.State==CombatState.AttackPrepare || core.State==CombatState.Charging) ? HeldSlashTime(core, clips[3]) : AttackPose(core, i);
                 if(i>=16 && i<=19)time=Mathf.Clamp01(core.DodgeElapsed/Mathf.Max(.001f,clips[i].length))*clips[i].length;
                 if(i==20)time=core.ChargeRatio*clips[i].length;
-                if ((i == 22 || i == 23 || i == 24) && selected == i) time = AttackPose(core, i);
+                if ((i == 21 || i == 22 || i == 23 || i == 24) && selected == i) time = AttackPose(core, i);
                 if (i == 25 && selected == 25) time = Mathf.Clamp01(actor.AirTime / Mathf.Max(.001f, clips[i].length)) * clips[i].length;
                 if (i == 26 && selected == 26) time = Mathf.Repeat(actor.AirTime, clips[i].length);
                 if (i == 27 && selected == 27) time = (1f - Mathf.Clamp01(actor.LandRemaining / CombatActor.LandDuration)) * clips[i].length;
