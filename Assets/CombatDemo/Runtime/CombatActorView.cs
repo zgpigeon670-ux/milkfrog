@@ -65,7 +65,7 @@ namespace Milkfrog.CombatDemo
                 case CombatState.PostureBroken: color = new Color(1, .3f, .8f); break;
                 case CombatState.Dead: color = new Color(.2f, .22f, .25f); break;
             }
-            stateColor = retainFactionColor ? (actor.isPlayer ? new Color(.25f, .8f, .95f) : new Color(.95f, .35f, .3f)) : color;
+            stateColor = retainFactionColor ? Color.white : color;
             PaintBody();
             if (attackRenderer != null) Paint(attackRenderer, color);
         }

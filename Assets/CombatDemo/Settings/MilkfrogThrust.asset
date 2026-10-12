@@ -10,25 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9fd5f7d9d24a51880a6c8c2a37f502, type: 3}
-  m_Name: light
+  m_Name: MilkfrogThrust
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAttackDefinition
   rules:
-    kind: 0
+    kind: 1
     response: 0
-    startup: 0.33333334
-    active: 0.24999997
-    recovery: 0.4166667
+    startup: 0.12
+    active: 0.12
+    recovery: 0.42
     damage: 10
-    maxDamage: 10
+    maxDamage: 22
     posture: 10
-    maxPosture: 10
+    maxPosture: 28
     block: 20
-    maxBlock: 20
+    maxBlock: 35
     deflectPosture: 30
-    cancelWindow: 0.16
-    CanComboFrom: 1
-    comboWindow: 0.18
-  clip: {fileID: -7410864681109482920, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
-  activeStart: 0.33333334
-  activeEnd: 0.5833333
-  trace: {fileID: 11400000, guid: 4c510ec265baa1244a8845a27b26559b, type: 2}
+    cancelWindow: 0.14
+  clip: {fileID: -1971729724006054521, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  activeStart: 0.18181817
+  activeEnd: 0.36363634
+  trace: {fileID: 11400000, guid: f49fbc48d534ab346bde7d49c1c0c116, type: 2}

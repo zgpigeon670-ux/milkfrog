@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9fd5f7d9d24a51880a6c8c2a37f502, type: 3}
-  m_Name: followup
+  m_Name: MilkfrogSlash
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAttackDefinition
   rules:
-    kind: 2
+    kind: 0
     response: 0
-    startup: 0.25000003
-    active: 0.25000003
-    recovery: 0.33333334
+    startup: 0.25
+    active: 0.1
+    recovery: 0.35
     damage: 10
     maxDamage: 10
     posture: 10
@@ -26,9 +26,9 @@ MonoBehaviour:
     maxBlock: 20
     deflectPosture: 30
     cancelWindow: 0.16
-    CanComboFrom: 0
+    CanComboFrom: 1
     comboWindow: 0.18
-  clip: {fileID: -3172749188834425358, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
-  activeStart: 0.3
-  activeEnd: 0.6
-  trace: {fileID: 11400000, guid: c8895a57c6704ad4f8c41acbf555474a, type: 2}
+  clip: {fileID: -7410864681109482920, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  activeStart: 0.25
+  activeEnd: 0.38
+  trace: {fileID: 11400000, guid: d22377d09e8d577408d0bd4160760b60, type: 2}

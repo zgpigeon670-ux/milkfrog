@@ -51,6 +51,7 @@ namespace Milkfrog.CombatDemo
         public Vector3 LastContactPoint { get; private set; }
         public bool HasContactPoint { get; private set; }
         public float EngageDistance => bladeTrace != null ? Mathf.Min(Core.Tuning.range, bladeTrace.engageDistance) : Core.Tuning.range;
+        public Vector3 BodyPosition => Motor != null ? Motor.bounds.center - Vector3.up * (Motor.height * .5f - Motor.center.y) : transform.position;
         readonly Collider[] contacts = new Collider[32];
         readonly RaycastHit[] occluders = new RaycastHit[32];
         Vector3 spawnPosition;
@@ -172,7 +173,7 @@ namespace Milkfrog.CombatDemo
             if (isPlayer && Target != null && Core.CanAct && Target.Core.State == CombatState.PostureBroken &&
                 ValidTarget(Target, transform.forward))
             {
-                Vector3 point = Target.Motor.ClosestPoint(transform.position + Vector3.up * 1.1f);
+                Vector3 point = Target.Motor.ClosestPoint(BodyPosition + Vector3.up * 1.1f);
                 if (HasLineOfSight(Target, point))
                 {
                     LastContactPoint = point; HasContactPoint = true;
@@ -186,7 +187,7 @@ namespace Milkfrog.CombatDemo
         {
             if (other == null || other == this || other.Core == null || other.Core.State == CombatState.Dead || !other.AcceptsDamage) return false;
             if (enforceFactions && isPlayer == other.isPlayer) return false;
-            Vector3 delta = other.transform.position - transform.position;
+            Vector3 delta = other.BodyPosition - BodyPosition;
             return Mathf.Abs(delta.y) <= maxTargetHeightDifference &&
                 Vector3.ProjectOnPlane(delta, Vector3.up).sqrMagnitude <= Core.Tuning.range * Core.Tuning.range &&
                 IsInFront(forward, delta, 120);
@@ -194,7 +195,7 @@ namespace Milkfrog.CombatDemo
 
         public bool HasLineOfSight(CombatActor other, Vector3 point)
         {
-            Vector3 origin = transform.position + Vector3.up * 1.1f;
+            Vector3 origin = BodyPosition + Vector3.up * 1.1f;
             Vector3 delta = point - origin;
             if (delta.sqrMagnitude < .000001f) return true;
             int count = Physics.RaycastNonAlloc(origin, delta.normalized, occluders, delta.magnitude, combatMask, QueryTriggerInteraction.Ignore);
@@ -222,20 +223,20 @@ namespace Milkfrog.CombatDemo
                 if (other.autoFaceGuardAttacks && other.Core.State == CombatState.Guard &&
                     Core.ActiveAttack.Response != AttackResponse.DodgeOnly)
                 {
-                    Vector3 incoming = transform.position - other.transform.position;
+                    Vector3 incoming = BodyPosition - other.BodyPosition;
                     incoming.y = 0;
                     if (incoming.sqrMagnitude > .000001f)
                         other.transform.rotation = Quaternion.LookRotation(incoming);
                 }
-                Core.TryHit(other.Core, IsInFront(other.transform.forward, transform.position - other.transform.position, other.Core.Tuning.guardAngle));
+                Core.TryHit(other.Core, IsInFront(other.transform.forward, BodyPosition - other.BodyPosition, other.Core.Tuning.guardAngle));
             }
         }
 
         void SampleAttack()
         {
-            if (CurrentTrace != null) return;
+            if (CurrentTrace != null && CurrentAttackDefinition != null && TraceMatches(CurrentAttackDefinition)) return;
             var tuning = Core.Tuning;
-            Vector3 center = transform.position + Vector3.up + AttackForward * (tuning.range * .5f);
+            Vector3 center = BodyPosition + Vector3.up + AttackForward * (tuning.range * .5f);
             Vector3 half = new Vector3(tuning.attackHalfWidth, .9f, tuning.range * .5f);
             Quaternion rotation = Quaternion.LookRotation(AttackForward);
             int count = Physics.OverlapBoxNonAlloc(center, half, contacts, rotation, combatMask, QueryTriggerInteraction.Ignore);
@@ -272,7 +273,7 @@ namespace Milkfrog.CombatDemo
             var bladeTrace=CurrentTrace;
             if (Core.State != CombatState.AttackActive) return;
             Quaternion facing = Quaternion.LookRotation(AttackForward);
-            Vector3 root = transform.position + facing * pose.root, tip = transform.position + facing * pose.tip;
+            Vector3 root = BodyPosition + facing * pose.root, tip = BodyPosition + facing * pose.tip;
             int count = Physics.OverlapCapsuleNonAlloc(root, tip, bladeTrace.radius, contacts, combatMask, QueryTriggerInteraction.Ignore);
             var found = count == contacts.Length ? Physics.OverlapCapsule(root, tip, bladeTrace.radius, combatMask, QueryTriggerInteraction.Ignore) : contacts;
             ResolveContacts(found, found == contacts ? count : found.Length, root, tip);

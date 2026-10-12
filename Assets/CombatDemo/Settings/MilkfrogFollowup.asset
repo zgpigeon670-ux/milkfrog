@@ -10,25 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c9fd5f7d9d24a51880a6c8c2a37f502, type: 3}
-  m_Name: slow
+  m_Name: MilkfrogFollowup
   m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAttackDefinition
   rules:
-    kind: 3
+    kind: 2
     response: 0
-    startup: 0.5833334
-    active: 0.3333333
-    recovery: 0.5833334
-    damage: 10
-    maxDamage: 10
-    posture: 10
-    maxPosture: 10
-    block: 20
-    maxBlock: 20
+    startup: 0.16
+    active: 0.1
+    recovery: 0.38
+    damage: 12
+    maxDamage: 12
+    posture: 14
+    maxPosture: 14
+    block: 22
+    maxBlock: 22
     deflectPosture: 30
-    cancelWindow: 0.16
-    CanComboFrom: 0
-    comboWindow: 0.18
-  clip: {fileID: -7862585771070652048, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
-  activeStart: 0.3888889
-  activeEnd: 0.6111111
-  trace: {fileID: 11400000, guid: 6638bc7b8492b18458203115a8ec75d2, type: 2}
+    cancelWindow: 0.14
+  clip: {fileID: -3172749188834425358, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  activeStart: 0.25
+  activeEnd: 0.38
+  trace: {fileID: 11400000, guid: d22377d09e8d577408d0bd4160760b60, type: 2}
