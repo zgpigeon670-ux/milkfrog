@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8686d13b5f66351409c05999acb481e2, type: 3}
+  m_Name: MilkfrogCombat
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAnimationProfile
+  idle: {fileID: -5252816984213320552, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  walk: {fileID: -3419257869308726280, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  jog: {fileID: -3419257869308726280, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  attack: {fileID: -7410864681109482920, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  hit: {fileID: 2459078804267041145, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  death: {fileID: -6758483313513240000, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  guard: {fileID: 3299788110970749302, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  parry: {fileID: 6507783001843095443, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  deflected: {fileID: -6939355378438629278, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  broken: {fileID: 2459078804267041145, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  walkBack: {fileID: -3419257869308726280, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  jogBack: {fileID: -3419257869308726280, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  walkLeft: {fileID: -3419257869308726280, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  jogLeft: {fileID: -3419257869308726280, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  walkRight: {fileID: -3419257869308726280, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  jogRight: {fileID: -3419257869308726280, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  dodgeForward: {fileID: 8849549522481734162, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  dodgeBack: {fileID: 5841707171513580741, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  dodgeLeft: {fileID: 1206203414021864626, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  dodgeRight: {fileID: 4158635320657290950, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  charge: {fileID: 3299788110970749302, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  thrust: {fileID: -1971729724006054521, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  jump: {fileID: -2993534804863918692, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  fall: {fileID: -1504929105726005784, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  land: {fileID: 4461826734956849724, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  attackActiveStart: 0.25
+  attackActiveEnd: 0.38
+  blendTime: 0.07
+  walkSpeed: 1.5
+  jogSpeed: 4
+  walkStrideLengths: {x: 1.2, y: 1.3098289, z: 1.2562774, w: 1.2562418}
+  jogStrideLengths: {x: 1.8, y: 1.8640125, z: 1.8391101, w: 1.841253}
