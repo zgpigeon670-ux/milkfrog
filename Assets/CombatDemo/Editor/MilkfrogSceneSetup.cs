@@ -34,20 +34,20 @@ namespace Milkfrog.CombatDemo.Editor
             var importer = (ModelImporter)AssetImporter.GetAtPath(ModelPath);
             importer.animationType = ModelImporterAnimationType.Generic;
             importer.avatarSetup = ModelImporterAvatarSetup.NoAvatar;
+            importer.clipAnimations = importer.defaultClipAnimations;
             importer.SaveAndReimport();
             AssetDatabase.ImportAsset(ModelPath, ImportAssetOptions.ForceUpdate);
             var model = AssetDatabase.LoadAssetAtPath<GameObject>(ModelPath);
             var clips = AssetDatabase.LoadAllAssetsAtPath(ModelPath).OfType<AnimationClip>()
                 .Where(c => !c.name.StartsWith("__")).ToArray();
-            var idle = clips.FirstOrDefault(c => c.name.EndsWith("idle") || c.name == "idle");
-            var walk = clips.FirstOrDefault(c => c.name.EndsWith("walk") || c.name == "walk");
-            if (model == null || idle == null || walk == null)
+            AnimationClip Clip(string name) => clips.FirstOrDefault(c => c.name == "metarig|" + name || c.name == name);
+            if (model == null || Clip("idle") == null || Clip("walk") == null)
             {
-                Debug.LogError($"missing assets model={model != null} idle={idle != null} walk={walk != null} clips={string.Join(",", clips.Select(c => c.name))}");
+                Debug.LogError("missing milkfrog clips: " + string.Join(",", clips.Select(c => c.name)));
                 EditorApplication.Exit(1);
                 return;
             }
-            SetLoop(walk);
+            foreach (var clip in clips) SetLoop(clip);
 
             var scene = EditorSceneManager.OpenScene(ScenePath);
             foreach (var existing in Object.FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToArray())
@@ -88,10 +88,15 @@ namespace Milkfrog.CombatDemo.Editor
             animator.avatar = AssetDatabase.LoadAllAssetsAtPath(ModelPath).OfType<Avatar>().FirstOrDefault();
             animator.applyRootMotion = false;
             Debug.Log($"ANIMATOR created={animator != null} avatar={animator.avatar != null}");
-            var locomotion = actor.AddComponent<MilkfrogLocomotion>();
-            locomotion.animator = animator;
-            locomotion.idle = idle;
-            locomotion.walk = walk;
+            var preview = actor.AddComponent<MilkfrogPreview>();
+            preview.animator = animator;
+            foreach (var field in typeof(MilkfrogPreview).GetFields())
+            {
+                if (field.FieldType != typeof(AnimationClip)) continue;
+                var clip = Clip(field.Name);
+                if (clip == null) Debug.LogWarning("no clip for " + field.Name);
+                else field.SetValue(preview, clip);
+            }
 
             var camera = Camera.main;
             if (camera != null)
@@ -102,25 +107,19 @@ namespace Milkfrog.CombatDemo.Editor
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
-            Debug.Log($"BUILT height={height:0.###} radius={controller.radius:0.###} idle={idle.name} {idle.length:0.###}s walk={walk.name} {walk.length:0.###}s");
+            var assigned = typeof(MilkfrogPreview).GetFields().Count(f => f.FieldType == typeof(AnimationClip) && f.GetValue(preview) != null);
+            Debug.Log("CLIP NAMES " + string.Join(",", clips.Select(c => c.name)));
+            Debug.Log($"BUILT height={height:0.###} clips={assigned}");
             EditorApplication.Exit(0);
         }
 
         static void SetLoop(AnimationClip clip)
         {
-            var importer = (ModelImporter)AssetImporter.GetAtPath(ModelPath);
-            var clips = importer.clipAnimations;
-            if (clips == null || clips.Length == 0) clips = importer.defaultClipAnimations;
-            var changed = false;
-            foreach (var description in clips)
-            {
-                if (!description.name.EndsWith("walk")) continue;
-                description.loopTime = true;
-                changed = true;
-            }
-            if (!changed) return;
-            importer.clipAnimations = clips;
-            importer.SaveAndReimport();
+            var settings = AnimationUtility.GetAnimationClipSettings(clip);
+            if (settings.loopTime) return;
+            settings.loopTime = clip.name.Contains("walk") || clip.name.Contains("jog") || clip.name.Contains("idle") || clip.name.Contains("fall");
+            if (!settings.loopTime) return;
+            AnimationUtility.SetAnimationClipSettings(clip, settings);
         }
     }
 }
