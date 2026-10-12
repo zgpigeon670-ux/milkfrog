@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c9fd5f7d9d24a51880a6c8c2a37f502, type: 3}
+  m_Name: thrust
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatAttackDefinition
+  rules:
+    kind: 1
+    response: 0
+    startup: 0.25
+    active: 0.25
+    recovery: 0.5
+    damage: 10
+    maxDamage: 10
+    posture: 10
+    maxPosture: 10
+    block: 20
+    maxBlock: 20
+    deflectPosture: 30
+    cancelWindow: 0.16
+    CanComboFrom: 0
+    comboWindow: 0.18
+  clip: {fileID: -1971729724006054521, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
+  activeStart: 0.25
+  activeEnd: 0.5
+  trace: {fileID: 11400000, guid: f74ed5c2d5461e540b2ae8837f14ea82, type: 2}
