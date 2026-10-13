@@ -273,7 +273,8 @@ namespace Milkfrog.CombatDemo
             var bladeTrace=CurrentTrace;
             if (Core.State != CombatState.AttackActive) return;
             Quaternion facing = Quaternion.LookRotation(AttackForward);
-            Vector3 root = BodyPosition + facing * pose.root, tip = BodyPosition + facing * pose.tip;
+            // The baker stores actor-local endpoints, not offsets from the controller's center.
+            Vector3 root = transform.position + facing * pose.root, tip = transform.position + facing * pose.tip;
             int count = Physics.OverlapCapsuleNonAlloc(root, tip, bladeTrace.radius, contacts, combatMask, QueryTriggerInteraction.Ignore);
             var found = count == contacts.Length ? Physics.OverlapCapsule(root, tip, bladeTrace.radius, combatMask, QueryTriggerInteraction.Ignore) : contacts;
             ResolveContacts(found, found == contacts ? count : found.Length, root, tip);

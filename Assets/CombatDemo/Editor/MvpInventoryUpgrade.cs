@@ -20,20 +20,39 @@ namespace Milkfrog.CombatDemo.Editor
         [MenuItem("Tools/Combat Demo/Upgrade MVP Inventory")]
         public static void Upgrade()
         {
+            EquipmentAuthoring.Ensure();
+            string uiPath = Root+"/UI/Inventory/InventoryView.prefab";
+            var font = Resources.Load<Font>("NotoSansSC-VF") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(uiPath) != null)
+            {
+                var contents = PrefabUtility.LoadPrefabContents(uiPath);
+                try
+                {
+                    if (InventoryView.EnsureQuickSlotLayout(contents.GetComponent<InventoryView>(), font))
+                        PrefabUtility.SaveAsPrefabAsset(contents, uiPath);
+                }
+                finally { PrefabUtility.UnloadPrefabContents(contents); }
+            }
             EditorSceneManager.OpenScene(MvpSceneBuilder.Level);
             var world = UnityEngine.Object.FindAnyObjectByType<MvpWorld>();
             if (world == null) throw new InvalidOperationException("Missing MVP world.");
+            var equipment = EquipmentAuthoring.Ids.Select(id => AssetDatabase.LoadAssetAtPath<ItemDefinition>(Root+"/Settings/Items/"+id+".asset")).ToArray();
             foreach (string folder in new[] {Root+"/Settings/Items",Root+"/UI/Inventory"}) Directory.CreateDirectory(folder);
             AssetDatabase.Refresh();
             var medicine = EnsureItem("healing-medicine", "疗伤药", "止血疗伤的药品。可在战斗中暂停背包使用；当前动作必须已结束。", ItemCategory.Consumable,40,0,0);
             var calming = EnsureItem("calming-pill", "定心丸", "平复呼吸、稳定架势。可在战斗中使用，架势崩溃期间无法使用。", ItemCategory.Consumable,0,40,1);
             var key = EnsureItem(WorldStateService.KeyItemId,"守门钥匙","用于开启守门人前方的封印门。取得后永久保留。",ItemCategory.Quest,0,0,2);
+            var tonic = EnsureItem("attack-tonic","战意散","激发战意，提高生命伤害。再次使用刷新时长，不叠加效果。",ItemCategory.Consumable,0,0,3);
             bool changed = false;
             var definitions = world.items == null ? new List<ItemDefinition>() : world.items.ToList();
-            foreach (var item in new[] {medicine,calming,key}) if (!definitions.Contains(item)) { definitions.Add(item); changed = true; }
+            foreach (var item in new[] {medicine,calming,key,tonic}.Concat(equipment)) if (!definitions.Contains(item)) { definitions.Add(item); changed = true; }
             if (changed) { world.items = definitions.ToArray(); EditorUtility.SetDirty(world); }
             changed |= EnsurePickup("pickup-healing-medicine",medicine,new Vector3(-3,.02f,-33));
             changed |= EnsurePickup("pickup-calming-pill",calming,new Vector3(-6,.02f,-33));
+            changed |= EnsurePickup("pickup-attack-tonic",tonic,new Vector3(3,.02f,-33));
+            for (int i = 0; i < 4; i++) changed |= EnsurePickup("pickup-"+equipment[i].stableId,equipment[i],new Vector3(-3 - i*2,.02f,-30));
+            int previewMask = 1 << LayerMask.NameToLayer("InventoryPreview");
+            if ((world.gameplayCamera.cullingMask & previewMask) != 0) { world.gameplayCamera.cullingMask &= ~previewMask; EditorUtility.SetDirty(world.gameplayCamera); changed = true; }
             var flow = world.GetComponent<GameFlowController>();
             if (flow.inventoryView == null)
             {
@@ -42,13 +61,13 @@ namespace Milkfrog.CombatDemo.Editor
                 if (prefab == null)
                 {
                     var root = new GameObject("InventoryView",typeof(RectTransform));
-                    var font = Resources.Load<Font>("NotoSansSC-VF") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
                     InventoryView.BuildLayout(root,font); root.SetActive(false);
                     prefab = PrefabUtility.SaveAsPrefabAsset(root,path); UnityEngine.Object.DestroyImmediate(root);
                 }
                 var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                 flow.inventoryView = instance.GetComponent<InventoryView>(); EditorUtility.SetDirty(flow); changed = true;
             }
+            if (InventoryView.EnsureQuickSlotLayout(flow.inventoryView, font)) { EditorUtility.SetDirty(flow.inventoryView); changed = true; }
             Validate(EditorSceneManager.GetActiveScene());
             if (changed) EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
             AssetDatabase.SaveAssets();
@@ -61,6 +80,7 @@ namespace Milkfrog.CombatDemo.Editor
             if (item != null) return item;
             item = ScriptableObject.CreateInstance<ItemDefinition>(); item.stableId=id; item.displayName=name;
             item.description=description; item.category=category; item.restoreHealth=health; item.reducePosture=posture;
+            if (iconKind == 3) { item.effectType = ItemEffectType.TemporaryAttack; item.attackDamageMultiplier = 1.25f; item.attackBuffDuration = 20; }
             item.icon=EnsureIcon(id,iconKind); AssetDatabase.CreateAsset(item,path); return item;
         }
         static Sprite EnsureIcon(string id,int kind)
@@ -74,6 +94,8 @@ namespace Milkfrog.CombatDemo.Editor
                 {
                     bool shape = kind==0 ? (x>=24 && x<=72 && y>=14 && y<=65) || (x>=34 && x<=62 && y>=65 && y<=81) :
                         kind==1 ? (x-48)*(x-48)+(y-48)*(y-48)<=30*30 :
+                        kind==3 ? (Math.Abs(x-y)<6 && x>=30 && y>=30 && x<=81 && y<=81) ||
+                            (x+y>=57 && x+y<=66 && x>=16 && x<=47 && y>=16 && y<=47) || (Math.Abs(x-y)<5 && x>=12 && x<=31 && y>=12 && y<=31) :
                         ((x-48)*(x-48)+(y-67)*(y-67)<=18*18 && (x-48)*(x-48)+(y-67)*(y-67)>=9*9) ||
                         (x>=43 && x<=53 && y>=12 && y<=54) || (x>=50 && x<=68 && (y>=13 && y<=23 || y>=31 && y<=41));
                     Color32 color = kind==0 ? new Color32(204,111,99,255) : kind==1 ? new Color32(116,188,151,255) : new Color32(235,190,111,255);
@@ -95,7 +117,7 @@ namespace Milkfrog.CombatDemo.Editor
             var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(path);
             if(prefab==null)
             {
-                var root=new GameObject(item.displayName); var pickup=root.AddComponent<InventoryPickup>(); pickup.stableId=id; pickup.item=item;
+                var root=new GameObject(item.displayName); var pickup=root.AddComponent<InventoryPickup>(); pickup.stableId=id; pickup.item=item; pickup.quantity = item.category == ItemCategory.Equipment ? 1 : 3;
                 var visual=GameObject.CreatePrimitive(PrimitiveType.Cube); visual.name="Visual"; visual.transform.SetParent(root.transform,false);
                 visual.transform.localPosition=Vector3.up*.65f; visual.transform.localScale=new Vector3(.4f,.7f,.4f);
                 visual.GetComponent<Collider>().isTrigger=true;
@@ -111,10 +133,21 @@ namespace Milkfrog.CombatDemo.Editor
             var ids=new HashSet<string>(StringComparer.Ordinal);
             if(world.items==null || world.items.Length==0)throw new BuildFailedException("Missing inventory catalog.");
             foreach(var item in world.items)
-                if(item==null || string.IsNullOrWhiteSpace(item.stableId) || !ids.Add(item.stableId) || string.IsNullOrWhiteSpace(item.displayName) || string.IsNullOrWhiteSpace(item.description) || item.icon==null ||
+                if(item==null || string.IsNullOrWhiteSpace(item.stableId) || !ids.Add(item.stableId) || string.IsNullOrWhiteSpace(item.displayName) || string.IsNullOrWhiteSpace(item.description) || item.icon==null || !item.EffectsValid ||
                     !Enum.IsDefined(typeof(ItemCategory),item.category) || float.IsNaN(item.restoreHealth) || float.IsInfinity(item.restoreHealth) || item.restoreHealth<0 ||
                     float.IsNaN(item.reducePosture) || float.IsInfinity(item.reducePosture) || item.reducePosture<0 ||
-                    (item.category==ItemCategory.Consumable && !item.Usable))throw new BuildFailedException("Invalid or duplicate item definition.");
+                    (item.category==ItemCategory.Consumable && !item.Usable) || (item.category==ItemCategory.Equipment && !item.EquipmentValid))throw new BuildFailedException("Invalid or duplicate item definition: " + (item != null ? item.stableId : "missing"));
+            if (!world.items.Any(i=>i.stableId==EquipmentService.DefaultWeaponId && i.equipmentSlot==EquipmentSlot.Weapon && i.EquipmentValid) || world.player.GetComponent<EquipmentVisuals>()==null || LayerMask.NameToLayer("InventoryPreview")<0)
+                throw new BuildFailedException("Missing default weapon, equipment visuals or preview layer.");
+            var model=world.player.GetComponent<EquipmentVisuals>().modelRoot;
+            if(model==null)throw new BuildFailedException("Missing equipment model root.");
+            var bones=new HashSet<string>(model.GetComponentsInChildren<Transform>(true).Select(t=>t.name));
+            foreach(var gear in world.items.Where(i=>i.category==ItemCategory.Equipment && i.equipmentSlot!=EquipmentSlot.Weapon))
+            {
+                var parts=gear.visualPrefab.GetComponentsInChildren<EquipmentVisualPart>(true);
+                if(parts.Length==0 || parts.Any(p=>string.IsNullOrEmpty(p.boneName) || !bones.Contains(p.boneName)) || gear.visualPrefab.GetComponentsInChildren<Collider>(true).Length>0)
+                    throw new BuildFailedException("Invalid equipment attachment: "+gear.stableId);
+            }
             var flow = world.GetComponent<GameFlowController>();
             if(flow==null || flow.inventoryView==null || !flow.inventoryView.Configured)throw new BuildFailedException("Missing inventory view configuration.");
             foreach(var pickup in components.OfType<InventoryPickup>())

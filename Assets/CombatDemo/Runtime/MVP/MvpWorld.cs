@@ -19,6 +19,7 @@ namespace Milkfrog.CombatDemo
         public QuestDefinition quest;
         public WorldStateService WorldState { get; } = new WorldStateService();
         public InventoryService Inventory { get; } = new InventoryService();
+        public EquipmentStats EquipmentStats { get; private set; }
         public ItemDefinition[] items;
         InventoryPickup[] inventoryPickups;
         public QuestProgressService Quests { get; private set; }
@@ -50,6 +51,8 @@ namespace Milkfrog.CombatDemo
         Vector2 movement;
         bool needsRelease, pendingSave, frozenGuard, hasFrozenGuard;
         bool menuAttackNeedsRelease;
+        bool itemNeedsRelease;
+        readonly bool[] slotNeedsRelease = new bool[3];
         float saveClock, saveRetryClock;
         MvpHud hud;
 
@@ -101,7 +104,9 @@ namespace Milkfrog.CombatDemo
             Defeated.Clear(); BossDefeated = snapshot != null && snapshot.bossDefeated;
             Progression.Restore(snapshot);
             WorldState.Restore(snapshot?.worldState);
-            Inventory.Restore(snapshot?.inventory ?? new InventoryData());
+            var inventoryData = snapshot?.inventory ?? new InventoryData();
+            EquipmentService.EnsureDefaultWeapon(inventoryData);
+            Inventory.Restore(inventoryData);
             ActiveCheckpointId = FindBonfire(snapshot?.activeCheckpointId) != null ? snapshot.activeCheckpointId : BonfireCheckpoint.StartId;
             UnlockedCheckpointIds.Clear();
             UnlockedCheckpointIds.Add(BonfireCheckpoint.StartId);
@@ -124,12 +129,13 @@ namespace Milkfrog.CombatDemo
             player.Core.Reset();
             ApplyProgression();
             player.Core.RestoreVitals(snapshot?.health ?? player.Core.Tuning.maxHealth, snapshot?.posture ?? 0);
+            RefreshEquipment();
             foreach (var enemy in enemies)
                 if (Defeated.Contains(enemy.stableId) || (enemy.IsBoss && BossDefeated))
                 { enemy.Actor.Core.RestoreVitals(0, 0); enemy.MarkDead(); enemy.gameObject.SetActive(false); }
             if (arena != null) arena.SetActive(false);
             Lock.Clear(); cameraRig.yaw = player.transform.eulerAngles.y; cameraRig.pitch = 8; cameraRig.ResetImpulse();
-            ClearInput(); needsRelease = false; feedback.ResetFeedback();
+            ClearInput(); needsRelease = itemNeedsRelease = false; feedback.ResetFeedback();
             foreach (var animation in animations) if (animation.gameObject.activeInHierarchy) animation.ResetVisuals();
             ApplyWorldObjects(); Physics.SyncTransforms(); Interactions.Refresh(); hud?.Refresh();
         }
@@ -181,34 +187,102 @@ namespace Milkfrog.CombatDemo
             Inventory.Restore(proposed.inventory); WorldState.Apply(WorldEventKind.ItemAcquired, target.stableId);
             Flow.Notify($"获得 {target.item.displayName} ×{target.quantity}"); return true;
         }
-        public string ItemUseBlockReason(ItemDefinition item)
+        public string ItemUseBlockReason(ItemDefinition item, ItemUseContext context = ItemUseContext.Backpack)
         {
-            if (!Flow.InventoryOpen || !Flow.InventoryUseAllowed || !player.Core.CanAct) return "当前动作期间只能查看背包";
+            if (context == ItemUseContext.Backpack ? !Flow.InventoryOpen || !Flow.InventoryUseAllowed || !player.Core.CanAct :
+                !Running || feedback.Clock.Remaining > 0 || !player.Core.CanAct) return "当前动作期间无法使用道具";
             if (item == null || !Inventory.HasItem(item.stableId)) return "物品数量不足";
-            if (!item.Usable) return "任务物品不可使用";
+            if (!item.Usable) return item.category == ItemCategory.Equipment ? "装备需要穿戴" : "任务物品不可使用";
+            if (item.effectType == ItemEffectType.TemporaryAttack)
+                return player.Core.CanApplyAttackBuff(item.attackDamageMultiplier, item.attackBuffDuration) ? null : "当前无法获得增益";
             if (!player.Core.CanRecoverWithItem(item.restoreHealth, item.reducePosture))
                 return item.restoreHealth > 0 ? "生命已满" : "架势已经为零";
             return null;
         }
-        public bool TryUseItem(string itemId)
+        public bool TryUseItem(string itemId, ItemUseContext context = ItemUseContext.Backpack)
         {
-            var item = FindItem(itemId); string reason = ItemUseBlockReason(item);
+            var item = FindItem(itemId); string reason = ItemUseBlockReason(item, context);
             if (reason != null) { Flow.Notify(reason); return false; }
+            var next = new InventoryService(); next.Restore(Inventory.Capture());
+            if (!next.TryConsume(itemId) || !SaveInventoryChange(next.Capture(), item.restoreHealth, item.reducePosture)) return false;
+            if (item.effectType == ItemEffectType.TemporaryAttack) player.Core.TryApplyAttackBuff(item.attackDamageMultiplier, item.attackBuffDuration);
+            else player.Core.TryRecoverWithItem(item.restoreHealth, item.reducePosture);
+            Inventory.Restore(next.Capture()); hud?.Refresh(); Flow.Notify("已使用 " + item.displayName); return true;
+        }
+        public bool TryUseEquippedItem()
+        {
+            if (string.IsNullOrEmpty(Inventory.EquippedItemId)) { Flow.Notify("请按 Tab 装备快捷道具"); return false; }
+            if (FindItem(Inventory.EquippedItemId) == null) { Flow.Notify("快捷道具配置缺失，请重新装备"); return false; }
+            return TryUseItem(Inventory.EquippedItemId, ItemUseContext.QuickSlot);
+        }
+        public string ItemEquipBlockReason(ItemDefinition item)
+        {
+            if (!Flow.InventoryOpen || Flow.State != GameFlowState.Playing) return "请在背包中装备";
+            if (item == null || !item.Usable) return "仅可装备有效消耗品";
+            if (!Inventory.HasItem(item.stableId)) return "物品数量不足";
+            return null;
+        }
+        public bool TryEquipItem(string id)
+            => TryAssignQuickItem(Inventory.ActiveQuickSlot, id);
+        public bool TryAssignQuickItem(int slot, string id)
+        {
+            var reason = ItemEquipBlockReason(FindItem(id));
+            if (reason != null) { Flow.Notify(reason); return false; }
+            var next = new InventoryService(); next.Restore(Inventory.Capture());
+            if (!next.TryAssignQuickSlot(slot, id) || !SaveInventoryChange(next.Capture())) return false;
+            Inventory.Restore(next.Capture()); hud?.Refresh(); Flow.Notify($"已放入槽 {slot + 1}：" + FindItem(id).displayName); return true;
+        }
+        public bool TryUnequipItem()
+            => TryClearQuickItem(Inventory.ActiveQuickSlot);
+        public bool TryClearQuickItem(int slot)
+        {
+            if (!Flow.InventoryOpen) return false;
+            var next = new InventoryService(); next.Restore(Inventory.Capture()); if (!next.ClearQuickSlot(slot)) return false;
+            if (!SaveInventoryChange(next.Capture())) return false;
+            Inventory.Restore(next.Capture()); hud?.Refresh(); Flow.Notify("已卸下快捷道具"); return true;
+        }
+        public string EquipmentBlockReason(ItemDefinition item = null)
+        {
+            if (!Flow.InventoryOpen || !Flow.InventoryEquipmentAllowed || player.Core.State != CombatState.Neutral) return "脱战且动作结束后可换装";
+            if (item != null && (!item.EquipmentValid || !Inventory.HasItem(item.stableId))) return "装备配置或数量无效";
+            return null;
+        }
+        public bool TryEquipGear(string id)
+        {
+            var item = FindItem(id); string reason = EquipmentBlockReason(item);
+            if (reason != null) { Flow.Notify(reason); return false; }
+            var next = new InventoryService(); next.Restore(Inventory.Capture());
+            if (!next.Equipment.TryEquip(item, item != null && next.HasItem(id)) || !SaveInventoryChange(next.Capture())) return false;
+            Inventory.Restore(next.Capture()); RefreshEquipment(); Flow.Notify("已穿戴 " + item.displayName); return true;
+        }
+        public bool TryUnequipGear(EquipmentSlot slot)
+        {
+            string reason = EquipmentBlockReason();
+            if (reason != null) { Flow.Notify(reason); return false; }
+            var next = new InventoryService(); next.Restore(Inventory.Capture());
+            if (!next.Equipment.TryUnequip(slot) || !SaveInventoryChange(next.Capture())) return false;
+            Inventory.Restore(next.Capture()); RefreshEquipment(); Flow.Notify("已卸下装备"); return true;
+        }
+        public void RefreshEquipment()
+        {
+            EquipmentStats = CharacterStatsCalculator.Calculate(Inventory, FindItem);
+            player.Core.ApplyEquipment(EquipmentStats.WeaponDamageMultiplier, EquipmentStats.DamageReduction, EquipmentStats.GuardReduction);
+            player.GetComponent<EquipmentVisuals>()?.Apply(Inventory, FindItem); hud?.Refresh();
+        }
+        bool SaveInventoryChange(InventoryData inventory, float restoreHealth = 0, float reducePosture = 0)
+        {
             PlayerSnapshot proposed;
             bool safe = CanSave;
             if (safe) proposed = Snapshot();
-            else if (!Flow.Store.TryLoad(out proposed)) { Flow.Notify("无法读取安全存档，物品未消耗。" + Flow.Store.LastMessage); return false; }
-            var next = new InventoryService(); next.Restore(Inventory.Capture());
-            if (!next.TryConsume(itemId)) return false;
-            MergeWorldProgress(proposed); next.WriteTo(proposed);
+            else if (!Flow.Store.TryLoad(out proposed)) { Flow.Notify("无法读取安全存档，道具操作未生效。" + Flow.Store.LastMessage); return false; }
+            MergeWorldProgress(proposed); proposed.inventory = inventory;
             if (safe)
             {
-                proposed.health = Mathf.Min(player.Core.Tuning.maxHealth, player.Core.Health + item.restoreHealth);
-                proposed.posture = Mathf.Max(0, player.Core.Posture - item.reducePosture);
+                proposed.health = Mathf.Min(player.Core.Tuning.maxHealth, player.Core.Health + restoreHealth);
+                proposed.posture = Mathf.Max(0, player.Core.Posture - reducePosture);
             }
-            if (!Flow.Store.TrySave(proposed)) { Flow.Notify("保存失败，物品未消耗。" + Flow.Store.LastMessage); return false; }
-            player.Core.TryRecoverWithItem(item.restoreHealth, item.reducePosture);
-            Inventory.Restore(proposed.inventory); hud?.Refresh(); Flow.Notify("已使用 " + item.displayName); return true;
+            if (!Flow.Store.TrySave(proposed)) { Flow.Notify("保存失败，道具操作未生效。" + Flow.Store.LastMessage); return false; }
+            return true;
         }
         public bool TryWorldInteraction(WorldInteractable target)
         {
@@ -248,6 +322,7 @@ namespace Milkfrog.CombatDemo
         {
             player.Core.ApplyGrowth(settings.player.maxHealth + 10 * Progression.Vitality,
                 settings.player.maxPosture + 10 * Progression.Resolve, Progression.AttackMultiplier);
+            RefreshEquipment();
         }
         public bool TryRest(BonfireCheckpoint bonfire)
         {
@@ -364,7 +439,8 @@ namespace Milkfrog.CombatDemo
         void LateUpdate() { Interactions?.Refresh(); }
         public void ClearInput(bool preserveAction = false)
         {
-            movement = Vector2.zero; needsRelease = true; hasFrozenGuard = frozenGuard = false;
+            movement = Vector2.zero; needsRelease = itemNeedsRelease = true; hasFrozenGuard = frozenGuard = false;
+            for (int i = 0; i < 3; i++) slotNeedsRelease[i] = true;
             if (player.Core == null || preserveAction) return;
             player.Core.SetAttackHeld(false);
             player.Core.SetGuard(false, false); player.Core.CancelPreparation();
@@ -383,6 +459,22 @@ namespace Milkfrog.CombatDemo
         {
             if (!Running) return;
             var previousState = player.Core.State;
+            bool s1 = !frame.slot1Held || !slotNeedsRelease[0], s2 = !frame.slot2Held || !slotNeedsRelease[1], s3 = !frame.slot3Held || !slotNeedsRelease[2];
+            if (!frame.slot1Held) slotNeedsRelease[0] = false;
+            if (!frame.slot2Held) slotNeedsRelease[1] = false;
+            if (!frame.slot3Held) slotNeedsRelease[2] = false;
+            bool slotChanged = false;
+            if (frame.slot1Pressed && s1) slotChanged = Inventory.SelectQuickSlot(0);
+            else if (frame.slot2Pressed && s2) slotChanged = Inventory.SelectQuickSlot(1);
+            else if (frame.slot3Pressed && s3) slotChanged = Inventory.SelectQuickSlot(2);
+            if (slotChanged) hud?.Refresh();
+            if (frame.slot1Pressed) slotNeedsRelease[0] = frame.slot1Held;
+            if (frame.slot2Pressed) slotNeedsRelease[1] = frame.slot2Held;
+            if (frame.slot3Pressed) slotNeedsRelease[2] = frame.slot3Held;
+            bool itemUseAllowed = player.Core.CanAct;
+            if (frame.itemReleased || !frame.itemHeld) itemNeedsRelease = false;
+            bool itemPressed = frame.itemPressed && !itemNeedsRelease;
+            if (frame.itemPressed) itemNeedsRelease = frame.itemHeld;
             if (menuAttackNeedsRelease)
             {
                 if (!frame.attackHeld) menuAttackNeedsRelease = false;
@@ -405,6 +497,8 @@ namespace Milkfrog.CombatDemo
             { player.Core.SetGuard(frame.guardHeld, false); needsRelease = frame.attackHeld; RefreshPlayerPose(); return; }
             if (frame.jumpPressed) player.TryJump();
             player.Core.SetGuard(frame.guardHeld, frame.guardPressed);
+            if (itemPressed && itemUseAllowed && TryUseEquippedItem())
+            { needsRelease = frame.attackHeld; if (player.Core.State != previousState) RefreshPlayerPose(); return; }
             if (frame.guardHeld) { needsRelease = frame.attackHeld; return; }
             if (player.Core.IsPreparing && (frame.attackReleased || !frame.attackHeld))
             {
@@ -482,7 +576,7 @@ namespace Milkfrog.CombatDemo
                 if (Lock.Target != null && Lock.Target.IsBoss) { player.Target = Lock.Target.Actor; player.FaceTarget(); }
                 else if (direction.sqrMagnitude > .001f && player.Core.CanAct)
                     player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, Quaternion.LookRotation(direction), 720 * step);
-                player.Move(direction, settings.playerSpeed, step);
+                player.Move(direction, settings.playerSpeed * EquipmentStats.MovementMultiplier, step);
                 foreach (var enemy in enemies) if (enemy.gameObject.activeInHierarchy) enemy.Tick(step);
                 Physics.SyncTransforms();
                 bool exploring = Director.State == EncounterState.Exploration;
@@ -552,10 +646,23 @@ namespace Milkfrog.CombatDemo
                 level = Progression.Level, experience = Progression.Experience, nextLevelCost = Progression.NextCost,
                 vitality = Progression.Vitality, resolve = Progression.Resolve, power = Progression.Power,
                 attackMultiplier = Progression.AttackMultiplier,
+                activeQuickSlot = Inventory.ActiveQuickSlot,
+                quickItemId = Inventory.EquippedItemId,
+                quickItemName = FindItem(Inventory.EquippedItemId)?.displayName,
+                quickItemIcon = FindItem(Inventory.EquippedItemId)?.icon,
+                quickItemCount = Inventory.Quantity(Inventory.EquippedItemId),
+                quickItemUsable = ItemUseBlockReason(FindItem(Inventory.EquippedItemId), ItemUseContext.QuickSlot) == null,
+                attackBuffMultiplier = core.AttackBuffMultiplier, attackBuffRemaining = core.AttackBuffRemaining,
+                attackBuffDuration = core.AttackBuffDuration,
                 bonfirePrompt = Interactions?.Prompt,
                 objective = Quests.Objective(Snapshot()),
                 encounter = Director.State.ToString().ToUpperInvariant(), message = Flow.Message,
                 debug = $"{core.State} | Enemies: {Director.Count} | Disengage: {Director.Remaining:F1}s | Contacts: {ContactCount} | Aim: {AimDecision}" };
+            for (int i = 0; i < 3; i++)
+            {
+                string id = Inventory.QuickItem(i); var item = FindItem(id);
+                data.quickSlots[i] = new QuickSlotHudData { id = id, name = item?.displayName, icon = item?.icon, count = Inventory.Quantity(id), usable = ItemUseBlockReason(item,ItemUseContext.QuickSlot) == null };
+            }
             if (Lock.Target != null) data.lockPoint = Lock.Target.transform.position + Vector3.up * 1.35f;
             var bars = new List<MvpEnemyBar>();
             foreach (var enemy in enemies)

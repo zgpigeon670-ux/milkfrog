@@ -46,6 +46,28 @@ namespace Milkfrog.CombatDemo
         public int AttackId { get; private set; }
         public AttackSnapshot ActiveAttack { get; private set; }
         public float OffensiveMultiplier { get; private set; } = 1f;
+        public float WeaponDamageMultiplier { get; private set; } = 1f;
+        public float ArmorReduction { get; private set; }
+        public float GuardReduction { get; private set; }
+        public void ApplyEquipment(float weaponMultiplier, float armorReduction, float guardReduction)
+        {
+            if (!CanAct || weaponMultiplier <= 0 || float.IsNaN(weaponMultiplier) || float.IsInfinity(weaponMultiplier) ||
+                float.IsNaN(armorReduction) || float.IsInfinity(armorReduction) || armorReduction < 0 || armorReduction > .8f ||
+                float.IsNaN(guardReduction) || float.IsInfinity(guardReduction) || guardReduction < 0 || guardReduction > .8f)
+                throw new ArgumentOutOfRangeException(nameof(weaponMultiplier));
+            WeaponDamageMultiplier = weaponMultiplier; ArmorReduction = armorReduction; GuardReduction = guardReduction;
+        }
+        public float AttackBuffMultiplier { get; private set; } = 1f;
+        public float AttackBuffRemaining { get; private set; }
+        public float AttackBuffDuration { get; private set; }
+        public bool CanApplyAttackBuff(float multiplier, float duration) => CanAct && Health > 0 && multiplier > 1 && duration > 0 &&
+            !float.IsNaN(multiplier) && !float.IsInfinity(multiplier) && !float.IsNaN(duration) && !float.IsInfinity(duration);
+        public bool TryApplyAttackBuff(float multiplier, float duration)
+        {
+            if (!CanApplyAttackBuff(multiplier, duration)) return false;
+            AttackBuffMultiplier = multiplier; AttackBuffDuration = AttackBuffRemaining = duration; return true;
+        }
+        public void ClearAttackBuff() { AttackBuffMultiplier = 1; AttackBuffDuration = AttackBuffRemaining = 0; }
         readonly AttackParameters lightDefinition, thrustDefinition, followupDefinition;
         float chargeElapsed;
         public float ChargeElapsed => chargeElapsed;
@@ -79,6 +101,7 @@ namespace Milkfrog.CombatDemo
         public void Reset()
         {
             guardHeld = attackHeld = false;
+            ClearAttackBuff();
             DeflectRemaining = 0;
             sinceInteraction = 0;
             AttackId = 0;
@@ -179,7 +202,7 @@ namespace Milkfrog.CombatDemo
         }
         void BeginAttack(AttackSnapshot attack,float credit)
         {
-            ActiveAttack=attack.ScaledOffense(OffensiveMultiplier);
+            ActiveAttack=attack.ScaledOffense(OffensiveMultiplier).ScaledHealthDamage(AttackBuffMultiplier * WeaponDamageMultiplier);
             hitTargets.Clear();
             AttackId++;
             Change(CombatState.AttackStartup,attack.Startup);
@@ -271,6 +294,11 @@ namespace Milkfrog.CombatDemo
 
         void AdvanceClock(float dt)
         {
+            if (AttackBuffRemaining > 0)
+            {
+                AttackBuffRemaining = Math.Max(0, AttackBuffRemaining - dt);
+                if (AttackBuffRemaining <= .000001f) ClearAttackBuff();
+            }
             ComboRemaining = Math.Max(0, ComboRemaining - dt);
             float before = sinceInteraction;
             sinceInteraction += dt;
@@ -288,6 +316,7 @@ namespace Milkfrog.CombatDemo
         {
             var previous = State;
             State = next;
+            if (next == CombatState.Dead) ClearAttackBuff();
             if(next!=CombatState.AttackPrepare && next!=CombatState.Charging && next!=CombatState.AttackStartup)chargeElapsed=0;
             Remaining = Math.Max(0, duration);
             StateDuration = Remaining;
@@ -321,14 +350,14 @@ namespace Milkfrog.CombatDemo
             else if (ActiveAttack.Response != AttackResponse.DodgeOnly && facing && defender.State == CombatState.Guard)
             {
                 result = HitResult.Block;
-                defender.Posture = Math.Min(defender.Tuning.maxPosture, defender.Posture + ActiveAttack.Block);
+                defender.Posture = Math.Min(defender.Tuning.maxPosture, defender.Posture + ActiveAttack.Block * (1 - defender.GuardReduction));
                 if (defender.Posture >= defender.Tuning.maxPosture)
                     defender.InterruptWithPriority(CombatState.HitStun, defender.Tuning.hitStun);
             }
             else
             {
                 result = HitResult.Hit;
-                defender.Health = Math.Max(0, defender.Health - ActiveAttack.Damage);
+                defender.Health = Math.Max(0, defender.Health - ActiveAttack.Damage * (1 - defender.ArmorReduction));
                 defender.Posture = Math.Min(defender.Tuning.maxPosture, defender.Posture + ActiveAttack.Posture);
                 defender.InterruptWithPriority(CombatState.HitStun, defender.Tuning.hitStun);
             }

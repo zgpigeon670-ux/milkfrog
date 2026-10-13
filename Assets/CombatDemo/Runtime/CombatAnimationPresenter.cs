@@ -10,6 +10,7 @@ namespace Milkfrog.CombatDemo
         public Animator animator;
         public CombatAnimationProfile profile;
         public TrailRenderer swordTrail;
+        public Transform bladeRoot, bladeTip;
         public float SampledAttackTime { get; private set; }
         public float LastVisualDelta { get; private set; }
         PlayableGraph graph;
@@ -83,6 +84,21 @@ namespace Milkfrog.CombatDemo
                 guardMask.SetHumanoidBodyPartActive((AvatarMaskBodyPart)part, part != (int)AvatarMaskBodyPart.Root &&
                     part != (int)AvatarMaskBodyPart.LeftLeg && part != (int)AvatarMaskBodyPart.RightLeg &&
                     part != (int)AvatarMaskBodyPart.LeftFootIK && part != (int)AvatarMaskBodyPart.RightFootIK);
+            if (!animator.isHuman)
+            {
+                // Generic rigs use transform paths; humanoid body-part flags have no effect.
+                var transforms = animator.GetComponentsInChildren<Transform>(true);
+                guardMask.transformCount = transforms.Length;
+                for (int i = 0; i < transforms.Length; i++)
+                {
+                    string path = RelativePath(transforms[i], animator.transform);
+                    guardMask.SetTransformPath(i, path);
+                    bool upper = false;
+                    for (var bone = transforms[i]; bone != null && bone != animator.transform; bone = bone.parent)
+                        if (bone.name == "spine.001") { upper = true; break; }
+                    guardMask.SetTransformActive(i, upper);
+                }
+            }
             layers.SetLayerMaskFromAvatarMask(1, guardMask);
             output.SetSourcePlayable(layers);
             graph.Play();
@@ -94,7 +110,10 @@ namespace Milkfrog.CombatDemo
         void OnState(CombatState from, CombatState to)
         {
             reactionTime = 0;
+            if (to == CombatState.Dodge || to == CombatState.AttackPrepare || to == CombatState.AttackStartup || to == CombatState.Guard)
+                finisherTime = -1;
             if (to == CombatState.Dead) deathTime = 0;
+            if (to == CombatState.Dodge && swordTrail != null) { swordTrail.emitting = false; swordTrail.Clear(); }
             if (to == CombatState.HitStun || to == CombatState.DeflectedStun || to == CombatState.PostureBroken || to == CombatState.Dead)
             {
                 finisherTime = -1;
@@ -123,6 +142,7 @@ namespace Milkfrog.CombatDemo
             weights[0] = 1;
             if (swordTrail != null) { swordTrail.Clear(); swordTrail.emitting = false; }
             AdvanceVisual(0, true);
+            if (swordTrail != null) { swordTrail.emitting = false; swordTrail.Clear(); }
         }
 
         public void AdvanceVisual(float dt, bool force = false)
@@ -149,7 +169,7 @@ namespace Milkfrog.CombatDemo
                 selected = core.ActiveAttack.Kind == AttackKind.Thrust ? 21 : core.ActiveAttack.Kind == AttackKind.Followup ? 24 :
                     core.ActiveAttack.Kind == AttackKind.Slow ? 22 :
                     core.ActiveAttack.Kind == AttackKind.Perilous ? 23 : 3;
-            else if(core.IsPreparing)selected=3;
+            else if(core.IsPreparing)selected=core.State == CombatState.Charging ? 20 : 3;
             else if(core.State==CombatState.Dodge)selected=16;
             else if(core.CanAct && actor.Jumping)selected=25;
             else if(core.CanAct && actor.Falling)selected=26;
@@ -171,6 +191,8 @@ namespace Milkfrog.CombatDemo
             }
             blendElapsed += dt;
             float blend = force || profile.blendTime <= 0 ? 1 : Mathf.Clamp01(blendElapsed / profile.blendTime);
+            // The active sword pose must match the baked collision trajectory exactly.
+            if (core.State == CombatState.AttackActive) blend = 1;
             float sum = 0;
             for (int i = 0; i < weights.Length; i++)
             {
@@ -201,7 +223,7 @@ namespace Milkfrog.CombatDemo
                 if (i == 1 || i == 2 || i >= 10 && i <=15) time = Mathf.Repeat(gaitPhase,1) * clips[i].length;
                 if (i == 3) time = finisherTime >= 0 ? Mathf.Min(finisherTime, clips[3].length) :
                     (core.State==CombatState.AttackPrepare || core.State==CombatState.Charging) ? HeldSlashTime(core, clips[3]) : AttackPose(core, i);
-                if(i>=16 && i<=19)time=Mathf.Clamp01(core.DodgeElapsed/Mathf.Max(.001f,clips[i].length))*clips[i].length;
+                if(i>=16 && i<=19)time=core.DodgeProgress*clips[i].length;
                 if(i==20)time=core.ChargeRatio*clips[i].length;
                 if ((i == 21 || i == 22 || i == 23 || i == 24) && selected == i) time = AttackPose(core, i);
                 if (i == 25 && selected == 25) time = Mathf.Clamp01(actor.AirTime / Mathf.Max(.001f, clips[i].length)) * clips[i].length;
@@ -209,7 +231,8 @@ namespace Milkfrog.CombatDemo
                 if (i == 27 && selected == 27) time = (1f - Mathf.Clamp01(actor.LandRemaining / CombatActor.LandDuration)) * clips[i].length;
                 if (i == 4 || i == 8) time = core.StateProgress * clips[i].length;
                 if (i == 5) time = Mathf.Min(deathTime, clips[i].length - .001f);
-                if (i == 6 || i == 9) time = clips[i].length * .5f;
+                if (i == 6) time = clips[i].length * .5f;
+                if (i == 9) time = Mathf.Min(core.StateProgress * core.StateDuration, clips[i].length);
                 if (i == 7) time = Mathf.Clamp01(1 + reactionTime / .16f) * clips[i].length;
                 // An outgoing action keeps its final sampled pose instead of jumping back to frame zero.
                 if (i <= 2 || i >= 10 && i <=15 || i == selected || selected==16 && i>=16 && i<=19 || force) poseTimes[i] = time;
@@ -236,6 +259,20 @@ namespace Milkfrog.CombatDemo
             float windup = definition != null && definition.clip != null ? definition.activeStart : profile.attackActiveStart;
             float held = core.State == CombatState.Charging ? 1f : Mathf.Clamp01(core.ChargeElapsed / Mathf.Max(.001f, core.Tuning.prepareThreshold));
             return windup * held * clip.length;
+        }
+
+        static string RelativePath(Transform bone, Transform root)
+        {
+            if (bone == root) return "";
+            string path = bone.name;
+            for (var parent = bone.parent; parent != null && parent != root; parent = parent.parent)
+                path = parent.name + "/" + path;
+            return path;
+        }
+
+        void OnDisable()
+        {
+            if (swordTrail != null) { swordTrail.emitting = false; swordTrail.Clear(); }
         }
 
         float AttackPose(CombatCore core, int track)

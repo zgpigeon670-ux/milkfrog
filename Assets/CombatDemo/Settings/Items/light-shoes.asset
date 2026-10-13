@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e1ac810f6645d646aff39e1307e9c08, type: 3}
+  m_Name: light-shoes
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.ItemDefinition
+  stableId: light-shoes
+  displayName: "\u8F7B\u4FBF\u978B"
+  category: 2
+  effectType: 0
+  icon: {fileID: 1737629647944840217, guid: 1b53c8f6f4bc37f46ba9a62ee660c5ca, type: 3}
+  description: "\u8F7B\u4FBF\u7684\u5E03\u978B\uFF0C\u63D0\u9AD8\u6C34\u5E73\u79FB\u52A8\u901F\u5EA6\u3002\u4E0D\u4F1A\u6539\u53D8\u8DF3\u8DC3\u6216\u95EA\u907F\u3002"
+  restoreHealth: 0
+  reducePosture: 0
+  attackDamageMultiplier: 1
+  attackBuffDuration: 0
+  equipmentSlot: 3
+  weight: 0
+  armorDefense: 0
+  guardDefense: 0
+  moveSpeedBonus: 0.1
+  weaponDamage: 10
+  visualPrefab: {fileID: 7365539923162446726, guid: 1642d2d35fc642d48af46ae3340a83bc, type: 3}

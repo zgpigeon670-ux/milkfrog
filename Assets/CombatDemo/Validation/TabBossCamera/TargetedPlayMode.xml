@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-13 08:32:52Z" end-time="2026-10-13 08:32:53Z" duration="0.687409">
+  <test-suite type="TestSuite" id="1130" name="milkfrog" fullname="milkfrog" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-13 08:32:52Z" end-time="2026-10-13 08:32:53Z" duration="0.687409" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1253" name="Milkfrog.CombatDemo.PlayTests.dll" fullname="E:/UNITY/PROJECTS/milkfrog/Builds/TabBossCameraValidation/Project/Library/ScriptAssemblies/Milkfrog.CombatDemo.PlayTests.dll" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-13 08:32:52Z" end-time="2026-10-13 08:32:53Z" duration="0.679968" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="32092" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1254" name="Milkfrog" fullname="Milkfrog" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-13 08:32:52Z" end-time="2026-10-13 08:32:53Z" duration="0.678125" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1255" name="CombatDemo" fullname="Milkfrog.CombatDemo" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-13 08:32:52Z" end-time="2026-10-13 08:32:53Z" duration="0.676362" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1256" name="Tests" fullname="Milkfrog.CombatDemo.Tests" runstate="Runnable" testcasecount="111" result="Passed" start-time="2026-10-13 08:32:52Z" end-time="2026-10-13 08:32:53Z" duration="0.674628" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1170" name="InventoryFlowTests" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" testcasecount="25" result="Passed" start-time="2026-10-13 08:32:52Z" end-time="2026-10-13 08:32:53Z" duration="0.591799" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1192" name="MenuMouseClickCannotAttackAfterClosingAndTabAndEscapeAreBound" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.MenuMouseClickCannotAttackAfterClosingAndTabAndEscapeAreBound" methodname="MenuMouseClickCannotAttackAfterClosingAndTabAndEscapeAreBound" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1391640582" result="Passed" start-time="2026-10-13 08:32:52Z" end-time="2026-10-13 08:32:53Z" duration="0.576701" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1201" name="MvpFlowTests" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" testcasecount="34" result="Passed" start-time="2026-10-13 08:32:53Z" end-time="2026-10-13 08:32:53Z" duration="0.078108" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1233" name="OverShoulderCameraAvoidsWallAndBossLockAllowsMouseOrbit" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.OverShoulderCameraAvoidsWallAndBossLockAllowsMouseOrbit" methodname="OverShoulderCameraAvoidsWallAndBossLockAllowsMouseOrbit" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1540378895" result="Passed" start-time="2026-10-13 08:32:53Z" end-time="2026-10-13 08:32:53Z" duration="0.073811" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+Saving results to: C:/Users/pigeon/AppData/LocalLow/DefaultCompany/milkfrog\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

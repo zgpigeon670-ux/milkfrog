@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="16" result="Passed" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-13 09:33:43Z" end-time="2026-10-13 09:33:45Z" duration="2.2141913">
+  <test-suite type="TestSuite" id="1147" name="milkfrog" fullname="milkfrog" runstate="Runnable" testcasecount="127" result="Passed" start-time="2026-10-13 09:33:43Z" end-time="2026-10-13 09:33:45Z" duration="2.214191" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1287" name="Milkfrog.CombatDemo.PlayTests.dll" fullname="E:/UNITY/PROJECTS/milkfrog/Builds/TabBossCameraValidation/Project/Library/ScriptAssemblies/Milkfrog.CombatDemo.PlayTests.dll" runstate="Runnable" testcasecount="127" result="Passed" start-time="2026-10-13 09:33:43Z" end-time="2026-10-13 09:33:45Z" duration="2.202908" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="26256" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1288" name="Milkfrog" fullname="Milkfrog" runstate="Runnable" testcasecount="127" result="Passed" start-time="2026-10-13 09:33:43Z" end-time="2026-10-13 09:33:45Z" duration="2.200430" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1289" name="CombatDemo" fullname="Milkfrog.CombatDemo" runstate="Runnable" testcasecount="127" result="Passed" start-time="2026-10-13 09:33:43Z" end-time="2026-10-13 09:33:45Z" duration="2.198278" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1290" name="Tests" fullname="Milkfrog.CombatDemo.Tests" runstate="Runnable" testcasecount="127" result="Passed" start-time="2026-10-13 09:33:43Z" end-time="2026-10-13 09:33:45Z" duration="2.196231" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1270" name="QuickConsumableFlowTests" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-13 09:33:43Z" end-time="2026-10-13 09:33:45Z" duration="2.193277" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1276" name="ActionAndHitStopPressesAreDiscardedInsteadOfQueued" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.ActionAndHitStopPressesAreDiscardedInsteadOfQueued" methodname="ActionAndHitStopPressesAreDiscardedInsteadOfQueued" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="86718700" result="Passed" start-time="2026-10-13 09:33:43Z" end-time="2026-10-13 09:33:44Z" duration="0.586600" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1282" name="BuffFreezesInInventoryAndHitStopAndClearsOnRest" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.BuffFreezesInInventoryAndHitStopAndClearsOnRest" methodname="BuffFreezesInInventoryAndHitStopAndClearsOnRest" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="2096265824" result="Passed" start-time="2026-10-13 09:33:44Z" end-time="2026-10-13 09:33:44Z" duration="0.155228" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1273" name="CalmingQuickUsePreservesGuardAndZeroPostureDoesNotConsume" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.CalmingQuickUsePreservesGuardAndZeroPostureDoesNotConsume" methodname="CalmingQuickUsePreservesGuardAndZeroPostureDoesNotConsume" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1767470297" result="Passed" start-time="2026-10-13 09:33:44Z" end-time="2026-10-13 09:33:44Z" duration="0.102325" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1283" name="CombatConsumptionPreservesSafeVitalsPositionAndEquippedSelection" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.CombatConsumptionPreservesSafeVitalsPositionAndEquippedSelection" methodname="CombatConsumptionPreservesSafeVitalsPositionAndEquippedSelection" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="820744246" result="Passed" start-time="2026-10-13 09:33:44Z" end-time="2026-10-13 09:33:44Z" duration="0.095989" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1277" name="DodgeWinsOverQuickUseAndSuccessfulQuickUseWinsOverAttack" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.DodgeWinsOverQuickUseAndSuccessfulQuickUseWinsOverAttack" methodname="DodgeWinsOverQuickUseAndSuccessfulQuickUseWinsOverAttack" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="845683396" result="Passed" start-time="2026-10-13 09:33:44Z" end-time="2026-10-13 09:33:44Z" duration="0.090548" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1275" name="EmptySlotAndDepletedOrUnknownItemsDoNotConsumeOrAutoSwitch" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.EmptySlotAndDepletedOrUnknownItemsDoNotConsumeOrAutoSwitch" methodname="EmptySlotAndDepletedOrUnknownItemsDoNotConsumeOrAutoSwitch" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1573210158" result="Passed" start-time="2026-10-13 09:33:44Z" end-time="2026-10-13 09:33:44Z" duration="0.094928" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1271" name="EquipUseAndUnequipButtonsPersistAndMarkTheGrid" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.EquipUseAndUnequipButtonsPersistAndMarkTheGrid" methodname="EquipUseAndUnequipButtonsPersistAndMarkTheGrid" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1328377434" result="Passed" start-time="2026-10-13 09:33:44Z" end-time="2026-10-13 09:33:44Z" duration="0.100955" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1278" name="EveryForbiddenStateRejectsQIncludingSameFrameGuardCancellation" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.EveryForbiddenStateRejectsQIncludingSameFrameGuardCancellation" methodname="EveryForbiddenStateRejectsQIncludingSameFrameGuardCancellation" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1504283492" result="Passed" start-time="2026-10-13 09:33:44Z" end-time="2026-10-13 09:33:44Z" duration="0.096730" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1284" name="FailedWriteRollsBackBothEquipmentAndEffects" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.FailedWriteRollsBackBothEquipmentAndEffects" methodname="FailedWriteRollsBackBothEquipmentAndEffects" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1134601667" result="Passed" start-time="2026-10-13 09:33:44Z" end-time="2026-10-13 09:33:45Z" duration="0.082017" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1272" name="HealingQuickUseIsImmediateDoesNotRepeatAndFullHealthDoesNotConsume" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.HealingQuickUseIsImmediateDoesNotRepeatAndFullHealthDoesNotConsume" methodname="HealingQuickUseIsImmediateDoesNotRepeatAndFullHealthDoesNotConsume" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="417659503" result="Passed" start-time="2026-10-13 09:33:45Z" end-time="2026-10-13 09:33:45Z" duration="0.095340" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1281" name="MenuCloseRequiresReleasingAndPressingQAgain" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.MenuCloseRequiresReleasingAndPressingQAgain" methodname="MenuCloseRequiresReleasingAndPressingQAgain" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1956340598" result="Passed" start-time="2026-10-13 09:33:45Z" end-time="2026-10-13 09:33:45Z" duration="0.086514" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1286" name="QBindingPressHoldReleaseAndTabMenusUseTheRealInputMap" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.QBindingPressHoldReleaseAndTabMenusUseTheRealInputMap" methodname="QBindingPressHoldReleaseAndTabMenusUseTheRealInputMap" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="794501852" result="Passed" start-time="2026-10-13 09:33:45Z" end-time="2026-10-13 09:33:45Z" duration="0.145247" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1280" name="ReloadingTheLevelKeepsSavedSlotAndQuantityWithoutTheTransientBuff" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.ReloadingTheLevelKeepsSavedSlotAndQuantityWithoutTheTransientBuff" methodname="ReloadingTheLevelKeepsSavedSlotAndQuantityWithoutTheTransientBuff" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="2082391162" result="Passed" start-time="2026-10-13 09:33:45Z" end-time="2026-10-13 09:33:45Z" duration="0.152100" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1285" name="RestoreDeathAndFastTravelKeepQuantityAndSelectionButClearBuff" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.RestoreDeathAndFastTravelKeepQuantityAndSelectionButClearBuff" methodname="RestoreDeathAndFastTravelKeepQuantityAndSelectionButClearBuff" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1752130566" result="Passed" start-time="2026-10-13 09:33:45Z" end-time="2026-10-13 09:33:45Z" duration="0.111820" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1279" name="TonicGroundPickupIsOneTimeAndFailedSaveLeavesItVisible" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.TonicGroundPickupIsOneTimeAndFailedSaveLeavesItVisible" methodname="TonicGroundPickupIsOneTimeAndFailedSaveLeavesItVisible" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="416643936" result="Passed" start-time="2026-10-13 09:33:45Z" end-time="2026-10-13 09:33:45Z" duration="0.070974" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+]]></output>
+              </test-case>
+              <test-case id="1274" name="TonicRefreshAndReplacingTheSlotDoNotStackOrRemoveBuff" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.TonicRefreshAndReplacingTheSlotDoNotStackOrRemoveBuff" methodname="TonicRefreshAndReplacingTheSlotDoNotStackOrRemoveBuff" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="735201125" result="Passed" start-time="2026-10-13 09:33:45Z" end-time="2026-10-13 09:33:45Z" duration="0.110420" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Rebake the trace for MilkfrogSlash after changing its clip or phase markers.
+Rebake the trace for MilkfrogThrust after changing its clip or phase markers.
+Rebake the trace for MilkfrogFollowup after changing its clip or phase markers.
+Saving results to: C:/Users/pigeon/AppData/LocalLow/DefaultCompany/milkfrog\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

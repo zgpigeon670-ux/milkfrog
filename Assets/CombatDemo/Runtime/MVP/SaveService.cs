@@ -9,7 +9,7 @@ namespace Milkfrog.CombatDemo
     [Serializable]
     public sealed class PlayerSnapshot
     {
-        public int version = 4;
+        public int version = 6;
         public string levelId = "MVP_TestLevel";
         public Vector3 position;
         public float yaw;
@@ -29,7 +29,7 @@ namespace Milkfrog.CombatDemo
 
     public sealed class SaveService
     {
-        public const int CurrentVersion = 4;
+        public const int CurrentVersion = 6;
         private const string CurrentLevelId = "MVP_TestLevel";
         private const string SaveFileName = "save.json";
         private const string BackupFileName = "save.backup.json";
@@ -262,6 +262,18 @@ namespace Milkfrog.CombatDemo
                 inventory.WriteTo(snapshot);
                 snapshot.version = CurrentVersion;
             }
+            if (sourceVersion < 5)
+            {
+                snapshot.inventory.equippedItemId = "";
+                snapshot.version = CurrentVersion;
+            }
+            if (sourceVersion < 6)
+            {
+                snapshot.inventory.quickSlots = new[] { snapshot.inventory.equippedItemId ?? "", "", "" };
+                snapshot.inventory.equipment = new EquipmentData();
+                EquipmentService.EnsureDefaultWeapon(snapshot.inventory);
+                snapshot.version = CurrentVersion;
+            }
             return SnapshotReadResult.Valid(snapshot, sourceVersion);
         }
 
@@ -294,6 +306,8 @@ namespace Milkfrog.CombatDemo
                 if (fieldIndex >= 0)
                     found[fieldIndex] = true;
 
+                if (version >= 6 && key == "inventory" && !HasObjectFields(json, index, new[] { "quickSlots", "equipment" })) return false;
+
                 if (!SkipJsonValue(json, ref index))
                     return false;
 
@@ -315,6 +329,30 @@ namespace Milkfrog.CombatDemo
 
             for (int i = 0; i < (version == 1 ? 8 : version == 2 ? 13 : version == 3 ? 15 : 16); i++) if (!found[i]) return false;
             return true;
+        }
+
+        private static bool HasObjectFields(string json, int index, string[] required)
+        {
+            SkipWhitespace(json, ref index);
+            if (index >= json.Length || json[index++] != '{') return false;
+            var found = new bool[required.Length];
+            while (index < json.Length)
+            {
+                SkipWhitespace(json, ref index);
+                if (index < json.Length && json[index] == '}') return Array.TrueForAll(found, value => value);
+                if (!TryReadUnescapedString(json, ref index, out var key)) return false;
+                SkipWhitespace(json, ref index);
+                if (index >= json.Length || json[index++] != ':') return false;
+                int field = Array.IndexOf(required, key); if (field >= 0) found[field] = true;
+                if (key == "equipment" && !HasObjectFields(json, index, new[] { "slots" })) return false;
+                if (!SkipJsonValue(json, ref index)) return false;
+                SkipWhitespace(json, ref index);
+                if (index >= json.Length) return false;
+                if (json[index] == ',') { index++; continue; }
+                if (json[index] == '}') return Array.TrueForAll(found, value => value);
+                return false;
+            }
+            return false;
         }
 
         private static int RequiredFieldIndex(string key)
@@ -421,7 +459,7 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
-            if (snapshot.version != CurrentVersion && !(allowLegacy && snapshot.version >= 1 && snapshot.version <= 3))
+            if (snapshot.version != CurrentVersion && !(allowLegacy && snapshot.version >= 1 && snapshot.version < CurrentVersion))
             {
                 message = "Unsupported save version.";
                 return false;

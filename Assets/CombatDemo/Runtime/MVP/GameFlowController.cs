@@ -26,6 +26,7 @@ namespace Milkfrog.CombatDemo
         System.Action attributesBack;
         public bool InventoryOpen { get; private set; }
         public bool InventoryUseAllowed { get; private set; }
+        public bool InventoryEquipmentAllowed { get; private set; }
         bool inventoryFromPause;
         System.Action pausedPage, pausedBack, inventoryReturn;
         public InventoryView inventoryView;
@@ -76,6 +77,7 @@ namespace Milkfrog.CombatDemo
         void CreateNew()
         {
             var snapshot = new PlayerSnapshot { position = new Vector3(0, .02f, -35) };
+            EquipmentService.EnsureDefaultWeapon(snapshot.inventory);
             if (!Store.TrySave(snapshot)) { menu.Show("SAVE FAILED", Store.LastMessage, new MenuAction("Back", ShowHome)); return; }
             LoadLevel(snapshot);
         }
@@ -129,6 +131,7 @@ namespace Milkfrog.CombatDemo
             inventoryFromPause = Paused;
             inventoryReturn = inventoryFromPause ? pausedPage : null;
             InventoryUseAllowed = world.player.Core.CanAct && world.feedback.Clock.Remaining <= 0;
+            InventoryEquipmentAllowed = world.Director.State == EncounterState.Exploration && world.player.Core.State == CombatState.Neutral && world.feedback.Clock.Remaining <= 0;
             Paused = true; InventoryOpen = true; world.cameraRig.Suspended = true; world.ClearInput(true); SetCursor(true); menu.Hide();
             if (inventoryView == null || !inventoryView.Configured)
             {
@@ -139,7 +142,7 @@ namespace Milkfrog.CombatDemo
         public void CloseInventory()
         {
             if (!InventoryOpen) return;
-            inventoryView?.Hide(); InventoryOpen = false; InventoryUseAllowed = false; world.ClearInput(); world.BlockMenuAttack();
+            inventoryView?.Hide(); InventoryOpen = false; InventoryUseAllowed = InventoryEquipmentAllowed = false; world.ClearInput(); world.BlockMenuAttack();
             if (inventoryFromPause)
             {
                 if (inventoryReturn != null) inventoryReturn();

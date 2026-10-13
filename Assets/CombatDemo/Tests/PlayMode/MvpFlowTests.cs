@@ -646,11 +646,11 @@ namespace Milkfrog.CombatDemo.Tests
             world.player.Core.SetGuard(true, false);
             a.Core.RequestAttack(); a.Core.Tick(.7f);
             Assert.That(world.player.Core.Health, Is.EqualTo(100));
-            Assert.That(world.player.Core.Posture, Is.EqualTo(20));
+            Assert.That(world.player.Core.Posture, Is.EqualTo(20 * (1 - world.EquipmentStats.GuardReduction)).Within(.001));
             Assert.That(Vector3.Angle(world.player.transform.forward, Vector3.back), Is.LessThan(.1f));
             b.Core.RequestAttack(); b.Core.Tick(.7f);
             Assert.That(world.player.Core.Health, Is.EqualTo(100));
-            Assert.That(world.player.Core.Posture, Is.EqualTo(40));
+            Assert.That(world.player.Core.Posture, Is.EqualTo(40 * (1 - world.EquipmentStats.GuardReduction)).Within(.001));
             Assert.That(Vector3.Angle(world.player.transform.forward, Vector3.forward), Is.LessThan(.1f));
             world.player.Core.RestoreVitals(100, 95); world.player.Core.SetGuard(true, false);
             a.Core.Reset(); a.Core.RequestAttack(); a.Core.Tick(.7f);
@@ -736,7 +736,7 @@ namespace Milkfrog.CombatDemo.Tests
             Assert.That(boss.Brain.NextPattern, Is.EqualTo(AttackPattern.Slow), "The first seeded weighted pick should be committed once the wait completes.");
             yield return null;
         }
-        [UnityTest] public IEnumerator OverShoulderCameraAvoidsWallAndBossLockFramesTarget()
+        [UnityTest] public IEnumerator OverShoulderCameraAvoidsWallAndBossLockAllowsMouseOrbit()
         {
             Place(world.player, new Vector3(0, .02f, -35));
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -755,9 +755,23 @@ namespace Milkfrog.CombatDemo.Tests
             world.cameraRig.ResetImpulse(); world.cameraRig.Step(.1f);
             Vector3 toBoss = boss.transform.position + Vector3.up * 1.35f - world.gameplayCamera.transform.position;
             Assert.That(Vector3.Angle(world.gameplayCamera.transform.forward, toBoss), Is.LessThan(25f));
-            float yaw = world.cameraRig.yaw;
-            world.cameraRig.Look(new Vector2(40, 0));
-            Assert.That(world.cameraRig.yaw, Is.EqualTo(yaw), "Boss lock should own the camera heading.");
+            float yaw = world.cameraRig.yaw, pitch = world.cameraRig.pitch;
+            world.cameraRig.Look(new Vector2(900, 100)); world.cameraRig.Step(.1f);
+            Assert.That(world.cameraRig.yaw, Is.EqualTo(yaw + 900 * world.cameraRig.sensitivity).Within(.001f));
+            Assert.That(world.cameraRig.pitch, Is.EqualTo(pitch - 100 * world.cameraRig.sensitivity).Within(.001f));
+            Quaternion manualHeading = Quaternion.Euler(world.cameraRig.pitch, world.cameraRig.yaw, 0);
+            Assert.That(Quaternion.Angle(world.gameplayCamera.transform.rotation, manualHeading), Is.LessThan(.1f));
+            Assert.That(Vector3.Angle(world.gameplayCamera.transform.forward, toBoss), Is.GreaterThan(60f), "Manual orbit must be able to look away from the boss");
+            world.Simulate(.05f); world.cameraRig.Step(.1f);
+            Assert.That(Quaternion.Angle(world.gameplayCamera.transform.rotation, manualHeading), Is.LessThan(.1f), "Simulation must not snap the camera back");
+            Assert.That(world.Lock.Target, Is.EqualTo(boss)); Assert.That(world.cameraRig.lockOn, Is.True);
+            world.Flow.OpenInventory();
+            var pausedRotation = world.gameplayCamera.transform.rotation;
+            world.cameraRig.Look(new Vector2(40, 50)); world.cameraRig.Step(1);
+            Assert.That(world.gameplayCamera.transform.rotation, Is.EqualTo(pausedRotation));
+            world.Flow.CloseInventory(); world.SubmitInput(new CombatInputFrame());
+            world.cameraRig.Look(new Vector2(40, 0)); world.cameraRig.Step(.1f);
+            Assert.That(Quaternion.Angle(world.gameplayCamera.transform.rotation, pausedRotation), Is.GreaterThan(1f));
         }
         [UnityTest] public IEnumerator BossPerilousBladeHitsThroughGuardButRespectsDodgeInvulnerability()
         {
