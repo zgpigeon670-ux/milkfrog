@@ -7,11 +7,14 @@ namespace Milkfrog.CombatDemo
     {
         public Vector2 move;
         public bool attackPressed,attackHeld,attackReleased,guardHeld,guardPressed,dodgePressed,jumpPressed,resetPressed,lockPressed;
+        public bool itemPressed, itemHeld, itemReleased;
+        public bool slot1Pressed, slot2Pressed, slot3Pressed, slot1Held, slot2Held, slot3Held;
     }
     public sealed class DemoInput : System.IDisposable
     {
         readonly InputActionMap map = new InputActionMap("CombatDemo");
-        readonly InputAction move, attack, guard, reset, mode, dodge, jump, lockOn, look, pause, interact, attributes, inventory;
+        readonly InputAction move, attack, guard, reset, mode, dodge, jump, lockOn, look, pause, interact, attributes, inventory, quickUse;
+        readonly InputAction slot1, slot2, slot3;
         public DemoInput(string lockBinding = "<Keyboard>/tab")
         {
             move = map.AddAction("Move", InputActionType.Value);
@@ -29,7 +32,11 @@ namespace Milkfrog.CombatDemo
             pause = map.AddAction("Pause", InputActionType.Button, "<Keyboard>/escape");
             interact = map.AddAction("Interact", InputActionType.Button, "<Keyboard>/e");
             attributes = map.AddAction("Attributes", InputActionType.Button, "<Keyboard>/c");
-            inventory = map.AddAction("Inventory", InputActionType.Button, "<Keyboard>/b");
+            inventory = map.AddAction("Inventory", InputActionType.Button, "<Keyboard>/tab");
+            quickUse = map.AddAction("QuickUse", InputActionType.Button, "<Keyboard>/q");
+            slot1 = map.AddAction("QuickSlot1", InputActionType.Button, "<Keyboard>/1");
+            slot2 = map.AddAction("QuickSlot2", InputActionType.Button, "<Keyboard>/2");
+            slot3 = map.AddAction("QuickSlot3", InputActionType.Button, "<Keyboard>/3");
             map.Enable();
         }
         public Vector2 Move => move.ReadValue<Vector2>();
@@ -43,7 +50,7 @@ namespace Milkfrog.CombatDemo
         public bool GuardPressed => guard.WasPressedThisFrame();
         public bool ResetPressed => reset.WasPressedThisFrame();
         public bool ModePressed => mode.WasPressedThisFrame();
-        public CombatInputFrame Snapshot => new CombatInputFrame {move=Move,attackPressed=AttackPressed,attackHeld=attack.IsPressed(),attackReleased=attack.WasReleasedThisFrame(),guardHeld=GuardHeld,guardPressed=GuardPressed,dodgePressed=dodge.WasPressedThisFrame(),jumpPressed=jump.WasPressedThisFrame(),resetPressed=ResetPressed,lockPressed=lockOn.WasPressedThisFrame()};
+        public CombatInputFrame Snapshot => new CombatInputFrame {move=Move,attackPressed=AttackPressed,attackHeld=attack.IsPressed(),attackReleased=attack.WasReleasedThisFrame(),guardHeld=GuardHeld,guardPressed=GuardPressed,dodgePressed=dodge.WasPressedThisFrame(),jumpPressed=jump.WasPressedThisFrame(),resetPressed=ResetPressed,lockPressed=lockOn.WasPressedThisFrame(),itemPressed=quickUse.WasPressedThisFrame(),itemHeld=quickUse.IsPressed(),itemReleased=quickUse.WasReleasedThisFrame(),slot1Pressed=slot1.WasPressedThisFrame(),slot2Pressed=slot2.WasPressedThisFrame(),slot3Pressed=slot3.WasPressedThisFrame(),slot1Held=slot1.IsPressed(),slot2Held=slot2.IsPressed(),slot3Held=slot3.IsPressed()};
         public void Dispose() => map.Dispose();
     }
 }

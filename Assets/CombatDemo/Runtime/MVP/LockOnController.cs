@@ -30,7 +30,7 @@ namespace Milkfrog.CombatDemo
         public void Force(EnemyController target)
         {
             Target = target; obscured = 0; world.player.Target = target.Actor;
-            // A mob lock is a selection aid; only the boss owns the camera.
+            // Boss locks widen framing, while mouse input still owns the camera heading.
             world.cameraRig.enemy = target.IsBoss ? target.transform : null;
             world.cameraRig.lockOn = target.IsBoss;
         }

@@ -31,4 +31,4 @@ MonoBehaviour:
   clip: {fileID: -7410864681109482920, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
   activeStart: 0.25
   activeEnd: 0.38
-  trace: {fileID: 11400000, guid: d22377d09e8d577408d0bd4160760b60, type: 2}
+  trace: {fileID: 11400000, guid: f80d473f7daac40479e696d33d45a06f, type: 2}

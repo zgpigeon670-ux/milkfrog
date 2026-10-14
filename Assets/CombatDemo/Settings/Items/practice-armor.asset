@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e1ac810f6645d646aff39e1307e9c08, type: 3}
+  m_Name: practice-armor
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.ItemDefinition
+  stableId: practice-armor
+  displayName: "\u7EC3\u4E60\u80F8\u7532"
+  category: 2
+  effectType: 0
+  icon: {fileID: -7662080969835705594, guid: e3a824864571ddd40a8c238e5e135a91, type: 3}
+  description: "\u57FA\u7840\u9632\u62A4\u88C5\u5907\u3002\u7A7F\u6234\u540E\u589E\u52A0\u9632\u5FA1\u4E0E\u91CD\u91CF\uFF0C\u51CF\u8F7B\u751F\u547D\u4F24\u5BB3\u5E76\u964D\u4F4E\u79FB\u52A8\u901F\u5EA6\u3002"
+  restoreHealth: 0
+  reducePosture: 0
+  attackDamageMultiplier: 1
+  attackBuffDuration: 0
+  equipmentSlot: 1
+  weight: 3
+  armorDefense: 12
+  guardDefense: 0
+  moveSpeedBonus: 0
+  weaponDamage: 10
+  visualPrefab: {fileID: 4270698176620234128, guid: 8d92bd355a4ba73409b6dfe23abcf06a, type: 3}

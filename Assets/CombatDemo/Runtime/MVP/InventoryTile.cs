@@ -8,6 +8,7 @@ namespace Milkfrog.CombatDemo
     public sealed class InventoryTile : MonoBehaviour, ISelectHandler
     {
         public Text label, count;
+        public Text equippedBadge;
         public Image icon;
         public Button button;
         [NonSerialized] public string itemId;

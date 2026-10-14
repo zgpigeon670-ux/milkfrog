@@ -16,7 +16,7 @@ namespace Milkfrog.CombatDemo
         public float yaw, pitch = 8, sensitivity = .12f;
         public void Look(Vector2 delta)
         {
-            if (Suspended || !freeOrbit || lockOn) return;
+            if (Suspended || !freeOrbit) return;
             yaw += delta.x * sensitivity;
             pitch = Mathf.Clamp(pitch - delta.y * sensitivity, -20, 65);
         }
@@ -99,13 +99,10 @@ namespace Milkfrog.CombatDemo
             if (bossLock)
             {
                 Vector3 delta = enemy.position - player.position; delta.y = 0;
-                if (delta.sqrMagnitude > .001f) rotation = Quaternion.LookRotation(delta) * Quaternion.Euler(12, 0, 0);
                 distance = Mathf.Clamp(orbitDistance + delta.magnitude * .25f, orbitDistance, 5.5f);
             }
             // Mouse orbit only. Character facing must not drag the camera sideways.
-            heading = bossLock
-                ? (positioned ? Quaternion.Slerp(heading, rotation, 1 - Mathf.Exp(-Mathf.Min(headingSmooth, 4) * dt)) : rotation)
-                : rotation;
+            heading = rotation;
             Vector3 desired = pivot + heading * (orbitShoulder + Vector3.back * distance);
             if (!positioned) { unoccludedPosition = desired; stableHeight = desired.y; }
             float horizontal = 1 - Mathf.Exp(-smooth * dt);
@@ -122,12 +119,7 @@ namespace Milkfrog.CombatDemo
             positioned = true;
             phase += dt * 28;
             transform.position = ConstrainPosition(pivot, stablePosition + Vector3.up * Mathf.Sin(phase) * impulse);
-            if (bossLock)
-            {
-                Vector3 aim = Vector3.Lerp(player.position, enemy.position, .45f) + Vector3.up * 1.35f;
-                transform.rotation = Quaternion.LookRotation(aim - transform.position);
-            }
-            else transform.rotation = heading;
+            transform.rotation = heading;
             impulse = Mathf.Max(0, impulse - dt * .9f);
         }
     }

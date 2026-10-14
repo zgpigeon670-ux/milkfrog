@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-13",
+  "unityVersion": "6000.6.2f1",
+  "baselineCommit": "aead761a6f53cff2ff1780dfd5aaf8846e9dd0d4",
+  "inventoryKey": "Tab",
+  "bossMouseOrbitEnabled": true,
+  "sourceScope": "Runtime C#, Settings assets, Prefabs and Scenes",
+  "sourceFilesChecked": 73,
+  "sourceMismatches": [],
+  "editMode": {
+    "passed": 109,
+    "total": 109
+  },
+  "fullPlayModeBaseline": {
+    "passed": 38,
+    "total": 111,
+    "failed": 73
+  },
+  "fullPlayModeAfterChanges": {
+    "passed": 38,
+    "newFailureNamesAfterRenameNormalization": [],
+    "total": 111,
+    "failed": 73
+  },
+  "targetedPlayMode": {
+    "passed": 2,
+    "total": 2,
+    "validationOnlySetupConditions": "Explicit LogAssert.Expect for existing MilkfrogSlash, MilkfrogThrust and MilkfrogFollowup trace errors; production tests and runtime still report them."
+  },
+  "buildExitCode": 0,
+  "buildExecutable": "E:\\UNITY\\PROJECTS\\milkfrog\\Builds\\MilkfrogMVP-TabBossCamera\\MilkfrogMVP.exe",
+  "buildExecutableBytes": 667136,
+  "buildAssemblySHA256": "57FE86D8D4735B68F1DE39BDBB57BB3A5C05D14D4511B32FE0C3C126AF556EB2",
+  "buildMatchesCompiledAssembly": true,
+  "humanPlaytestCompleted": false,
+  "computerUseUsed": false,
+  "gitCommitted": false,
+  "gitPushed": false
+}

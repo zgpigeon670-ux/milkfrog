@@ -68,6 +68,39 @@ namespace Milkfrog.CombatDemo.Tests
 
 #if UNITY_EDITOR
         [Test]
+        public void BossCameraOrbitFollowsMouseAndSurvivesTargetMovementAndPause()
+        {
+            var player = new GameObject("Camera player");
+            var boss = new GameObject("Camera boss");
+            var rigObject = new GameObject("Camera rig");
+            try
+            {
+                var rig = rigObject.AddComponent<DemoCamera>();
+                rig.player = player.transform; rig.enemy = boss.transform; rig.freeOrbit = true; rig.lockOn = true;
+                boss.transform.position = Vector3.forward * 7; rig.yaw = 25; rig.pitch = 8; rig.Step(.1f);
+                rig.Look(new Vector2(720, 100)); rig.Step(.1f);
+                Assert.That(rig.yaw, Is.EqualTo(25 + 720 * rig.sensitivity).Within(.001f));
+                Assert.That(rig.pitch, Is.EqualTo(8 - 100 * rig.sensitivity).Within(.001f));
+                var heading = Quaternion.Euler(rig.pitch, rig.yaw, 0);
+                Assert.That(Quaternion.Angle(rig.transform.rotation, heading), Is.LessThan(.1f));
+                boss.transform.position = new Vector3(12, 0, -3); player.transform.rotation = Quaternion.Euler(0, 180, 0);
+                rig.Step(.2f);
+                Assert.That(Quaternion.Angle(rig.transform.rotation, heading), Is.LessThan(.1f));
+                rig.Suspended = true; rig.Look(new Vector2(300, 300)); rig.Step(1);
+                Assert.That(Quaternion.Angle(rig.transform.rotation, heading), Is.LessThan(.1f));
+                rig.Suspended = false; rig.Look(new Vector2(-100, -10000)); rig.Step(.1f);
+                Assert.That(rig.pitch, Is.EqualTo(65));
+                rig.Look(new Vector2(0, 10000)); Assert.That(rig.pitch, Is.EqualTo(-20));
+                rig.Step(.1f); var releasedHeading = rig.transform.rotation; rig.ReleaseLock(); rig.Step(.1f);
+                Assert.That(Quaternion.Angle(rig.transform.rotation, releasedHeading), Is.LessThan(.1f));
+            }
+            finally
+            {
+                Object.DestroyImmediate(rigObject); Object.DestroyImmediate(boss); Object.DestroyImmediate(player);
+            }
+        }
+
+        [Test]
         public void AuthoredPlayerThrustUsesItsIndependentMotionAndTrace()
         {
             var thrust = AssetDatabase.LoadAssetAtPath<CombatAttackDefinition>("Assets/CombatDemo/Settings/PlayerThrust.asset");

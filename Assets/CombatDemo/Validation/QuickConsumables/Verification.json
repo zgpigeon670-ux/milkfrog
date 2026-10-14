@@ -1,0 +1,1682 @@
+{
+  "date": "2026-10-13",
+  "unityVersion": "6000.6.2f1",
+  "branch": "codex/quick-consumables",
+  "baseCommit": "aead761a6f53cff2ff1780dfd5aaf8846e9dd0d4",
+  "pushed": false,
+  "humanAcceptance": false,
+  "editMode": {
+    "total": 130,
+    "passed": 130,
+    "failed": 0
+  },
+  "playMode": {
+    "total": 127,
+    "passed": 54,
+    "failed": 73,
+    "newFeaturePassed": 16,
+    "baselineFailures": 73,
+    "newFailures": 0,
+    "knownFailures": [
+      "Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.PerilousDeflectFailsAndDodgeInvulnerabilityAvoidsIt",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.AttributeReturnRefreshesVitalsAndPreservesItsOriginalParent",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.BothConsumablesApplyAndZeroPostureDoesNotConsume",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.CombatUseOnlyUpdatesInventoryInTheSafeSave",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.DirectionNavigationAndSubmitOperateTheEditableGridAndUseButton",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.EnemyPlayerAnimationAndCameraStayFrozenWhileInventoryIsOpen",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.GateChecksInventoryInsteadOfHistoricalAcquisitionFacts",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.InventoryReturnsToFastTravelAndThenBonfire",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.InventoryReturnsToQuestAndEscapeNavigatesOneLayerAtATime",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.KeyIsShownAndOpeningGateDoesNotConsumeIt",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.MenuMouseClickCannotAttackAfterClosingAndTabAndEscapeAreBound",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.MissingInventoryReferencesLeaveFlowResumable",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.OpeningDuringAttackOrChargeCannotUseOrAdvanceTheAction",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.PauseAndItsInventoryKeepTheCameraFrozenUntilResume",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.PauseMenuAndBonfireReturnKeepTheCorrectParentMenu",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.PickupFailureLeavesCountAndWorldObjectUntouched",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.PickupsStackPersistAndCannotBeCollectedTwice",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.PressingDuringAnActionCannotBufferAnAttackUntilRecovery",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.PressingDuringHitStopCannotBufferAnAttack",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.QuantityRefreshReusesTilesAndKeepsUsableButtonFocus",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.ReleaseAndFreshPressInTheSameFrameDoNotRequireAnExtraIdleFrame",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.RestTravelDeathAndRewardWritesPreserveConsumedCounts",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.ReturnThroughHomeRestoresItemsAndOneInventoryView",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.UnlimitedItemsScrollAndEmptyCategoryHasUsableNavigation",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.UseClampsVitalsAndEmptyCountsDisappearFromGrid",
+      "Milkfrog.CombatDemo.Tests.InventoryFlowTests.UseFailureDoesNotConsumeOrHeal",
+      "Milkfrog.CombatDemo.Tests.MvpBossCombatTests.DeflectInterruptsBossAndBossCounterattackIsSlashRecordedForNextSelection",
+      "Milkfrog.CombatDemo.Tests.MvpBossCombatTests.OrdinaryPlayerHitsDamageBossWithoutCancellingStartupActiveOrRecovery",
+      "Milkfrog.CombatDemo.Tests.MvpBossCombatTests.PlayerParryStillInterruptsArmoredBossAttack",
+      "Milkfrog.CombatDemo.Tests.MvpBossCombatTests.PostureBreakAndDeathStillOverrideBossHitResistance",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.AttackSelectionUsesLockThenReticleThenNearestThenCameraRay",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.BonfireRestSwitchesCheckpointHealsAndResetsReturningMobs",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.BonfireUpgradeConsumesExperienceAndUpdatesPlayerCaps",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.BossBoundaryBlocksEscapeAndSimultaneousDeathIsFailure",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.BossDoesNotRerollWhileWaitingForItsAttackCommit",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.BossForcesLockCannotDisengageAndVictoryPersists",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.BossPerilousBladeHitsThroughGuardButRespectsDodgeInvulnerability",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.BossUsesReproducibleWeightedAttacksAndWarningTracksPerilousStartup",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.ChargeReleaseReaimsAndKeepsBladeForwardAligned",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.CombatMobRewardUpdatesSafeSaveWithoutSavingCombatPosition",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.FactionsRejectEnemyDamageAndHitFeedbackIsDeliveredOnce",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.FailedBonfireSaveDoesNotActivateOrApplyRest",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.FailedFastTravelSaveDoesNotMoveOrChangeCheckpoint",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.FailedUpgradeSaveKeepsExperienceAndAttributes",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.FastTravelUsesOnlyUnlockedBonfiresAndMakesDestinationRespawnPoint",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.FollowupAndExecutionUseSelectedDirection",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.FreshStartHasThreeMobsBossAndSafeSave",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.GuardTurnsTowardEachMobButBreakAndPerilousStillHit",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.HomeContinueNewGameConfirmationAndRepeatedSceneChanges",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.InteractionResetsTimerAndLeashCancelsAttack",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.LockSelectsScreenCenterAndUnlocksWithoutEndingCombat",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.MiddleMouseBindingAndFreezeReleaseDoNotQueueAttack",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.MobLockDoesNotSteerMovementOrCameraButAimsCommittedAttack",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.MultipleParticipantsAndSingleDeathDoNotStopWorld",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.OcclusionDiscardsCandidatesAndBreaksLockAfterOneSecond",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.OverShoulderCameraAvoidsWallAndBossLockAllowsMouseOrbit",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.PlayerDeathKeepsSafeSaveAndRetryLoadsIt",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.RecoveryIsFrameRateIndependentAndPauseFreezesIt",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.RestIsRejectedDuringBossCombatEvenAtBonfireRange",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.RestIsRejectedDuringCombatOrWhilePlayerIsNotNeutral",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.SaveRestoresResourcesAndDefeatedEnemiesButClearsTransientActions",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.SideLockedSlashUsesTurnedBladeAndActuallyConnects",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.TimeoutAndFlowAreConsistentAcrossThirtySixtyAndOneTwenty",
+      "Milkfrog.CombatDemo.Tests.MvpFlowTests.TimeoutRearmsOnlyAfterLeavingAndReturning",
+      "Milkfrog.CombatDemo.Tests.PhaseThreeTests.ThrustFollowsItsOwnBladeAndHitsOnceAtAllFrameRates",
+      "Milkfrog.CombatDemo.Tests.QuestFlowTests.BossSaveFailureCanBeRetriedWithoutAwardingExperienceAgain",
+      "Milkfrog.CombatDemo.Tests.QuestFlowTests.CompleteQuestUsesInteractionsAndPersistsAcrossRestTravelDeathAndReload",
+      "Milkfrog.CombatDemo.Tests.QuestFlowTests.FocusSortsByScreenThenDistanceThenIdAndNeverExecutesANewFocusSilently",
+      "Milkfrog.CombatDemo.Tests.QuestFlowTests.GateCannotBeBypassedAndEarlyKeyDoesNotSkipCamp",
+      "Milkfrog.CombatDemo.Tests.QuestFlowTests.ReloadThroughHomePreservesWorldAndCreatesSingleInteractionSession",
+      "Milkfrog.CombatDemo.Tests.QuestFlowTests.RevalidatesRangeHeightOcclusionAndCurrentState",
+      "Milkfrog.CombatDemo.Tests.QuestFlowTests.RewardWritesKeepKeyAndDoorProgress",
+      "Milkfrog.CombatDemo.Tests.QuestFlowTests.SaveFailureLeavesKeyAndDoorAndQuestUntouched"
+    ]
+  },
+  "sourceCopy": {
+    "filesChecked": 255,
+    "differences": 0,
+    "files": [
+      {
+        "path": "Assets/CombatDemo/Editor/AnimatedDemoBuilder.cs",
+        "sha256": "BC55EF44E9AB58C6EEC4CD8E65F0CC4FDFB321F64F250537A5C1C80FDAF69C48",
+        "copySha256": "BC55EF44E9AB58C6EEC4CD8E65F0CC4FDFB321F64F250537A5C1C80FDAF69C48",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/AnimatedDemoBuilder.cs.meta",
+        "sha256": "DFB5618CA9FB45ADABC5F3103CD1F0B9D8745B562CC591A1695F78CC06906F52",
+        "copySha256": "DFB5618CA9FB45ADABC5F3103CD1F0B9D8745B562CC591A1695F78CC06906F52",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/AnimationCalibration.cs",
+        "sha256": "2B390ED39A0D75883AE6EBB327BCC47F7EFD548D437893A760BC86B9B71BF590",
+        "copySha256": "2B390ED39A0D75883AE6EBB327BCC47F7EFD548D437893A760BC86B9B71BF590",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/AnimationCalibration.cs.meta",
+        "sha256": "90E658BBA26F32F054448E180B39C95913B9B2B5BBA7429AB1F57C6698A85557",
+        "copySha256": "90E658BBA26F32F054448E180B39C95913B9B2B5BBA7429AB1F57C6698A85557",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatBenchmarkBatch.cs",
+        "sha256": "B6FF4B00800CD5FF609038AE2BF0D341CCA3EED4EA6C09EB00249EF6AECE547F",
+        "copySha256": "B6FF4B00800CD5FF609038AE2BF0D341CCA3EED4EA6C09EB00249EF6AECE547F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatBenchmarkBatch.cs.meta",
+        "sha256": "D8FDDC1889122C477D882AB37D563FE7823F1950515ADC931AF43CCAA0BEDE2E",
+        "copySha256": "D8FDDC1889122C477D882AB37D563FE7823F1950515ADC931AF43CCAA0BEDE2E",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatBladeTraceBaker.cs",
+        "sha256": "B2A929785ABEC5ACC5787C52BF551D76579B18294D548784361593A10656AA16",
+        "copySha256": "B2A929785ABEC5ACC5787C52BF551D76579B18294D548784361593A10656AA16",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatBladeTraceBaker.cs.meta",
+        "sha256": "B3C41AB3B068EE125D5916C1A604812DE5FADFBFDC6DF123CB505B6999823E8C",
+        "copySha256": "B3C41AB3B068EE125D5916C1A604812DE5FADFBFDC6DF123CB505B6999823E8C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatDemoBuilder.cs",
+        "sha256": "6849ADADC76A45D682BB7F0D04054BE9E77C71BE57899100F04C09EA9CCE1B9B",
+        "copySha256": "6849ADADC76A45D682BB7F0D04054BE9E77C71BE57899100F04C09EA9CCE1B9B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatDemoBuilder.cs.meta",
+        "sha256": "4A965EB383F3248AA4F391F323EED007A52C3529E9A07BB75310C8702FA5AC80",
+        "copySha256": "4A965EB383F3248AA4F391F323EED007A52C3529E9A07BB75310C8702FA5AC80",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatDemoCapture.cs",
+        "sha256": "15A2F96DE01206F1AC466453F49B21F8D8701984C39C8007E75B17869CAD257A",
+        "copySha256": "15A2F96DE01206F1AC466453F49B21F8D8701984C39C8007E75B17869CAD257A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatDemoCapture.cs.meta",
+        "sha256": "D3833AECE67BFDABAEAE550543F9E16B330BFEF87D341DDE1544E5267CF6708B",
+        "copySha256": "D3833AECE67BFDABAEAE550543F9E16B330BFEF87D341DDE1544E5267CF6708B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatMotionAuthoring.cs",
+        "sha256": "BE3DF514DA85D2A2DE92C2F4445C6031AD6F8B7C5D2ED453F0E5E9025C5D558B",
+        "copySha256": "BE3DF514DA85D2A2DE92C2F4445C6031AD6F8B7C5D2ED453F0E5E9025C5D558B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatMotionAuthoring.cs.meta",
+        "sha256": "7CE640D34EF8AF362332979318090B6B1659929447F322FD683F04CB54820B0A",
+        "copySha256": "7CE640D34EF8AF362332979318090B6B1659929447F322FD683F04CB54820B0A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatPresentationUpgrade.cs",
+        "sha256": "E31EF30EFAECBEE8EC513B262E31972E9C24EA889CEF8A846F8D4360568A9BA1",
+        "copySha256": "E31EF30EFAECBEE8EC513B262E31972E9C24EA889CEF8A846F8D4360568A9BA1",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/CombatPresentationUpgrade.cs.meta",
+        "sha256": "1E6EAE056BC8E55695A2854BC74E483A70B808EC51620D60AA9A5F7E91509849",
+        "copySha256": "1E6EAE056BC8E55695A2854BC74E483A70B808EC51620D60AA9A5F7E91509849",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/InventoryCapture.cs",
+        "sha256": "C76D95742B99652070B22A23D65969A72B4731894FC0A2A2CF3B2BA11FDCA35D",
+        "copySha256": "C76D95742B99652070B22A23D65969A72B4731894FC0A2A2CF3B2BA11FDCA35D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/InventoryCapture.cs.meta",
+        "sha256": "5915D13F12C8DECC24B9859DF7EDBE87DD4CE5B11C417ACCD01D419BA5D5C4AA",
+        "copySha256": "5915D13F12C8DECC24B9859DF7EDBE87DD4CE5B11C417ACCD01D419BA5D5C4AA",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/Milkfrog.CombatDemo.Editor.asmdef",
+        "sha256": "B519C778C3B1FBB350B6119B630F3ACA7205139A655B2BB880B40FCF0E3BA7AF",
+        "copySha256": "B519C778C3B1FBB350B6119B630F3ACA7205139A655B2BB880B40FCF0E3BA7AF",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/Milkfrog.CombatDemo.Editor.asmdef.meta",
+        "sha256": "B6F8A43889431B94ABEF901141329DAB3B5A694A7E46847814830B560F1B6C09",
+        "copySha256": "B6F8A43889431B94ABEF901141329DAB3B5A694A7E46847814830B560F1B6C09",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/MvpCapture.cs",
+        "sha256": "42D67DDD3EC37D30C41FADF187D95EA05A8AAB6ED2F5F74AD20DAE7BC3F8548A",
+        "copySha256": "42D67DDD3EC37D30C41FADF187D95EA05A8AAB6ED2F5F74AD20DAE7BC3F8548A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/MvpCapture.cs.meta",
+        "sha256": "D828BECCB0FEAA40E98F2B45EF4303E6A44B575D46155B3CCA5EA63A3223C236",
+        "copySha256": "D828BECCB0FEAA40E98F2B45EF4303E6A44B575D46155B3CCA5EA63A3223C236",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/MvpInventoryUpgrade.cs",
+        "sha256": "A36861174B7C28256D2DDEC2A6113ED95FC08438BFCA0E56981B05B991A362CB",
+        "copySha256": "A36861174B7C28256D2DDEC2A6113ED95FC08438BFCA0E56981B05B991A362CB",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/MvpInventoryUpgrade.cs.meta",
+        "sha256": "0AC396E4BD9957980E39F23A4D98FD3AF862B09E0D76F81A4A5A85490C0F0F1D",
+        "copySha256": "0AC396E4BD9957980E39F23A4D98FD3AF862B09E0D76F81A4A5A85490C0F0F1D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/MvpQuestUpgrade.cs",
+        "sha256": "AE63C6F5FBB0A4C3A1EB0E3848A687892A907B84627264D83C9D8315DDB648C4",
+        "copySha256": "AE63C6F5FBB0A4C3A1EB0E3848A687892A907B84627264D83C9D8315DDB648C4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/MvpQuestUpgrade.cs.meta",
+        "sha256": "88A7626FB2C4E9C04DAD2BA4EDC791B53871288A863FA2DDD3FC40226BFD4DF0",
+        "copySha256": "88A7626FB2C4E9C04DAD2BA4EDC791B53871288A863FA2DDD3FC40226BFD4DF0",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/MvpSceneBuilder.cs",
+        "sha256": "5C178417F5123879420E662CEF0D1EF7603338CF2DBC5262ED1AF8DF1D3AF5A4",
+        "copySha256": "5C178417F5123879420E662CEF0D1EF7603338CF2DBC5262ED1AF8DF1D3AF5A4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/MvpSceneBuilder.cs.meta",
+        "sha256": "0B82F5798A7C1E2F917F94B49583DF858B28B42AA1EE59CA1DC6CC2DDF79F1F6",
+        "copySha256": "0B82F5798A7C1E2F917F94B49583DF858B28B42AA1EE59CA1DC6CC2DDF79F1F6",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/PhaseThreeCapture.cs",
+        "sha256": "7378A821E7EC8ED240474F1A0A26395EA82998FFB3B0C44EDC90EEE43BFD41D5",
+        "copySha256": "7378A821E7EC8ED240474F1A0A26395EA82998FFB3B0C44EDC90EEE43BFD41D5",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/PhaseThreeCapture.cs.meta",
+        "sha256": "80DCE0CFBA3DB83FB9F2ADFF8D241FB9E38C782181D565166912BA29CCA7601D",
+        "copySha256": "80DCE0CFBA3DB83FB9F2ADFF8D241FB9E38C782181D565166912BA29CCA7601D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/QuaterniusAnimationImport.cs",
+        "sha256": "593178A06CC2C8C5A5D63D1F798B6F74C10B40C316323C4A5353BF2524978F3C",
+        "copySha256": "593178A06CC2C8C5A5D63D1F798B6F74C10B40C316323C4A5353BF2524978F3C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/QuaterniusAnimationImport.cs.meta",
+        "sha256": "2596F6590DA941313129E3A2FCA0D47C55F0838B01957AC2F9E8D20F2F608956",
+        "copySha256": "2596F6590DA941313129E3A2FCA0D47C55F0838B01957AC2F9E8D20F2F608956",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/QuickConsumableCapture.cs",
+        "sha256": "40AA257DE57400782F750738842411C58C9015E3C87EA06802A09CAD4503A7D3",
+        "copySha256": "40AA257DE57400782F750738842411C58C9015E3C87EA06802A09CAD4503A7D3",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Editor/QuickConsumableCapture.cs.meta",
+        "sha256": "9A3E255CE68F924C8167938C699E8223F8BA8E945FDC7B97201E21580FF93F83",
+        "copySha256": "9A3E255CE68F924C8167938C699E8223F8BA8E945FDC7B97201E21580FF93F83",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/BossEnemy.prefab",
+        "sha256": "591F96096DFB386A80F715799D2F0D29E1257C241B4CA79A6BFB179EA5D8230A",
+        "copySha256": "591F96096DFB386A80F715799D2F0D29E1257C241B4CA79A6BFB179EA5D8230A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/BossEnemy.prefab.meta",
+        "sha256": "6AE4317AE23B6CB9D590E2EB60B4198BAB59D7EE1197936C9A5D4D3BBBB1D2BA",
+        "copySha256": "6AE4317AE23B6CB9D590E2EB60B4198BAB59D7EE1197936C9A5D4D3BBBB1D2BA",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/GuardianGate.prefab",
+        "sha256": "A812711E1CB167452240280B9E9C0E9D9F8610ED2605ABAA1C3C1BB4AD01EFBC",
+        "copySha256": "A812711E1CB167452240280B9E9C0E9D9F8610ED2605ABAA1C3C1BB4AD01EFBC",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/GuardianGate.prefab.meta",
+        "sha256": "D340B168D0054DE49486508FB57D544E4D6C0C489ACA1AE550A35E78646A6235",
+        "copySha256": "D340B168D0054DE49486508FB57D544E4D6C0C489ACA1AE550A35E78646A6235",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/GuardianKey.prefab",
+        "sha256": "DB297BB3D6C6B85022B8FCFCCE1F2A1DAB3DB6B7BC78767214D0E1A5D552AB45",
+        "copySha256": "DB297BB3D6C6B85022B8FCFCCE1F2A1DAB3DB6B7BC78767214D0E1A5D552AB45",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/GuardianKey.prefab.meta",
+        "sha256": "8AE257814FA6B2C48249E77E723585445B766EB5BA2EB860229AE6C715B5861F",
+        "copySha256": "8AE257814FA6B2C48249E77E723585445B766EB5BA2EB860229AE6C715B5861F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/MobEnemy.prefab",
+        "sha256": "BBE46C162DBEB2151E09A5979D846CD12E8FDAC40E2C34FCF09649CD94B9A77D",
+        "copySha256": "BBE46C162DBEB2151E09A5979D846CD12E8FDAC40E2C34FCF09649CD94B9A77D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/MobEnemy.prefab.meta",
+        "sha256": "263A7EAAFA3CE9EED5D7D9A6D5183B7DDC3C2CC517D6EE5332C3B9B5ACCC99EC",
+        "copySha256": "263A7EAAFA3CE9EED5D7D9A6D5183B7DDC3C2CC517D6EE5332C3B9B5ACCC99EC",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/pickup-attack-tonic.prefab",
+        "sha256": "D845F31B5D502EAC16A480F8B9CC7FBEA2E4C317FB0DEB444BD79CA7DE96690B",
+        "copySha256": "D845F31B5D502EAC16A480F8B9CC7FBEA2E4C317FB0DEB444BD79CA7DE96690B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/pickup-attack-tonic.prefab.meta",
+        "sha256": "68207382415CEEDEAC05507AAE87D17B86BB646DBD8540B850A2DD9058D82850",
+        "copySha256": "68207382415CEEDEAC05507AAE87D17B86BB646DBD8540B850A2DD9058D82850",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/pickup-calming-pill.prefab",
+        "sha256": "E20DF8F9197A22F0A3B9E292A9C8EA9C43928466D05A65FBDACB7252FEBF0CE0",
+        "copySha256": "E20DF8F9197A22F0A3B9E292A9C8EA9C43928466D05A65FBDACB7252FEBF0CE0",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/pickup-calming-pill.prefab.meta",
+        "sha256": "09CC8FD737D6CA686C9F1DA896385164B0863F0548A6B764738102DE472173CE",
+        "copySha256": "09CC8FD737D6CA686C9F1DA896385164B0863F0548A6B764738102DE472173CE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/pickup-healing-medicine.prefab",
+        "sha256": "3EAB49B8DB1769CC42F24650C797EC022F26E1D7B7601FAB48E5C0BA38946420",
+        "copySha256": "3EAB49B8DB1769CC42F24650C797EC022F26E1D7B7601FAB48E5C0BA38946420",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/pickup-healing-medicine.prefab.meta",
+        "sha256": "6E015B770C6BBEF3A75607F808E9E73A6EEC2CC56AADAA1AA8CF84CB0F54CEE5",
+        "copySha256": "6E015B770C6BBEF3A75607F808E9E73A6EEC2CC56AADAA1AA8CF84CB0F54CEE5",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/Player.prefab",
+        "sha256": "B6EBE2841E02414D66DA725C7E998B73DC27C7A3ABFFA74C7D967E5EFE8D1933",
+        "copySha256": "B6EBE2841E02414D66DA725C7E998B73DC27C7A3ABFFA74C7D967E5EFE8D1933",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Prefabs/MVP/Player.prefab.meta",
+        "sha256": "B32ADDAB8441F33A47089B1669AB8436140ADBE8E897D9E14E75492B81A14EE3",
+        "copySha256": "B32ADDAB8441F33A47089B1669AB8436140ADBE8E897D9E14E75492B81A14EE3",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatActor.cs",
+        "sha256": "61A757EC76F049ECDE3D6CBAB8422AC0F9E602E1DB3B5A48DB65202B02F9BF2A",
+        "copySha256": "61A757EC76F049ECDE3D6CBAB8422AC0F9E602E1DB3B5A48DB65202B02F9BF2A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatActor.cs.meta",
+        "sha256": "0D616FFE146072B7D5E14DDB75C9F4220F6A7FA3C060B69D728F1B231345A5A4",
+        "copySha256": "0D616FFE146072B7D5E14DDB75C9F4220F6A7FA3C060B69D728F1B231345A5A4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatActorView.cs",
+        "sha256": "C0DBD3DB67754D7E996F0F6083F192795955625672DC8394866E94C94A7BD177",
+        "copySha256": "C0DBD3DB67754D7E996F0F6083F192795955625672DC8394866E94C94A7BD177",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatActorView.cs.meta",
+        "sha256": "235FADAFFE2B7F09870D8FA596DF01BF01E86E41013801041DCE94D582ADFABA",
+        "copySha256": "235FADAFFE2B7F09870D8FA596DF01BF01E86E41013801041DCE94D582ADFABA",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatAnimationPresenter.cs",
+        "sha256": "7D7CC67BE67543FC1A452EF9A9A4AF5647E46C650375B744266A7E5A13885CAB",
+        "copySha256": "7D7CC67BE67543FC1A452EF9A9A4AF5647E46C650375B744266A7E5A13885CAB",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatAnimationPresenter.cs.meta",
+        "sha256": "AA1B433E58FDF9E58A8F0EFA2A77C249F73FE06A9CC19F126E608FC5C5942DF4",
+        "copySha256": "AA1B433E58FDF9E58A8F0EFA2A77C249F73FE06A9CC19F126E608FC5C5942DF4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatAnimationProfile.cs",
+        "sha256": "E5768F4786EFF11AC5901BC0F6490A8DE58EC6C0432F48FED950977AFD0D40BB",
+        "copySha256": "E5768F4786EFF11AC5901BC0F6490A8DE58EC6C0432F48FED950977AFD0D40BB",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatAnimationProfile.cs.meta",
+        "sha256": "E3C23E26736AD8E1CE480DD11DC9F8963BA0F2CE38276AC48EF815620F4B5627",
+        "copySha256": "E3C23E26736AD8E1CE480DD11DC9F8963BA0F2CE38276AC48EF815620F4B5627",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatAttackDefinition.cs",
+        "sha256": "69E1DB6BD01D4375B1B4540EC209E5A02FFAD1B7F61C2C14B48783C8FF1332FE",
+        "copySha256": "69E1DB6BD01D4375B1B4540EC209E5A02FFAD1B7F61C2C14B48783C8FF1332FE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatAttackDefinition.cs.meta",
+        "sha256": "9C58C361FA5773AE774244746AE048EC6438CB29AF2705E9304832AE60CC288C",
+        "copySha256": "9C58C361FA5773AE774244746AE048EC6438CB29AF2705E9304832AE60CC288C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatBenchmarkRun.cs",
+        "sha256": "CF6D4D4FACDD8C7980905258EF891BB3F1025B39F9E1EA64D4FC48C79579139D",
+        "copySha256": "CF6D4D4FACDD8C7980905258EF891BB3F1025B39F9E1EA64D4FC48C79579139D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatBenchmarkRun.cs.meta",
+        "sha256": "A9AEEA4693FAB1B21B6B39464A416170CA2241AAC27B13FD23F5B32682C36930",
+        "copySha256": "A9AEEA4693FAB1B21B6B39464A416170CA2241AAC27B13FD23F5B32682C36930",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatBladeTrace.cs",
+        "sha256": "B077485A001410638B4F369D4B56B4E07886DB43AB99E82FB398CD6C41E7B37D",
+        "copySha256": "B077485A001410638B4F369D4B56B4E07886DB43AB99E82FB398CD6C41E7B37D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatBladeTrace.cs.meta",
+        "sha256": "DE9513151349BCAF9885013E37780B46B4568EA19A4479FC02A953A954AA1003",
+        "copySha256": "DE9513151349BCAF9885013E37780B46B4568EA19A4479FC02A953A954AA1003",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatCore.cs",
+        "sha256": "BDF5CAACB5CB9D7BD0AF257B55A39F2D550DDC890F5C593C2701C338FCC217BA",
+        "copySha256": "BDF5CAACB5CB9D7BD0AF257B55A39F2D550DDC890F5C593C2701C338FCC217BA",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatCore.cs.meta",
+        "sha256": "AD7E7EE9B6671D71DF55F9AB266324DF3039C66BF3CECC7F6A94B7537CAF38BF",
+        "copySha256": "AD7E7EE9B6671D71DF55F9AB266324DF3039C66BF3CECC7F6A94B7537CAF38BF",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatDebugHud.cs",
+        "sha256": "A61B2B5C2AEB52B9120E4DC2F781133336B719B258D272203F7F27F71D327980",
+        "copySha256": "A61B2B5C2AEB52B9120E4DC2F781133336B719B258D272203F7F27F71D327980",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatDebugHud.cs.meta",
+        "sha256": "184BFBFDABB2D9DEA4493EDD832C185CFCC039C78DDD20BDCDD565BD11452EB3",
+        "copySha256": "184BFBFDABB2D9DEA4493EDD832C185CFCC039C78DDD20BDCDD565BD11452EB3",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatDemoSession.cs",
+        "sha256": "8F6850E72C072BAC832CE793BE9827DC0C4ED955B72EB536B53715F0F2DCCFD8",
+        "copySha256": "8F6850E72C072BAC832CE793BE9827DC0C4ED955B72EB536B53715F0F2DCCFD8",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatDemoSession.cs.meta",
+        "sha256": "803EA79A84825BA48FB836A8156DE9BABD4FE718D4FF10C375D2E5C31389939F",
+        "copySha256": "803EA79A84825BA48FB836A8156DE9BABD4FE718D4FF10C375D2E5C31389939F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatDemoSettings.cs",
+        "sha256": "214E4A5160339BD9792AB36DA887C200C3B44EC6EA217935C1DEB4CE09CBB248",
+        "copySha256": "214E4A5160339BD9792AB36DA887C200C3B44EC6EA217935C1DEB4CE09CBB248",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatDemoSettings.cs.meta",
+        "sha256": "D0859D0819E33D0C3B2C8045C14B27465E6D74A0B28132B068D3EC54C6C6C849",
+        "copySha256": "D0859D0819E33D0C3B2C8045C14B27465E6D74A0B28132B068D3EC54C6C6C849",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatFeedback.cs",
+        "sha256": "CFFEB939B10EBA983F30790C2A999C2AC39D79BB015ED7C2530D68767B514BC4",
+        "copySha256": "CFFEB939B10EBA983F30790C2A999C2AC39D79BB015ED7C2530D68767B514BC4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatFeedback.cs.meta",
+        "sha256": "30BE6426AA801FFB91A19839C01151830C1CC53DA3E22D2E2659C0C7FDE5C715",
+        "copySha256": "30BE6426AA801FFB91A19839C01151830C1CC53DA3E22D2E2659C0C7FDE5C715",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatHud.cs",
+        "sha256": "63AC96E449E5B8DDFC3E276C54D689E57C3D2A9635D7E37E0B85619D9728A8C7",
+        "copySha256": "63AC96E449E5B8DDFC3E276C54D689E57C3D2A9635D7E37E0B85619D9728A8C7",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatHud.cs.meta",
+        "sha256": "44DA63BDE10C98389EAE9756951F7D462A18C2447A07105D62335C8A72A0766D",
+        "copySha256": "44DA63BDE10C98389EAE9756951F7D462A18C2447A07105D62335C8A72A0766D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatPerformanceSampler.cs",
+        "sha256": "71E9A1530CED340312F3FC761FD19C1B0B5020E2D387BB11EF832871224BA501",
+        "copySha256": "71E9A1530CED340312F3FC761FD19C1B0B5020E2D387BB11EF832871224BA501",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/CombatPerformanceSampler.cs.meta",
+        "sha256": "A6D1C56541358D51F582FA7A72D4C382B8EE50F938D52787E4EEE76B67A4B35F",
+        "copySha256": "A6D1C56541358D51F582FA7A72D4C382B8EE50F938D52787E4EEE76B67A4B35F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/DemoCamera.cs",
+        "sha256": "8968AAA4264E02E54273DCE7CF66E3DAE57938D4A41674ECFF5384E874BE9429",
+        "copySha256": "8968AAA4264E02E54273DCE7CF66E3DAE57938D4A41674ECFF5384E874BE9429",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/DemoCamera.cs.meta",
+        "sha256": "87AE1D55B29486CAD467183728AAA5F5B9582EAE83A9108F2BD91428DD0181DF",
+        "copySha256": "87AE1D55B29486CAD467183728AAA5F5B9582EAE83A9108F2BD91428DD0181DF",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/DemoInput.cs",
+        "sha256": "0136F8B2F205CE6FB0CDB0B3864DC7B3758CCFE022172C5D77CDE6760E2DAE31",
+        "copySha256": "0136F8B2F205CE6FB0CDB0B3864DC7B3758CCFE022172C5D77CDE6760E2DAE31",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/DemoInput.cs.meta",
+        "sha256": "54CC5E3741D84C35D73DD103D646D7E03E8E213370C739DA7867244DBFD0ACB9",
+        "copySha256": "54CC5E3741D84C35D73DD103D646D7E03E8E213370C739DA7867244DBFD0ACB9",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/EnemyBrain.cs",
+        "sha256": "D721758AD042A3F0D0235F898255815F84B6133771024D3A968F6E00DC29D87C",
+        "copySha256": "D721758AD042A3F0D0235F898255815F84B6133771024D3A968F6E00DC29D87C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/EnemyBrain.cs.meta",
+        "sha256": "8AEEF77D5F0C13180B909EB1CCBE5C0646CDF043B0D9ECA38DF6AB34595E4A7C",
+        "copySha256": "8AEEF77D5F0C13180B909EB1CCBE5C0646CDF043B0D9ECA38DF6AB34595E4A7C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/Milkfrog.CombatDemo.asmdef",
+        "sha256": "AA8C395CC072B7B291530128C2AC012EA04B6930B8123BD23636BA4669DEE542",
+        "copySha256": "AA8C395CC072B7B291530128C2AC012EA04B6930B8123BD23636BA4669DEE542",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/Milkfrog.CombatDemo.asmdef.meta",
+        "sha256": "4630AA99734C5C63C5B2EF50BFC66A4C8EE569A8BDB8E682AACE49B0BD75D068",
+        "copySha256": "4630AA99734C5C63C5B2EF50BFC66A4C8EE569A8BDB8E682AACE49B0BD75D068",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP.meta",
+        "sha256": "E862DA319A210D720DA43E0B482AA015CA622EC9EAAF7988FA5777D67062CE71",
+        "copySha256": "E862DA319A210D720DA43E0B482AA015CA622EC9EAAF7988FA5777D67062CE71",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/BonfireCheckpoint.cs",
+        "sha256": "677ECB57C8E48831A4386C377ABA403DAA847F0D536EF6FCA8212B19CFAE1A71",
+        "copySha256": "677ECB57C8E48831A4386C377ABA403DAA847F0D536EF6FCA8212B19CFAE1A71",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/BonfireCheckpoint.cs.meta",
+        "sha256": "F9A4097F13C24788D1254B28E652DBF6A2CD22C556AD5FF2CBA0B68DF7B20AE6",
+        "copySha256": "F9A4097F13C24788D1254B28E652DBF6A2CD22C556AD5FF2CBA0B68DF7B20AE6",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/BossEnemy.cs",
+        "sha256": "62EA86F7D596AD4491D44ED1C5856D81E43F955759D1019980F3BE91F883907D",
+        "copySha256": "62EA86F7D596AD4491D44ED1C5856D81E43F955759D1019980F3BE91F883907D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/BossEnemy.cs.meta",
+        "sha256": "5902D39C3A27F11F1AE648D7FD4219F1528990845A8EC4E680C4ADBC89D9F6F6",
+        "copySha256": "5902D39C3A27F11F1AE648D7FD4219F1528990845A8EC4E680C4ADBC89D9F6F6",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/EncounterDirector.cs",
+        "sha256": "7B8F72FC9E82E2EBF1DF9145601E17E3BADAE9D613A71662EEE0E8ADA142B6A5",
+        "copySha256": "7B8F72FC9E82E2EBF1DF9145601E17E3BADAE9D613A71662EEE0E8ADA142B6A5",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/EncounterDirector.cs.meta",
+        "sha256": "17A01F13ED25FAD9B8E12D85C3431FA6909037142A47AD68ECA6B936B8E2D3F5",
+        "copySha256": "17A01F13ED25FAD9B8E12D85C3431FA6909037142A47AD68ECA6B936B8E2D3F5",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/EnemyController.cs",
+        "sha256": "7801113810E9C01D8346A6D141079703477D660A927EAD6593BBB3940CA63C64",
+        "copySha256": "7801113810E9C01D8346A6D141079703477D660A927EAD6593BBB3940CA63C64",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/EnemyController.cs.meta",
+        "sha256": "C22ACBD79BE056D90A123C5EFB1A0A4CE22F9CFC594DFB6C0089667E416C96EF",
+        "copySha256": "C22ACBD79BE056D90A123C5EFB1A0A4CE22F9CFC594DFB6C0089667E416C96EF",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/EnemyDefinition.cs",
+        "sha256": "E5EE1BB74F255F97C90442445F92C161694726753859A6DB5189BA50DA9DCFC8",
+        "copySha256": "E5EE1BB74F255F97C90442445F92C161694726753859A6DB5189BA50DA9DCFC8",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/EnemyDefinition.cs.meta",
+        "sha256": "9DA756608B34663F150A763E6FDEC0F4B5ADB349FE0C2CA799A8104FCFF1E4D1",
+        "copySha256": "9DA756608B34663F150A763E6FDEC0F4B5ADB349FE0C2CA799A8104FCFF1E4D1",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/GameFlowController.cs",
+        "sha256": "52307C4550187DC1D52B909317042F3AFC519FBBA4E6A980EE16C3709629F9AE",
+        "copySha256": "52307C4550187DC1D52B909317042F3AFC519FBBA4E6A980EE16C3709629F9AE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/GameFlowController.cs.meta",
+        "sha256": "6D35E10FE22A4482DDCD986C58F9FD6B49806149C53C7702BFBDD985CEF0834E",
+        "copySha256": "6D35E10FE22A4482DDCD986C58F9FD6B49806149C53C7702BFBDD985CEF0834E",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InteractionController.cs",
+        "sha256": "83A9B1F9964E8C56FFA1FE9A61C710384DEA243066F57E083EC150664CE6DAF6",
+        "copySha256": "83A9B1F9964E8C56FFA1FE9A61C710384DEA243066F57E083EC150664CE6DAF6",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InteractionController.cs.meta",
+        "sha256": "A23482BB1D1C81F328EA8578593CEB91C0816D658A447203F9AB95D3705F4D98",
+        "copySha256": "A23482BB1D1C81F328EA8578593CEB91C0816D658A447203F9AB95D3705F4D98",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InventoryPickup.cs",
+        "sha256": "55BA90653325DFC18C3E5F0640876BFB4254026B622566FA0DA9B478E48E8F2A",
+        "copySha256": "55BA90653325DFC18C3E5F0640876BFB4254026B622566FA0DA9B478E48E8F2A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InventoryPickup.cs.meta",
+        "sha256": "F64BCBB51F9EB09FA79B3B5F204EDDC5A0804B57EEA8978BC0DC04DE68080AD3",
+        "copySha256": "F64BCBB51F9EB09FA79B3B5F204EDDC5A0804B57EEA8978BC0DC04DE68080AD3",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InventoryService.cs",
+        "sha256": "54F805F34DE4D1526275A4F19F4C9D0667AB4F5639E2229B4F1C6639665E2500",
+        "copySha256": "54F805F34DE4D1526275A4F19F4C9D0667AB4F5639E2229B4F1C6639665E2500",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InventoryService.cs.meta",
+        "sha256": "C8263FA64FAEE8782CE92B5FED7E49002C45FD30BD9034FEA211274C54CD179E",
+        "copySha256": "C8263FA64FAEE8782CE92B5FED7E49002C45FD30BD9034FEA211274C54CD179E",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InventoryTile.cs",
+        "sha256": "97422D6F6AC169FC5CF7A62E97E16E9DA0761855F02DAEA5ED7BFEFE5E96AC3D",
+        "copySha256": "97422D6F6AC169FC5CF7A62E97E16E9DA0761855F02DAEA5ED7BFEFE5E96AC3D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InventoryTile.cs.meta",
+        "sha256": "0353C08BDBD1AA6238547F9CCA9EBA926E560EFCA06DE6B4F4B79DA607A0A19A",
+        "copySha256": "0353C08BDBD1AA6238547F9CCA9EBA926E560EFCA06DE6B4F4B79DA607A0A19A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InventoryView.cs",
+        "sha256": "5BB4236154E2C4FB05C4E83CA982B3E0B8F4E8BE06B8F4058D776D20E3CE15E2",
+        "copySha256": "5BB4236154E2C4FB05C4E83CA982B3E0B8F4E8BE06B8F4058D776D20E3CE15E2",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/InventoryView.cs.meta",
+        "sha256": "0CD63E4189AC428B6F95CD179F6B020BF8F6FDC6C784B14485C63D074F9723D7",
+        "copySha256": "0CD63E4189AC428B6F95CD179F6B020BF8F6FDC6C784B14485C63D074F9723D7",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/ItemDefinition.cs",
+        "sha256": "7658E51100ED748324E9CAF3D8DC488C5991964E37BFF4A2754490DB84AD9EEE",
+        "copySha256": "7658E51100ED748324E9CAF3D8DC488C5991964E37BFF4A2754490DB84AD9EEE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/ItemDefinition.cs.meta",
+        "sha256": "3469C1129624CB8CB3AA249A90B59625A286CE3E6296853B48399B6A10D39C85",
+        "copySha256": "3469C1129624CB8CB3AA249A90B59625A286CE3E6296853B48399B6A10D39C85",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/LockOnController.cs",
+        "sha256": "EF3868E74C50D98508972565979E3053896FEF6AB83746F1D1D0E22A5C98B7DF",
+        "copySha256": "EF3868E74C50D98508972565979E3053896FEF6AB83746F1D1D0E22A5C98B7DF",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/LockOnController.cs.meta",
+        "sha256": "94DFB9B35D8DA3BCD17D03189D8A507F1790A7AFE3605F941F41FD64FDCA3F77",
+        "copySha256": "94DFB9B35D8DA3BCD17D03189D8A507F1790A7AFE3605F941F41FD64FDCA3F77",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/MobEnemy.cs",
+        "sha256": "B5453A0EB6EF1963A3E03FC3DA0513A439813A172C1EBEF5E37507399FAA02C4",
+        "copySha256": "B5453A0EB6EF1963A3E03FC3DA0513A439813A172C1EBEF5E37507399FAA02C4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/MobEnemy.cs.meta",
+        "sha256": "0A4DDF16A3E3EE059F9BA229310108FD51441D5E2B1CFDCB044C5B02CA4D910D",
+        "copySha256": "0A4DDF16A3E3EE059F9BA229310108FD51441D5E2B1CFDCB044C5B02CA4D910D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/MvpHud.cs",
+        "sha256": "960C28D56FBD998FB841F16BA357DC4BE12D5F4DF8673225949AB9EB6DE34684",
+        "copySha256": "960C28D56FBD998FB841F16BA357DC4BE12D5F4DF8673225949AB9EB6DE34684",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/MvpHud.cs.meta",
+        "sha256": "8EA61811D9F2AD2F240B2F63337948E6B26FBE395D9AAA5C65A1113CB90211D8",
+        "copySha256": "8EA61811D9F2AD2F240B2F63337948E6B26FBE395D9AAA5C65A1113CB90211D8",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/MvpMenuView.cs",
+        "sha256": "91336C43BB4EE3C185391743AA84F0DA721258D3CC7A030DB068238C62254F0F",
+        "copySha256": "91336C43BB4EE3C185391743AA84F0DA721258D3CC7A030DB068238C62254F0F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/MvpMenuView.cs.meta",
+        "sha256": "45F3E22A692A0C40DA634641F053380676E7B0E9C4C51BDEC69A26AB93F48E1E",
+        "copySha256": "45F3E22A692A0C40DA634641F053380676E7B0E9C4C51BDEC69A26AB93F48E1E",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/MvpWorld.cs",
+        "sha256": "05A0F40DB7AB5D828EDD10ECBA95955093FE26BD8EE28748EF33A6938DDAE2F7",
+        "copySha256": "05A0F40DB7AB5D828EDD10ECBA95955093FE26BD8EE28748EF33A6938DDAE2F7",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/MvpWorld.cs.meta",
+        "sha256": "5A474F2D643B6B9A482E3250B183945E077A6A977F81068F76CB475A717C6FE4",
+        "copySha256": "5A474F2D643B6B9A482E3250B183945E077A6A977F81068F76CB475A717C6FE4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/PlayerProgression.cs",
+        "sha256": "748580E06322482260676EF3D8F1BAFC5881E7685687D808813D2AE231E353B0",
+        "copySha256": "748580E06322482260676EF3D8F1BAFC5881E7685687D808813D2AE231E353B0",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/PlayerProgression.cs.meta",
+        "sha256": "54D3CF4E0A023642A989074F5500C96E9D5B7B98EBA3B5D8C85D228C0F4A0332",
+        "copySha256": "54D3CF4E0A023642A989074F5500C96E9D5B7B98EBA3B5D8C85D228C0F4A0332",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/QuestDefinition.cs",
+        "sha256": "B9A8337629F8E9A11F34722DDFEEE3172F7D5C7E5DDFA6A92B0BDEABD8BDC7CA",
+        "copySha256": "B9A8337629F8E9A11F34722DDFEEE3172F7D5C7E5DDFA6A92B0BDEABD8BDC7CA",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/QuestDefinition.cs.meta",
+        "sha256": "1558F00275A3706D86F2B25F738E482DFA0F3D46B24BDA5DD2032CD7C9B9214D",
+        "copySha256": "1558F00275A3706D86F2B25F738E482DFA0F3D46B24BDA5DD2032CD7C9B9214D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/QuestProgressService.cs",
+        "sha256": "F433146FCDC3AC0076779E14E4E0CF8152AFA9E1C43DD503311833FF30E3696C",
+        "copySha256": "F433146FCDC3AC0076779E14E4E0CF8152AFA9E1C43DD503311833FF30E3696C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/QuestProgressService.cs.meta",
+        "sha256": "2552ABD393CE92DF069D91ADAC91FCDDFFA1E270B1EBE375D364C8B4691F722F",
+        "copySha256": "2552ABD393CE92DF069D91ADAC91FCDDFFA1E270B1EBE375D364C8B4691F722F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/Resources.meta",
+        "sha256": "7886EC27B991A9BC1BCDB318BAC6C0ACCB9F54486C76D2EF6F84F7BBC0D446B0",
+        "copySha256": "7886EC27B991A9BC1BCDB318BAC6C0ACCB9F54486C76D2EF6F84F7BBC0D446B0",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/Resources/NotoSansSC-VF.ttf",
+        "sha256": "A3041811A78C361B1DE50F953C805E0244951C21C5BD412F7232EF0D899AF0DA",
+        "copySha256": "A3041811A78C361B1DE50F953C805E0244951C21C5BD412F7232EF0D899AF0DA",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/Resources/NotoSansSC-VF.ttf.meta",
+        "sha256": "237B178181249B3463DFFB0C5C6C6BA6CDE9798E4A9B08ECC696BC3D564D8F18",
+        "copySha256": "237B178181249B3463DFFB0C5C6C6BA6CDE9798E4A9B08ECC696BC3D564D8F18",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/SaveService.cs",
+        "sha256": "1DEA9FC435151FBFE81B04D1B324C771C3570BBC3416B210098622921E394C84",
+        "copySha256": "1DEA9FC435151FBFE81B04D1B324C771C3570BBC3416B210098622921E394C84",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/SaveService.cs.meta",
+        "sha256": "51BB8972E314D22433AE9BA568226D6939CDBE018CC35C5E30397BFE4E17ABDE",
+        "copySha256": "51BB8972E314D22433AE9BA568226D6939CDBE018CC35C5E30397BFE4E17ABDE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/WorldInteractable.cs",
+        "sha256": "26EED1BE41160FF2D9ED4A7C6BE93AB46A51A06C127B0CDCF2A2B63E143C419D",
+        "copySha256": "26EED1BE41160FF2D9ED4A7C6BE93AB46A51A06C127B0CDCF2A2B63E143C419D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/WorldInteractable.cs.meta",
+        "sha256": "7236021AF21320059395E6ACE301D6790E9B8469FC2B4D5AA546395B3A12B2E0",
+        "copySha256": "7236021AF21320059395E6ACE301D6790E9B8469FC2B4D5AA546395B3A12B2E0",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/WorldStateService.cs",
+        "sha256": "6420B6F381D1E0BEB222982FC17DB5DFD2E05DE307415899A489FE7DEBC96593",
+        "copySha256": "6420B6F381D1E0BEB222982FC17DB5DFD2E05DE307415899A489FE7DEBC96593",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/MVP/WorldStateService.cs.meta",
+        "sha256": "8132CA17713CADC5A0AA8C3FDD46F6C8E5898452E7F0339BFE8E80C3477B6B83",
+        "copySha256": "8132CA17713CADC5A0AA8C3FDD46F6C8E5898452E7F0339BFE8E80C3477B6B83",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/PlayClip.cs",
+        "sha256": "1578D1E3A8D94B7F276F6BDAB264379D91E1F36143143F59A1CD14EC181E9A72",
+        "copySha256": "1578D1E3A8D94B7F276F6BDAB264379D91E1F36143143F59A1CD14EC181E9A72",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Runtime/PlayClip.cs.meta",
+        "sha256": "BAC3B45E6326F934C4DA80798EF2D6680E84733D570102A6EE9CC0B05E23FDF9",
+        "copySha256": "BAC3B45E6326F934C4DA80798EF2D6680E84733D570102A6EE9CC0B05E23FDF9",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Scenes/MainMenu.unity",
+        "sha256": "92B7DE8ADF6CB6172857379393BDBB62F632372AC0E96348F9C2457BDACEE656",
+        "copySha256": "92B7DE8ADF6CB6172857379393BDBB62F632372AC0E96348F9C2457BDACEE656",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Scenes/MainMenu.unity.meta",
+        "sha256": "0F78BCFD4C82624A06074C0EEB3EFFCC9A30430F6F0B30F7EA496407CD8FC0F6",
+        "copySha256": "0F78BCFD4C82624A06074C0EEB3EFFCC9A30430F6F0B30F7EA496407CD8FC0F6",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Scenes/MVP_TestLevel.unity",
+        "sha256": "E98FF5530903DC1AA113FDBFD8EECBA61216C8D56B7A15DD77D51E4223A881DF",
+        "copySha256": "E98FF5530903DC1AA113FDBFD8EECBA61216C8D56B7A15DD77D51E4223A881DF",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Scenes/MVP_TestLevel.unity.meta",
+        "sha256": "A7A56992359616A99AA450720E2054E61013542929E2572D13DCE18C58C9C1A4",
+        "copySha256": "A7A56992359616A99AA450720E2054E61013542929E2572D13DCE18C58C9C1A4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/AnimatedCombat.asset",
+        "sha256": "C29B0E6A8B0B5AA7A829BC78CEEE78BFFE91E66CEEA1E023B6528872F9DF86CE",
+        "copySha256": "C29B0E6A8B0B5AA7A829BC78CEEE78BFFE91E66CEEA1E023B6528872F9DF86CE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/AnimatedCombat.asset.meta",
+        "sha256": "DA1086A93B93BE9DE80F015FB123D91EC8860F3BF6267CB1BC12915407753517",
+        "copySha256": "DA1086A93B93BE9DE80F015FB123D91EC8860F3BF6267CB1BC12915407753517",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/BossEnemy.asset",
+        "sha256": "390A7F39834A5E24E6F7A3464E8ED7A707B1064F79AAAF456A2531F85731608C",
+        "copySha256": "390A7F39834A5E24E6F7A3464E8ED7A707B1064F79AAAF456A2531F85731608C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/BossEnemy.asset.meta",
+        "sha256": "8126C8B4B2F36C50416D3DD9CF8E62B2467A491360518D7CB4656456C228A4B1",
+        "copySha256": "8126C8B4B2F36C50416D3DD9CF8E62B2467A491360518D7CB4656456C228A4B1",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/BossPerilous.asset",
+        "sha256": "7EDCA51761FC142432961BB02764A150DA1D0231381037690AC8DCF5FA75987C",
+        "copySha256": "7EDCA51761FC142432961BB02764A150DA1D0231381037690AC8DCF5FA75987C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/BossPerilous.asset.meta",
+        "sha256": "896E0455B8A878ED221611D2563B2D10FA06BE4717FF876EFB9F6BD8F575D7F4",
+        "copySha256": "896E0455B8A878ED221611D2563B2D10FA06BE4717FF876EFB9F6BD8F575D7F4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/BossSlash.asset",
+        "sha256": "8FD2E3233DF213615C7F4C9EE8C0FC53BEBBC2134FFA7A14A2128E83D23CAE0E",
+        "copySha256": "8FD2E3233DF213615C7F4C9EE8C0FC53BEBBC2134FFA7A14A2128E83D23CAE0E",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/BossSlash.asset.meta",
+        "sha256": "9B7920BA1ADE73417515AC17A7A730377635EDCA990E83AC2ABE6072479F7C48",
+        "copySha256": "9B7920BA1ADE73417515AC17A7A730377635EDCA990E83AC2ABE6072479F7C48",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/BossSlow.asset",
+        "sha256": "7E057F0C9A284F0EC732B3C9005E39B3D8C402A3894F28465F9E308A6F3428A7",
+        "copySha256": "7E057F0C9A284F0EC732B3C9005E39B3D8C402A3894F28465F9E308A6F3428A7",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/BossSlow.asset.meta",
+        "sha256": "BA676672C1DBCC87425DBFC2FAA22927DC004382E5E5EBE75A72C7131414C599",
+        "copySha256": "BA676672C1DBCC87425DBFC2FAA22927DC004382E5E5EBE75A72C7131414C599",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/DefaultCombat.asset",
+        "sha256": "90A8BFA23AE1C4A7692203838A11D812758E0373D034CA0E6447E8FD178E6A4B",
+        "copySha256": "90A8BFA23AE1C4A7692203838A11D812758E0373D034CA0E6447E8FD178E6A4B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/DefaultCombat.asset.meta",
+        "sha256": "A67B947F45C392872C6B2948FE509ED54CBAB3DA58F1CED1DCBF8BBA79015DA4",
+        "copySha256": "A67B947F45C392872C6B2948FE509ED54CBAB3DA58F1CED1DCBF8BBA79015DA4",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/EnemyPerilous.asset",
+        "sha256": "B0B950C32CB0800325D79E9B15B6A5EE3FDD11CF5B68EC990622E579A911E338",
+        "copySha256": "B0B950C32CB0800325D79E9B15B6A5EE3FDD11CF5B68EC990622E579A911E338",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/EnemyPerilous.asset.meta",
+        "sha256": "7B0BF0EEBA944378B32CE2263AAAA242CA24770AEB3FA5CB675A557D66888FD3",
+        "copySha256": "7B0BF0EEBA944378B32CE2263AAAA242CA24770AEB3FA5CB675A557D66888FD3",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/EnemySlash.asset",
+        "sha256": "D65F845185F0C75F498226D5FE67BB028EFC93D21D72B239196CBACF0C636424",
+        "copySha256": "D65F845185F0C75F498226D5FE67BB028EFC93D21D72B239196CBACF0C636424",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/EnemySlash.asset.meta",
+        "sha256": "9CD3D0831AACFA72F86765378296CA9C13660B8B81CA8D6E2EEFE3D7B14B4B75",
+        "copySha256": "9CD3D0831AACFA72F86765378296CA9C13660B8B81CA8D6E2EEFE3D7B14B4B75",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/EnemySlow.asset",
+        "sha256": "3CFAF099DCAAE1B34EF9FACE188B1CAFFE793D5FBEDDC7842FB461FA6247EE56",
+        "copySha256": "3CFAF099DCAAE1B34EF9FACE188B1CAFFE793D5FBEDDC7842FB461FA6247EE56",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/EnemySlow.asset.meta",
+        "sha256": "B6755C3AD559ECFFA9FCDD013B082306A38D77B1961E6AD5974B29ECD7DA067B",
+        "copySha256": "B6755C3AD559ECFFA9FCDD013B082306A38D77B1961E6AD5974B29ECD7DA067B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/GuardianTrial.asset",
+        "sha256": "27B1EBE6C791EFE48E7346766045B7F81C01FAE171F87942C830F8B67CFA03FA",
+        "copySha256": "27B1EBE6C791EFE48E7346766045B7F81C01FAE171F87942C830F8B67CFA03FA",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/GuardianTrial.asset.meta",
+        "sha256": "00BE776EA7EBFA978535D6D2B89D731697499B31EAF348921882F357C2E7D111",
+        "copySha256": "00BE776EA7EBFA978535D6D2B89D731697499B31EAF348921882F357C2E7D111",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/Items.meta",
+        "sha256": "CAFA2A977C5FD312C35228E9B39D431616B562593ABD9695F2DBDCEEE35DF113",
+        "copySha256": "CAFA2A977C5FD312C35228E9B39D431616B562593ABD9695F2DBDCEEE35DF113",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/Items/attack-tonic.asset",
+        "sha256": "F16EB12004DB1307104AAE55E68CB2C372C07BC4EBBDDC2E0DF7AFC22997BC40",
+        "copySha256": "F16EB12004DB1307104AAE55E68CB2C372C07BC4EBBDDC2E0DF7AFC22997BC40",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/Items/attack-tonic.asset.meta",
+        "sha256": "01F3CDEB886B17034A7B5DFF0089B0E586B06F988C5BEF3DAFE84C1F53A3F67B",
+        "copySha256": "01F3CDEB886B17034A7B5DFF0089B0E586B06F988C5BEF3DAFE84C1F53A3F67B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/Items/calming-pill.asset",
+        "sha256": "C07B8FC079AD9A0831652236BFE06105DDE3CF023EF938F371BC8F8816F6BB37",
+        "copySha256": "C07B8FC079AD9A0831652236BFE06105DDE3CF023EF938F371BC8F8816F6BB37",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/Items/calming-pill.asset.meta",
+        "sha256": "47A296D807F3F476F8FB57BF762C780FF44FEF5338220F94F8F95DD96870C71B",
+        "copySha256": "47A296D807F3F476F8FB57BF762C780FF44FEF5338220F94F8F95DD96870C71B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/Items/guardian-key.asset",
+        "sha256": "A1B9F75D69949DF7C7E51CD89244FBB8080150AB717E5CDABB7E23524170DDE7",
+        "copySha256": "A1B9F75D69949DF7C7E51CD89244FBB8080150AB717E5CDABB7E23524170DDE7",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/Items/guardian-key.asset.meta",
+        "sha256": "E1FE3860C6A411769FE0A3DF1DB216048D2741034AFAFE55410382DBB64E4A8F",
+        "copySha256": "E1FE3860C6A411769FE0A3DF1DB216048D2741034AFAFE55410382DBB64E4A8F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/Items/healing-medicine.asset",
+        "sha256": "85F2144DA12831753C89A132E1B54D1E6866546644820B9AF52404F642F4ECAB",
+        "copySha256": "85F2144DA12831753C89A132E1B54D1E6866546644820B9AF52404F642F4ECAB",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/Items/healing-medicine.asset.meta",
+        "sha256": "A5BAB28AB755D566E6537D932961BE86D6881AC9D8F771F52FF5D9FE3B96A79F",
+        "copySha256": "A5BAB28AB755D566E6537D932961BE86D6881AC9D8F771F52FF5D9FE3B96A79F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/MilkfrogFollowup.asset",
+        "sha256": "9AA93F036C6FC5C5EE5E6E96DD16FBED14C6349B8CDCA628483C9E4A385B2564",
+        "copySha256": "9AA93F036C6FC5C5EE5E6E96DD16FBED14C6349B8CDCA628483C9E4A385B2564",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/MilkfrogFollowup.asset.meta",
+        "sha256": "67337117E6D4ED2E1E2E9CF99E0DA6A7051900664349391B77D8F65DB31B60B5",
+        "copySha256": "67337117E6D4ED2E1E2E9CF99E0DA6A7051900664349391B77D8F65DB31B60B5",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/MilkfrogSlash.asset",
+        "sha256": "51EB3CBF28B3177626F45EA6B241C68EEDFCF1472CBC2429917022DC4733BA6C",
+        "copySha256": "51EB3CBF28B3177626F45EA6B241C68EEDFCF1472CBC2429917022DC4733BA6C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/MilkfrogSlash.asset.meta",
+        "sha256": "D0594E2264123CDFF48C06BEEBAECF91169FC3A8AC8C5884E67AAA8460AD6E49",
+        "copySha256": "D0594E2264123CDFF48C06BEEBAECF91169FC3A8AC8C5884E67AAA8460AD6E49",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/MilkfrogThrust.asset",
+        "sha256": "EA196A42F06FED3CB688E1FE1077247C5523092C6AE16E62E75E219F2C297975",
+        "copySha256": "EA196A42F06FED3CB688E1FE1077247C5523092C6AE16E62E75E219F2C297975",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/MilkfrogThrust.asset.meta",
+        "sha256": "30569E9D850334B75EFD10FC5236D0AAD5C15DE686770829F6C599EA0CC72F2A",
+        "copySha256": "30569E9D850334B75EFD10FC5236D0AAD5C15DE686770829F6C599EA0CC72F2A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/MobEnemy.asset",
+        "sha256": "F7E97DE50B2F43116270512C429033DDC93735D408951235117EA5644668B91B",
+        "copySha256": "F7E97DE50B2F43116270512C429033DDC93735D408951235117EA5644668B91B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/MobEnemy.asset.meta",
+        "sha256": "F313052B54FD5755855FCF4255DC48FED4C3272ECBC0152EEEC909DE484E1FB5",
+        "copySha256": "F313052B54FD5755855FCF4255DC48FED4C3272ECBC0152EEEC909DE484E1FB5",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/PlayerFollowup.asset",
+        "sha256": "BEA677AD4CDF6E7A96B0D4C7916A1341305DBDB2FF65A91EC88667115EA1FBA7",
+        "copySha256": "BEA677AD4CDF6E7A96B0D4C7916A1341305DBDB2FF65A91EC88667115EA1FBA7",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/PlayerFollowup.asset.meta",
+        "sha256": "1568D15AF50783F1BA8424CE198F8DD2A5DD558958F3C8C82F1B19214D1C235A",
+        "copySha256": "1568D15AF50783F1BA8424CE198F8DD2A5DD558958F3C8C82F1B19214D1C235A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/PlayerSlash.asset",
+        "sha256": "0FC7CA010A7808CE9EA6EFABB15ED2FF259CCB8F916846D2315CC454063BA72B",
+        "copySha256": "0FC7CA010A7808CE9EA6EFABB15ED2FF259CCB8F916846D2315CC454063BA72B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/PlayerSlash.asset.meta",
+        "sha256": "EAD765DFF4BBE741502850B446D7B93E59BC9CD900D4FFB6ABC5BE93375D4DF0",
+        "copySha256": "EAD765DFF4BBE741502850B446D7B93E59BC9CD900D4FFB6ABC5BE93375D4DF0",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/PlayerThrust.asset",
+        "sha256": "C58EC6A7FD3EFC39421EAF534566156DD52593F7453FEB01FB064758FAFDDE73",
+        "copySha256": "C58EC6A7FD3EFC39421EAF534566156DD52593F7453FEB01FB064758FAFDDE73",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Settings/PlayerThrust.asset.meta",
+        "sha256": "CE10322AD5111F84A9678DE67672104EB3C8C46347C55AD39772A2CDDC7016D6",
+        "copySha256": "CE10322AD5111F84A9678DE67672104EB3C8C46347C55AD39772A2CDDC7016D6",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode.meta",
+        "sha256": "CD58DA2D0B046FA2AAE962CB0271E454F4F49FB7F6C8CF0C811548DDA85650C2",
+        "copySha256": "CD58DA2D0B046FA2AAE962CB0271E454F4F49FB7F6C8CF0C811548DDA85650C2",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/AnimatedCoreTests.cs",
+        "sha256": "1BDDFAC4389FC69EEA985EED55892DAA73E4C9124DF48DEA70E7B676D232358B",
+        "copySha256": "1BDDFAC4389FC69EEA985EED55892DAA73E4C9124DF48DEA70E7B676D232358B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/AnimatedCoreTests.cs.meta",
+        "sha256": "F8035580B8F3BE8E6979AE3AF9377EC223A071FDC8E176B6C3C94B7AC0DDE269",
+        "copySha256": "F8035580B8F3BE8E6979AE3AF9377EC223A071FDC8E176B6C3C94B7AC0DDE269",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/BladeIntervalTests.cs",
+        "sha256": "4843880855C6DEEB4FD5800112068E7D1568A46FB7CA6B15B5E8657CB9E5811D",
+        "copySha256": "4843880855C6DEEB4FD5800112068E7D1568A46FB7CA6B15B5E8657CB9E5811D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/BladeIntervalTests.cs.meta",
+        "sha256": "D6B4ED321FF7941FF4FD8145C4E6A7DE88E0503F3C8C07500FFAAA5E1A84427D",
+        "copySha256": "D6B4ED321FF7941FF4FD8145C4E6A7DE88E0503F3C8C07500FFAAA5E1A84427D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/ChargeCoreTests.cs",
+        "sha256": "B441CCFDCFC45506411263226AD89F2BF28D53D212830E8D3CAF6E2FC56B2439",
+        "copySha256": "B441CCFDCFC45506411263226AD89F2BF28D53D212830E8D3CAF6E2FC56B2439",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/ChargeCoreTests.cs.meta",
+        "sha256": "2A6B1FE966117063B5CFCD1E283C005D183C9D4C29AE3A1BE1D9DDF920E471D9",
+        "copySha256": "2A6B1FE966117063B5CFCD1E283C005D183C9D4C29AE3A1BE1D9DDF920E471D9",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/CombatCoreTests.cs",
+        "sha256": "D592BB6732EB8E531310B3E82469CA6C071816C4FC83E28C0596359432CC54D2",
+        "copySha256": "D592BB6732EB8E531310B3E82469CA6C071816C4FC83E28C0596359432CC54D2",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/CombatCoreTests.cs.meta",
+        "sha256": "D1E501BFC7458D74C9782D52E98DAB8131CE4676D2FA6FFD8EE7319ADA645078",
+        "copySha256": "D1E501BFC7458D74C9782D52E98DAB8131CE4676D2FA6FFD8EE7319ADA645078",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/CombatFeelTests.cs",
+        "sha256": "30253A4DE8D8B1B8C35005B806DCF7585C634E50798C46E36D7CD596DA784A95",
+        "copySha256": "30253A4DE8D8B1B8C35005B806DCF7585C634E50798C46E36D7CD596DA784A95",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/CombatFeelTests.cs.meta",
+        "sha256": "67759F6235AA417C1C1BA3C2D3B382C6C9FA153FD8686D37CD912C92F1C10CDE",
+        "copySha256": "67759F6235AA417C1C1BA3C2D3B382C6C9FA153FD8686D37CD912C92F1C10CDE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/DodgeCoreTests.cs",
+        "sha256": "7B600F8A06C695620DB0B0A48CC76B05E0AA067F993F2FAAA09B038929B7338B",
+        "copySha256": "7B600F8A06C695620DB0B0A48CC76B05E0AA067F993F2FAAA09B038929B7338B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/DodgeCoreTests.cs.meta",
+        "sha256": "D2B6E86D3BF3AE45330FD640DA917AC53E9A449C1B137D4733B7584DF5760332",
+        "copySha256": "D2B6E86D3BF3AE45330FD640DA917AC53E9A449C1B137D4733B7584DF5760332",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/GameplayPolishTests.cs",
+        "sha256": "9230259C2B482543A01285BDEDB986D16D8F2BF4DACFADD7F050A4731523BF8A",
+        "copySha256": "9230259C2B482543A01285BDEDB986D16D8F2BF4DACFADD7F050A4731523BF8A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/GameplayPolishTests.cs.meta",
+        "sha256": "070AD6190F0DC66ACA6DBFED515DBD44A91A32BE3ECD0B5B2A8E6C22D27B2CFC",
+        "copySha256": "070AD6190F0DC66ACA6DBFED515DBD44A91A32BE3ECD0B5B2A8E6C22D27B2CFC",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/InventoryTests.cs",
+        "sha256": "1670E62A02FE25B6032DE36617191C52168BC708173370FD267F81BB8F8F3563",
+        "copySha256": "1670E62A02FE25B6032DE36617191C52168BC708173370FD267F81BB8F8F3563",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/InventoryTests.cs.meta",
+        "sha256": "3592CB928AF5FAF7A5039A615C6F785F9F9F24B5598B06FE0C9182C95859736B",
+        "copySha256": "3592CB928AF5FAF7A5039A615C6F785F9F9F24B5598B06FE0C9182C95859736B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/Milkfrog.CombatDemo.EditTests.asmdef",
+        "sha256": "8AC616E0EB69B34B5B9D24EA825D0B5AF43BD41D24F7004DFE59E8E9C86063FC",
+        "copySha256": "8AC616E0EB69B34B5B9D24EA825D0B5AF43BD41D24F7004DFE59E8E9C86063FC",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/Milkfrog.CombatDemo.EditTests.asmdef.meta",
+        "sha256": "DF402D41811F949AFDA02B828783026452C5EA598C12FED878D208AED3AA5D69",
+        "copySha256": "DF402D41811F949AFDA02B828783026452C5EA598C12FED878D208AED3AA5D69",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/MvpSaveMigrationTests.cs",
+        "sha256": "10CF117C0A3853579C008D92011C4AB10F9157C9A20B27AD84E121C3A68A1C95",
+        "copySha256": "10CF117C0A3853579C008D92011C4AB10F9157C9A20B27AD84E121C3A68A1C95",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/MvpSaveMigrationTests.cs.meta",
+        "sha256": "1771C4D4FFF6BBD561076EDFB94B6FAA5421229B2AC06E39677637A151D61091",
+        "copySha256": "1771C4D4FFF6BBD561076EDFB94B6FAA5421229B2AC06E39677637A151D61091",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/MvpSaveTests.cs",
+        "sha256": "9A7DBA9441E10D4E92DA88C2BB4F9BBCA605AD1A0242045FA24191CE6FC283DE",
+        "copySha256": "9A7DBA9441E10D4E92DA88C2BB4F9BBCA605AD1A0242045FA24191CE6FC283DE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/MvpSaveTests.cs.meta",
+        "sha256": "D30214B200FBB72E543C6D3B09370333F6B1999E11A86176735A3548B7018C64",
+        "copySha256": "D30214B200FBB72E543C6D3B09370333F6B1999E11A86176735A3548B7018C64",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/PerilousWarningHudTests.cs",
+        "sha256": "762265323D37330A8FD1B992C46587CD066D449C2CAC445BE0029D795AD2FBB1",
+        "copySha256": "762265323D37330A8FD1B992C46587CD066D449C2CAC445BE0029D795AD2FBB1",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/PerilousWarningHudTests.cs.meta",
+        "sha256": "526982B4A3C9D263F30F59ED158B3C6B37593B2EFFF05BE8F0008396F95FDDF1",
+        "copySha256": "526982B4A3C9D263F30F59ED158B3C6B37593B2EFFF05BE8F0008396F95FDDF1",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/PlayerProgressionTests.cs",
+        "sha256": "471195586DAF20839B7F1A3F8DF7D9422D40FC406512589905C512EC9207255D",
+        "copySha256": "471195586DAF20839B7F1A3F8DF7D9422D40FC406512589905C512EC9207255D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/PlayerProgressionTests.cs.meta",
+        "sha256": "E828E37B01011B71AD9C0C923EBBC84AE45A1E1934D53D4F2375EE4F5E45CB20",
+        "copySha256": "E828E37B01011B71AD9C0C923EBBC84AE45A1E1934D53D4F2375EE4F5E45CB20",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/QuickConsumableTests.cs",
+        "sha256": "BBF15362ED46CBC41B99354C2101AE068551C889D0C978E0405BCBF696190496",
+        "copySha256": "BBF15362ED46CBC41B99354C2101AE068551C889D0C978E0405BCBF696190496",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/QuickConsumableTests.cs.meta",
+        "sha256": "7FDB7ED2F6A95BD5DAFE7CB05AA607F9469A920F8D32BC75EC1B0F86D2BB686C",
+        "copySha256": "7FDB7ED2F6A95BD5DAFE7CB05AA607F9469A920F8D32BC75EC1B0F86D2BB686C",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/WorldIdValidationTests.cs",
+        "sha256": "D5E00621F6EEFC12BD5E932223A6C6B38BB0F0CD272F93EAB808D0EC81FEDC43",
+        "copySha256": "D5E00621F6EEFC12BD5E932223A6C6B38BB0F0CD272F93EAB808D0EC81FEDC43",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/WorldIdValidationTests.cs.meta",
+        "sha256": "69157CFFAFA5AD0A7AB802FA042187625E729414A5F5E01E04F8E91B7F9EE53B",
+        "copySha256": "69157CFFAFA5AD0A7AB802FA042187625E729414A5F5E01E04F8E91B7F9EE53B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/WorldProgressTests.cs",
+        "sha256": "723A20C952950BF2843610EAA7DEFB4275319032B8CF66F3A79CC4DFDAAC68DD",
+        "copySha256": "723A20C952950BF2843610EAA7DEFB4275319032B8CF66F3A79CC4DFDAAC68DD",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/EditMode/WorldProgressTests.cs.meta",
+        "sha256": "7C7027F22BA074DC7E155DB16B04FD17F51CA4D0DF6CFEFF65CF61CC223C1D7E",
+        "copySha256": "7C7027F22BA074DC7E155DB16B04FD17F51CA4D0DF6CFEFF65CF61CC223C1D7E",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode.meta",
+        "sha256": "131CB4EB40F7E09CD2985A8F470AFFEC2AE021CFBCED50C90272FE605B588742",
+        "copySha256": "131CB4EB40F7E09CD2985A8F470AFFEC2AE021CFBCED50C90272FE605B588742",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/AnimatedSceneTests.cs",
+        "sha256": "BBA13BBE20BC4E905CD5EA8B3793B17EAC18F740C56EF89AB27B45936557BD50",
+        "copySha256": "BBA13BBE20BC4E905CD5EA8B3793B17EAC18F740C56EF89AB27B45936557BD50",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/AnimatedSceneTests.cs.meta",
+        "sha256": "DDF6FA014DD3C52C58496E1B5C5076BC9DE60329065FDCDE3CB44494D87EB5A5",
+        "copySha256": "DDF6FA014DD3C52C58496E1B5C5076BC9DE60329065FDCDE3CB44494D87EB5A5",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/BladeContactTests.cs",
+        "sha256": "8F345335B32037389897BE2C44FFD6148E49BCD668280A8516057448A8DF0DD2",
+        "copySha256": "8F345335B32037389897BE2C44FFD6148E49BCD668280A8516057448A8DF0DD2",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/BladeContactTests.cs.meta",
+        "sha256": "286AA9F6A14085AE6051A1AD06BC5A1D3F414A14B774D3DAC17030A4299C4A90",
+        "copySha256": "286AA9F6A14085AE6051A1AD06BC5A1D3F414A14B774D3DAC17030A4299C4A90",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/CombatFeelSceneTests.cs",
+        "sha256": "831D1F7E4918F90DE518CCD18EAD72970F84488C0197FFE8D5F5CC2FD6ABCED6",
+        "copySha256": "831D1F7E4918F90DE518CCD18EAD72970F84488C0197FFE8D5F5CC2FD6ABCED6",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/CombatFeelSceneTests.cs.meta",
+        "sha256": "2F50ED6D099424618ECEA1E4B8521B0470583A79CA7A9031C1FA4B8FE7C9209F",
+        "copySha256": "2F50ED6D099424618ECEA1E4B8521B0470583A79CA7A9031C1FA4B8FE7C9209F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/CombatPresentationTests.cs",
+        "sha256": "FBFF27FEBCACF8B1888303B19C00FC556686CD0EEDCD8C7F40753F942F2D20BD",
+        "copySha256": "FBFF27FEBCACF8B1888303B19C00FC556686CD0EEDCD8C7F40753F942F2D20BD",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/CombatPresentationTests.cs.meta",
+        "sha256": "3D9035C613312B3FA571D19021DC73E283FDC39A9AB4A1E33B22621E86E11F9E",
+        "copySha256": "3D9035C613312B3FA571D19021DC73E283FDC39A9AB4A1E33B22621E86E11F9E",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/CombatSceneTests.cs",
+        "sha256": "1C371EDB9E77181E5BBAF9BFFCEB026FAE22A7A2CA4D03BAD1E88AF2889FC4BE",
+        "copySha256": "1C371EDB9E77181E5BBAF9BFFCEB026FAE22A7A2CA4D03BAD1E88AF2889FC4BE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/CombatSceneTests.cs.meta",
+        "sha256": "DFF39720035881C453671C4075566C5DB621BE50736816A4E764E4C828F62A59",
+        "copySha256": "DFF39720035881C453671C4075566C5DB621BE50736816A4E764E4C828F62A59",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/DirectionalMotionTests.cs",
+        "sha256": "CAA4D31C60EBC52745B0674E6F051BC36E798894332C0BAB6C9C0847CA8AD970",
+        "copySha256": "CAA4D31C60EBC52745B0674E6F051BC36E798894332C0BAB6C9C0847CA8AD970",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/DirectionalMotionTests.cs.meta",
+        "sha256": "F69EA823B7EBD09D2909CECAB73A00814D2487536690B3B1ADFBBEC2C5DA2ADB",
+        "copySha256": "F69EA823B7EBD09D2909CECAB73A00814D2487536690B3B1ADFBBEC2C5DA2ADB",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/InventoryFlowTests.cs",
+        "sha256": "367D35DD537BDE27A0E719D59AA33C80C30A7FFB0FA0019F354272EAC35581C1",
+        "copySha256": "367D35DD537BDE27A0E719D59AA33C80C30A7FFB0FA0019F354272EAC35581C1",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/InventoryFlowTests.cs.meta",
+        "sha256": "3057CDF19C10C2B1CF9DAC048A7E633830734E6AB57A4E925BFCAA87751D6926",
+        "copySha256": "3057CDF19C10C2B1CF9DAC048A7E633830734E6AB57A4E925BFCAA87751D6926",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/Milkfrog.CombatDemo.PlayTests.asmdef",
+        "sha256": "C74E069638BD661D4F5670DC06544301A0CDB878CB1594D2CD388291EDF6657B",
+        "copySha256": "C74E069638BD661D4F5670DC06544301A0CDB878CB1594D2CD388291EDF6657B",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/Milkfrog.CombatDemo.PlayTests.asmdef.meta",
+        "sha256": "F58665FFCBCB8F2647E94808E5F388118D45311A1ECEA454B96206F2DD2E4610",
+        "copySha256": "F58665FFCBCB8F2647E94808E5F388118D45311A1ECEA454B96206F2DD2E4610",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/MvpBossCombatTests.cs",
+        "sha256": "5ED1A8A2D301F74D450292BA92C7E29BDF29BA6BB8187B165B2695268667B230",
+        "copySha256": "5ED1A8A2D301F74D450292BA92C7E29BDF29BA6BB8187B165B2695268667B230",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/MvpBossCombatTests.cs.meta",
+        "sha256": "FC2A5A01311284297B9B12A23662E9C974DF45C115A2BF0D4B68E8B0703E39A2",
+        "copySha256": "FC2A5A01311284297B9B12A23662E9C974DF45C115A2BF0D4B68E8B0703E39A2",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/MvpFlowTests.cs",
+        "sha256": "030AA1E138F407DC1F230800DE1A84DCD58FA5299AB30E25E1D6B80CDE3F156D",
+        "copySha256": "030AA1E138F407DC1F230800DE1A84DCD58FA5299AB30E25E1D6B80CDE3F156D",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/MvpFlowTests.cs.meta",
+        "sha256": "D8763CFC209BB49528C3831863AF88988725587579503F566E9A10A487BC4117",
+        "copySha256": "D8763CFC209BB49528C3831863AF88988725587579503F566E9A10A487BC4117",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/PhaseThreeTests.cs",
+        "sha256": "DA302CA6D1EC27035BFC8D733724589DE779B5583F225525B3ED3B35AF3B1ACE",
+        "copySha256": "DA302CA6D1EC27035BFC8D733724589DE779B5583F225525B3ED3B35AF3B1ACE",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/PhaseThreeTests.cs.meta",
+        "sha256": "D4A9EED567BDB17B5A6AC77A1112A56CBC1FA36339C464FFA6792E580E6C8AE2",
+        "copySha256": "D4A9EED567BDB17B5A6AC77A1112A56CBC1FA36339C464FFA6792E580E6C8AE2",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/QuestFlowTests.cs",
+        "sha256": "4510C568C7A0EF1165E3BFDB2EA79413AF0DC4A36B691BE1A7CDCFE5D9C97F2E",
+        "copySha256": "4510C568C7A0EF1165E3BFDB2EA79413AF0DC4A36B691BE1A7CDCFE5D9C97F2E",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/QuestFlowTests.cs.meta",
+        "sha256": "138A59DBB03BE5BF59BA7864E4192B541C108153D0290DA48C5663E1769B6EFB",
+        "copySha256": "138A59DBB03BE5BF59BA7864E4192B541C108153D0290DA48C5663E1769B6EFB",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/QuickConsumableFlowTests.cs",
+        "sha256": "43309989B5F1880965045C28C32521558C14191914ED679039CE437680CA3618",
+        "copySha256": "43309989B5F1880965045C28C32521558C14191914ED679039CE437680CA3618",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/Tests/PlayMode/QuickConsumableFlowTests.cs.meta",
+        "sha256": "6DB47AA705B2F9A74C5D1CD81516D980EA3C5415C4E826A3F809A2015266E78A",
+        "copySha256": "6DB47AA705B2F9A74C5D1CD81516D980EA3C5415C4E826A3F809A2015266E78A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/attack-tonic.png",
+        "sha256": "12CD8A0084A8951D069CBCF68EE0044D73BF6E9FAAD009F36AD2B8340F42EB01",
+        "copySha256": "12CD8A0084A8951D069CBCF68EE0044D73BF6E9FAAD009F36AD2B8340F42EB01",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/attack-tonic.png.meta",
+        "sha256": "D06B33ED5CE17573E6A9682951D11D4A9672DEB8F8E0E12F017A7685B15B57EC",
+        "copySha256": "D06B33ED5CE17573E6A9682951D11D4A9672DEB8F8E0E12F017A7685B15B57EC",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/calming-pill.png",
+        "sha256": "926B73BEA10435B96C2D481947F57ED0DCA57D4BB33E13175D5CAFAD6E744B2A",
+        "copySha256": "926B73BEA10435B96C2D481947F57ED0DCA57D4BB33E13175D5CAFAD6E744B2A",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/calming-pill.png.meta",
+        "sha256": "7B2FB786C92E69888AFE8162BDB9A398A5E2A3412972C018399F3CE64E4A532F",
+        "copySha256": "7B2FB786C92E69888AFE8162BDB9A398A5E2A3412972C018399F3CE64E4A532F",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/guardian-key.png",
+        "sha256": "AAA072EAF19B50D90EA17AB040EDF5989CF26FF04543A8D8E4E2C1140146ECC0",
+        "copySha256": "AAA072EAF19B50D90EA17AB040EDF5989CF26FF04543A8D8E4E2C1140146ECC0",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/guardian-key.png.meta",
+        "sha256": "96D18127F216AE305C605C340092FEF4BADF5BBB1FA7F971E37E306BB430C856",
+        "copySha256": "96D18127F216AE305C605C340092FEF4BADF5BBB1FA7F971E37E306BB430C856",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/healing-medicine.png",
+        "sha256": "DD506C996CAB9219062A6B6A343A619CA79DCFD4A874CE4E5E48968AD7D4C804",
+        "copySha256": "DD506C996CAB9219062A6B6A343A619CA79DCFD4A874CE4E5E48968AD7D4C804",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/healing-medicine.png.meta",
+        "sha256": "1659FF638B4AC8F7A8248E1DDC7AB5DA71382E90F5835B701822F78A7CE1B1AF",
+        "copySha256": "1659FF638B4AC8F7A8248E1DDC7AB5DA71382E90F5835B701822F78A7CE1B1AF",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/InventoryView.prefab",
+        "sha256": "1A2529E624413F70FBABFDEC043EA4EC91A9240750BC5FBBF9269FF3A87D4F20",
+        "copySha256": "1A2529E624413F70FBABFDEC043EA4EC91A9240750BC5FBBF9269FF3A87D4F20",
+        "matches": true
+      },
+      {
+        "path": "Assets/CombatDemo/UI/Inventory/InventoryView.prefab.meta",
+        "sha256": "77C48E3DB7C3F92754E5EFAA6D35526D0A8DE6F5EB1D5D9F48979B1083C98FD4",
+        "copySha256": "77C48E3DB7C3F92754E5EFAA6D35526D0A8DE6F5EB1D5D9F48979B1083C98FD4",
+        "matches": true
+      }
+    ]
+  },
+  "build": {
+    "path": "Builds/MilkfrogMVP-QuickConsumables/MilkfrogMVP.exe",
+    "exeSha256": "6833A3B986DA4ACF7EF8B009BAE7136A01BE3734071D9DDC57B3DD115830536A",
+    "packedAssemblySha256": "A1B199722C8AA7EF81B625B70A2FE000DD2156E2D634CD2231E07E13059EE4C9",
+    "compiledAssemblySha256": "A1B199722C8AA7EF81B625B70A2FE000DD2156E2D634CD2231E07E13059EE4C9",
+    "matches": true,
+    "exitCode": 0
+  },
+  "screenshots": [
+    {
+      "file": "00.png",
+      "sha256": "8CD52C437A658C65CEA35AE793F9F524BC0AFC141B68434C54F8C5B8F9D163F9"
+    },
+    {
+      "file": "01.png",
+      "sha256": "E71AF61273B18C6D3E564CB4A99A5BB0A232C32F3BC507965A12E225FA5D86BF"
+    },
+    {
+      "file": "02.png",
+      "sha256": "912C06AB2627867F2846A166248A701CB8AFE7B09790A47BFA4BC2FEC1C72B74"
+    },
+    {
+      "file": "03.png",
+      "sha256": "A17DFEA2C4FE2E1947B07768AD32E074C13C4B22B5FC60A418B94977C10DE3A6"
+    },
+    {
+      "file": "04.png",
+      "sha256": "2E5587F893B48B10D615010E145A3B7B02682D5C3549D1FBA769E10021F56A64"
+    },
+    {
+      "file": "05.png",
+      "sha256": "47C2BC49CD6EACA560D47C53EBC9125C5D53E4A2F604420B4424A6D2B3A0F65C"
+    },
+    {
+      "file": "06.png",
+      "sha256": "3642E026007C453017EDFE856CF208FB39826274600F6ABF9ED03B0F3ACD33DA"
+    },
+    {
+      "file": "07.png",
+      "sha256": "6E6CB721C98B62BD713EB71A24292581DFA0F6C0B069CC1A341A5A504199C8AF"
+    },
+    {
+      "file": "08.png",
+      "sha256": "7CBF498A17770E56C52CD29BC46753CD68F19ACD4E7BBE840C24B33313EF02A6"
+    },
+    {
+      "file": "09.png",
+      "sha256": "C210C518F91F2BF0F3DB9D057DEC26C12A354FF8ABC60EAE080F1509501D2A3C"
+    }
+  ]
+}

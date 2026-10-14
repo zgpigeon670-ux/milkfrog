@@ -41,10 +41,17 @@ namespace Milkfrog.CombatDemo.Editor
             if (trace == null) { trace = ScriptableObject.CreateInstance<CombatBladeTrace>(); AssetDatabase.CreateAsset(trace,path); }
             var model = presentation.animator;
             var profile = presentation.profile;
-            var hand = model.GetBoneTransform(HumanBodyBones.RightHand);
-            var sword = hand.Find("Training Sword");
-            if (sword == null) throw new InvalidOperationException("Missing right-hand Training Sword.");
-            var blade = sword.Find("Blade");
+            Transform blade = null;
+            bool explicitEndpoints = presentation.bladeRoot != null && presentation.bladeTip != null;
+            if (!explicitEndpoints)
+            {
+                if (!model.isHuman) throw new InvalidOperationException("Generic rigs require bladeRoot and bladeTip.");
+                var hand = model.GetBoneTransform(HumanBodyBones.RightHand);
+                var sword = hand != null ? hand.Find("Training Sword") : null;
+                if (sword == null) throw new InvalidOperationException("Missing right-hand Training Sword.");
+                blade = sword.Find("Blade");
+                if (blade == null) throw new InvalidOperationException("Missing Training Sword/Blade.");
+            }
             Vector3 position = model.transform.localPosition; Quaternion rotation = model.transform.localRotation;
             model.cullingMode = AnimatorCullingMode.AlwaysAnimate; model.applyRootMotion = false; model.Rebind();
             var graph = PlayableGraph.Create("Bake blade trajectory"); graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
@@ -64,11 +71,11 @@ namespace Milkfrog.CombatDemo.Editor
                     clip.SetTime(Mathf.Lerp(trace.bakedStart,trace.bakedEnd,progress)*attack.length); graph.Evaluate(0);
                     model.transform.localPosition=position; model.transform.localRotation=rotation;
                     trace.poses[i] = new BladePose {
-                        root=presentation.actor.transform.InverseTransformPoint(blade.TransformPoint(Vector3.down*.5f)),
-                        tip=presentation.actor.transform.InverseTransformPoint(blade.TransformPoint(Vector3.up*.5f)) };
+                        root=presentation.actor.transform.InverseTransformPoint(explicitEndpoints ? presentation.bladeRoot.position : blade.TransformPoint(Vector3.down*.5f)),
+                        tip=presentation.actor.transform.InverseTransformPoint(explicitEndpoints ? presentation.bladeTip.position : blade.TransformPoint(Vector3.up*.5f)) };
                     report.AppendLine(progress.ToString("F4") + "," + trace.poses[i].root.ToString("F4") + "," + trace.poses[i].tip.ToString("F4"));
                 }
-                Directory.CreateDirectory("Evidence"); File.WriteAllText("Evidence/blade-trajectory.txt",report.ToString());
+                Directory.CreateDirectory("Evidence"); File.WriteAllText("Evidence/" + trace.name + "-trajectory.txt",report.ToString());
                 EditorUtility.SetDirty(trace);
             }
             finally

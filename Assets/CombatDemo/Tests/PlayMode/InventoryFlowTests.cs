@@ -97,7 +97,7 @@ namespace Milkfrog.CombatDemo.Tests
         }
         [UnityTest] public IEnumerator QuantityRefreshReusesTilesAndKeepsUsableButtonFocus()
         {
-            PrepareMedicine(); world.Flow.OpenInventory(); yield return null; yield return null;
+            PrepareMedicine(); world.Flow.OpenInventory(); world.Flow.inventoryView.SetCategory(2); yield return null; yield return null;
             var view=world.Flow.inventoryView;
             var tile=view.content.GetComponentsInChildren<InventoryTile>().Single();
             EventSystem.current.SetSelectedGameObject(view.useButton.gameObject);
@@ -111,7 +111,7 @@ namespace Milkfrog.CombatDemo.Tests
             world.player.Core.RestoreVitals(20,0); Assert.That(world.TryUseItem("healing-medicine"),Is.True);
             yield return null; yield return null;
             Assert.That(view.content.GetComponentsInChildren<InventoryTile>().Length,Is.Zero);
-            Assert.That(EventSystem.current.currentSelectedGameObject,Is.EqualTo(view.categoryButtons[0].gameObject));
+            Assert.That(EventSystem.current.currentSelectedGameObject,Is.EqualTo(view.categoryButtons[2].gameObject));
         }
         [UnityTest] public IEnumerator MissingInventoryReferencesLeaveFlowResumable()
         {
@@ -172,7 +172,7 @@ namespace Milkfrog.CombatDemo.Tests
         }
         [UnityTest] public IEnumerator UseClampsVitalsAndEmptyCountsDisappearFromGrid()
         {
-            PrepareMedicine(); world.Flow.OpenInventory(); var view=world.Flow.inventoryView;
+            PrepareMedicine(); world.Flow.OpenInventory(); var view=world.Flow.inventoryView; view.SetCategory(2);
             Assert.That(world.TryUseItem("healing-medicine"),Is.True); Assert.That(world.player.Core.Health,Is.EqualTo(60));
             Assert.That(world.TryUseItem("healing-medicine"),Is.True); Assert.That(world.player.Core.Health,Is.EqualTo(100));
             Assert.That(world.TryUseItem("healing-medicine"),Is.False); Assert.That(world.Inventory.Quantity("healing-medicine"),Is.EqualTo(1));
@@ -226,7 +226,7 @@ namespace Milkfrog.CombatDemo.Tests
         [UnityTest] public IEnumerator KeyIsShownAndOpeningGateDoesNotConsumeIt()
         {
             var key=UnityEngine.Object.FindObjectsByType<WorldInteractable>().First(x=>x.kind==WorldInteractionKind.KeyPickup);
-            Focus(key); Assert.That(world.Interactions.TryInteract(),Is.True); world.Flow.OpenInventory(); world.Flow.inventoryView.SetCategory(2); yield return null;
+            Focus(key); Assert.That(world.Interactions.TryInteract(),Is.True); world.Flow.OpenInventory(); world.Flow.inventoryView.SetCategory(3); yield return null;
             Assert.That(world.Inventory.Quantity(WorldStateService.KeyItemId),Is.EqualTo(1)); Assert.That(world.Flow.inventoryView.itemName.text,Is.EqualTo("守门钥匙"));
             Assert.That(world.TryUseItem(WorldStateService.KeyItemId),Is.False); world.Flow.CloseInventory();
             var camp=world.FindBonfire(BonfireCheckpoint.BossApproachId); Focus(camp); Assert.That(world.Interactions.TryInteract(),Is.True); world.Flow.TogglePause();
@@ -259,7 +259,7 @@ namespace Milkfrog.CombatDemo.Tests
             Focus(world.FindBonfire(BonfireCheckpoint.StartId)); Assert.That(world.Interactions.TryInteract(),Is.True);
             world.Flow.OpenInventory(); world.Flow.CloseInventory(); Assert.That(world.Flow.ActiveBonfire,Is.Not.Null); Assert.That(world.Flow.Paused,Is.True); yield return null;
         }
-        [UnityTest] public IEnumerator MenuMouseClickCannotAttackAfterClosingAndBAndEscapeAreBound()
+        [UnityTest] public IEnumerator MenuMouseClickCannotAttackAfterClosingAndTabAndEscapeAreBound()
         {
             var previousBackground=InputSystem.settings.backgroundBehavior;
             InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
@@ -274,13 +274,25 @@ namespace Milkfrog.CombatDemo.Tests
             try
             {
                 DispatchKeyboard(keyboard,new KeyboardState(Key.B));
-                Assert.That(world.Flow.InventoryOpen,Is.True,$"B pressed={input.InventoryPressed}, raw={keyboard.bKey.isPressed}, device={keyboard.enabled}, value={map["Inventory"].ReadValue<float>()}, phase={map["Inventory"].phase}, pause={input.PausePressed}, enabled={map.enabled}, state={world.Flow.State}");
+                Assert.That(world.Flow.InventoryOpen,Is.False,"The old B binding must no longer open inventory");
+                DispatchKeyboard(keyboard,new KeyboardState());
+                DispatchKeyboard(keyboard,new KeyboardState(Key.Tab));
+                Assert.That(world.Flow.InventoryOpen,Is.True,$"Tab pressed={input.InventoryPressed}, raw={keyboard.tabKey.isPressed}, device={keyboard.enabled}, value={map["Inventory"].ReadValue<float>()}, phase={map["Inventory"].phase}, pause={input.PausePressed}, enabled={map.enabled}, state={world.Flow.State}");
+                Assert.That(input.Snapshot.lockPressed,Is.False,"MVP Tab must not toggle the middle-mouse target lock");
+                DispatchKeyboard(keyboard,new KeyboardState(Key.Tab));
+                Assert.That(world.Flow.InventoryOpen,Is.True,"Holding Tab must not repeatedly toggle inventory");
+                DispatchKeyboard(keyboard,new KeyboardState());
+                DispatchKeyboard(keyboard,new KeyboardState(Key.Tab));
+                Assert.That(world.Flow.InventoryOpen,Is.False,"Tab also closes inventory");
+                DispatchKeyboard(keyboard,new KeyboardState());
+                DispatchKeyboard(keyboard,new KeyboardState(Key.Tab));
+                Assert.That(world.Flow.InventoryOpen,Is.True);
                 DispatchKeyboard(keyboard,new KeyboardState());
                 InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left,true)); InputSystem.Update();
                 int before=world.player.Core.AttackId; world.Flow.CloseInventory();
                 world.SubmitInput(new CombatInputFrame{attackHeld=true,attackPressed=true});
                 Assert.That(world.player.Core.AttackId,Is.EqualTo(before));
-                InputSystem.QueueStateEvent(mouse,new MouseState()); DispatchKeyboard(keyboard,new KeyboardState(Key.B));
+                InputSystem.QueueStateEvent(mouse,new MouseState()); DispatchKeyboard(keyboard,new KeyboardState(Key.Tab));
                 Assert.That(world.Flow.InventoryOpen,Is.True);
                 DispatchKeyboard(keyboard,new KeyboardState(Key.Escape));
                 Assert.That(world.Flow.InventoryOpen,Is.False); Assert.That(world.Running,Is.True);
@@ -320,7 +332,7 @@ namespace Milkfrog.CombatDemo.Tests
             for(int i=0;i<40;i++)world.Inventory.TryAdd("future-item-"+i.ToString("00"),1);
             world.Flow.OpenInventory(); yield return null; yield return null;
             var view=world.Flow.inventoryView; Canvas.ForceUpdateCanvases();
-            Assert.That(view.content.GetComponentsInChildren<InventoryTile>().Length,Is.EqualTo(40));
+            Assert.That(view.content.GetComponentsInChildren<InventoryTile>().Length,Is.EqualTo(41));
             Assert.That(view.content.rect.height,Is.GreaterThan(view.scroll.viewport.rect.height));
             var last=view.content.GetComponentsInChildren<InventoryTile>().Last(); EventSystem.current.SetSelectedGameObject(last.gameObject);
             Assert.That(view.scroll.verticalNormalizedPosition,Is.LessThan(.1f));

@@ -26,6 +26,7 @@ namespace Milkfrog.CombatDemo
         GUIStyle perilousWarningStyle;
         GUIStyle perilousHintStyle;
         GUIStyle resourceStyle;
+        GUIStyle quickItemStyle;
         GUIStyle bonfirePromptStyle;
         GUIStyle objectiveStyle;
         Font perilousFont;
@@ -83,6 +84,7 @@ namespace Milkfrog.CombatDemo
                 DrawSystemMessage(width);
                 DrawBoss(width);
                 DrawPlayerBars(width, height);
+                DrawQuickItem(width, height);
                 DrawBonfirePrompt(width, height);
                 if (!string.IsNullOrEmpty(data.objective))
                 {
@@ -130,6 +132,7 @@ namespace Milkfrog.CombatDemo
 
             perilousFont = Resources.Load<Font>("NotoSansSC-VF");
             resourceStyle = Style(15, Text, TextAnchor.MiddleLeft);
+            quickItemStyle = Style(18, Text, TextAnchor.MiddleCenter); quickItemStyle.font = perilousFont;
             bonfirePromptStyle = Style(22, Text, TextAnchor.MiddleCenter);
             bonfirePromptStyle.font = perilousFont;
             objectiveStyle = new GUIStyle(bonfirePromptStyle) { fontSize = 19, alignment = TextAnchor.UpperRight, wordWrap = true };
@@ -235,6 +238,32 @@ namespace Milkfrog.CombatDemo
             Rect rect = new Rect(center - 270f, height - 218f, 540f, 36f);
             Fill(new Rect(rect.x, rect.y + 2f, rect.width, rect.height - 4f), new Color(.045f, .035f, .025f, .78f));
             GUI.Label(rect, data.bonfirePrompt, bonfirePromptStyle);
+        }
+        void DrawQuickItem(float width, float height)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                var rect = new Rect(width - 336 + i * 96, height - 170, 88, 122); Fill(rect,Ink);
+                Fill(new Rect(rect.x,rect.y,rect.width,2),i == data.activeQuickSlot ? Gold : Bronze);
+                var slot = data.quickSlots[i];
+                if (slot.icon != null)
+                {
+                    var sprite = slot.icon; var texture = sprite.texture; var uv = sprite.textureRect;
+                    GUI.DrawTextureWithTexCoords(new Rect(rect.x+24,rect.y+7,40,40),texture,new Rect(uv.x/texture.width,uv.y/texture.height,uv.width/texture.width,uv.height/texture.height));
+                }
+                GUI.Label(new Rect(rect.x,rect.y+49,88,26),string.IsNullOrEmpty(slot.id)?"空槽":slot.name??"配置缺失",quickItemStyle);
+                GUI.Label(new Rect(rect.x,rect.y+77,88,26),$"{i+1}   ×{slot.count}",quickItemStyle);
+                if(i == data.activeQuickSlot) GUI.Label(new Rect(rect.x,rect.y+101,88,21),"Q 使用",quickItemStyle);
+                if(!string.IsNullOrEmpty(slot.id) && !slot.usable)Fill(rect,new Color(0,0,0,.22f));
+                var skill = new Rect(rect.x,height-225,88,46); Fill(skill,new Color(.08f,.08f,.09f,.80f));
+                GUI.Label(skill,$"技能 {i+1}\n未开放",quickItemStyle);
+            }
+            if (data.attackBuffRemaining > 0)
+            {
+                var buff = new Rect(width - 336,height - 278,280,43); Fill(buff,Ink);
+                GUI.Label(new Rect(buff.x,buff.y,280,28),$"生命伤害 +{(data.attackBuffMultiplier-1)*100:0}%  {Mathf.CeilToInt(data.attackBuffRemaining)}秒",quickItemStyle);
+                DrawThinBar(new Rect(buff.x+8,buff.y+33,buff.width-16,4),Ratio(data.attackBuffRemaining,data.attackBuffDuration),Gold);
+            }
         }
 
         void DrawReticle(float width, float height)
@@ -395,6 +424,13 @@ namespace Milkfrog.CombatDemo
         public int resolve;
         public int power;
         public float attackMultiplier = 1f;
+        public string quickItemId = "", quickItemName;
+        public Sprite quickItemIcon;
+        public int quickItemCount;
+        public bool quickItemUsable;
+        public int activeQuickSlot;
+        public QuickSlotHudData[] quickSlots = { new QuickSlotHudData(), new QuickSlotHudData(), new QuickSlotHudData() };
+        public float attackBuffMultiplier = 1, attackBuffRemaining, attackBuffDuration;
         public string objective;
         public string bonfirePrompt = string.Empty;
         public float charge;
@@ -413,6 +449,7 @@ namespace Milkfrog.CombatDemo
         public MvpEnemyBar[] enemies = Array.Empty<MvpEnemyBar>();
     }
 
+    public sealed class QuickSlotHudData { public string id = "", name; public Sprite icon; public int count; public bool usable; }
     public struct MvpEnemyBar
     {
         public string name;

@@ -81,17 +81,18 @@ namespace Milkfrog.CombatDemo.Tests
             source.questProgress.completedSteps = new[] {"find-key","open-gate"};
             Directory.CreateDirectory(directory); File.WriteAllText(Path.Combine(directory,"save.json"),JsonUtility.ToJson(source));
             var store = new SaveService(directory); Assert.That(store.TryLoad(out var loaded),Is.True,store.LastMessage);
-            Assert.That(loaded.version,Is.EqualTo(4)); Assert.That(loaded.health,Is.EqualTo(61));
+            Assert.That(loaded.version,Is.EqualTo(SaveService.CurrentVersion)); Assert.That(loaded.health,Is.EqualTo(61));
             Assert.That(loaded.worldState.openedDoors,Does.Contain(WorldStateService.GateId));
-            Assert.That(loaded.inventory.entries,Has.Length.EqualTo(1)); Assert.That(loaded.inventory.entries[0].quantity,Is.EqualTo(1));
+            Assert.That(loaded.inventory.entries,Has.Length.EqualTo(2)); Assert.That(loaded.inventory.entries[0].quantity,Is.EqualTo(1));
             if(version==3) { Assert.That(loaded.experience,Is.EqualTo(37)); Assert.That(loaded.questProgress.completedSteps,Is.EqualTo(source.questProgress.completedSteps)); }
             Assert.That(store.TrySave(loaded),Is.True); Assert.That(store.TryLoad(out loaded),Is.True);
-            Assert.That(loaded.inventory.entries,Has.Length.EqualTo(1)); Assert.That(loaded.inventory.entries[0].quantity,Is.EqualTo(1));
+            Assert.That(loaded.inventory.entries,Has.Length.EqualTo(2)); Assert.That(loaded.inventory.entries[0].quantity,Is.EqualTo(1));
         }
         [Test] public void LegacyWithoutKeyDoesNotReceiveFreeItems()
         {
             Directory.CreateDirectory(directory); File.WriteAllText(Path.Combine(directory,"save.json"),JsonUtility.ToJson(new PlayerSnapshot{version=3}));
-            Assert.That(new SaveService(directory).TryLoad(out var loaded),Is.True); Assert.That(loaded.inventory.entries,Is.Empty);
+            Assert.That(new SaveService(directory).TryLoad(out var loaded),Is.True); Assert.That(loaded.inventory.entries,Has.Length.EqualTo(1));
+            Assert.That(loaded.inventory.entries[0].itemId,Is.EqualTo(EquipmentService.DefaultWeaponId));
         }
         [TestCase(0)] [TestCase(-1)] public void InvalidSavedQuantitiesAreRejected(int count)
         {

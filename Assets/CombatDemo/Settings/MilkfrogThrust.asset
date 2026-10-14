@@ -26,7 +26,9 @@ MonoBehaviour:
     maxBlock: 35
     deflectPosture: 30
     cancelWindow: 0.14
+    CanComboFrom: 0
+    comboWindow: 0.18
   clip: {fileID: -1971729724006054521, guid: 3d37cc9d3e8361644ad876ca8759933b, type: 3}
   activeStart: 0.18181817
   activeEnd: 0.36363634
-  trace: {fileID: 11400000, guid: f49fbc48d534ab346bde7d49c1c0c116, type: 2}
+  trace: {fileID: 11400000, guid: 579a2de2ca4038245b82087b9bf02340, type: 2}
