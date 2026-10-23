@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="660" viewBox="0 0 1440 660">
+<rect width="1440" height="660" fill="#0e1a24"/>
+<text x="40" y="60" fill="#e0e9eb" font-size="34" font-family="Microsoft YaHei,sans-serif">模块与接口 / SIMPLE TILED MODEL</text>
+<text x="40" y="103" fill="#91a6b2" font-size="20" font-family="Microsoft YaHei,sans-serif">N=1 · E=2 · S=4 · W=8；每个开口须与相邻格的反向开口一致。</text>
+<rect x="45" y="190" width="150" height="150" fill="#233744"/>
+<text x="45" y="393" fill="#e0e9eb" font-size="25" font-family="Microsoft YaHei,sans-serif">空格</text>
+<text x="45" y="427" fill="#91a6b2" font-size="18" font-family="Microsoft YaHei,sans-serif">接口掩码 0</text>
+<rect x="275" y="190" width="150" height="150" fill="#233744"/>
+<rect x="332" y="247" width="36" height="36" fill="#c1ced0"/>
+<rect x="332" y="190" width="36" height="75" fill="#c1ced0"/>
+<rect x="332" y="265" width="36" height="75" fill="#c1ced0"/>
+<text x="275" y="393" fill="#e0e9eb" font-size="25" font-family="Microsoft YaHei,sans-serif">直道</text>
+<text x="275" y="427" fill="#91a6b2" font-size="18" font-family="Microsoft YaHei,sans-serif">接口掩码 5</text>
+<rect x="505" y="190" width="150" height="150" fill="#233744"/>
+<rect x="562" y="247" width="36" height="36" fill="#c1ced0"/>
+<rect x="562" y="190" width="36" height="75" fill="#c1ced0"/>
+<rect x="580" y="247" width="75" height="36" fill="#c1ced0"/>
+<text x="505" y="393" fill="#e0e9eb" font-size="25" font-family="Microsoft YaHei,sans-serif">转角</text>
+<text x="505" y="427" fill="#91a6b2" font-size="18" font-family="Microsoft YaHei,sans-serif">接口掩码 3</text>
+<rect x="735" y="190" width="150" height="150" fill="#233744"/>
+<rect x="792" y="247" width="36" height="36" fill="#c1ced0"/>
+<rect x="792" y="190" width="36" height="75" fill="#c1ced0"/>
+<rect x="810" y="247" width="75" height="36" fill="#c1ced0"/>
+<rect x="792" y="265" width="36" height="75" fill="#c1ced0"/>
+<text x="735" y="393" fill="#e0e9eb" font-size="25" font-family="Microsoft YaHei,sans-serif">丁字</text>
+<text x="735" y="427" fill="#91a6b2" font-size="18" font-family="Microsoft YaHei,sans-serif">接口掩码 7</text>
+<rect x="965" y="190" width="150" height="150" fill="#233744"/>
+<rect x="1022" y="247" width="36" height="36" fill="#c1ced0"/>
+<rect x="1022" y="190" width="36" height="75" fill="#c1ced0"/>
+<rect x="1040" y="247" width="75" height="36" fill="#c1ced0"/>
+<rect x="1022" y="265" width="36" height="75" fill="#c1ced0"/>
+<rect x="965" y="247" width="75" height="36" fill="#c1ced0"/>
+<text x="965" y="393" fill="#e0e9eb" font-size="25" font-family="Microsoft YaHei,sans-serif">十字</text>
+<text x="965" y="427" fill="#91a6b2" font-size="18" font-family="Microsoft YaHei,sans-serif">接口掩码 15</text>
+<rect x="1195" y="190" width="150" height="150" fill="#233744"/>
+<rect x="1252" y="247" width="36" height="36" fill="#c1ced0"/>
+<rect x="1252" y="190" width="36" height="75" fill="#c1ced0"/>
+<text x="1195" y="393" fill="#e0e9eb" font-size="25" font-family="Microsoft YaHei,sans-serif">尽端</text>
+<text x="1195" y="427" fill="#91a6b2" font-size="18" font-family="Microsoft YaHei,sans-serif">接口掩码 1</text>
+<text x="45" y="529" fill="#e0e9eb" font-size="24" font-family="Microsoft YaHei,sans-serif">走廊：3 m 净宽；房间：8×8 m；墙高：3 m；默认网格：10×10。</text>
+<text x="45" y="572" fill="#e0e9eb" font-size="22" font-family="Microsoft YaHei,sans-serif">5 类走廊原型旋转去重 = 15 种状态；同接口的房间状态 15 种；加 1 种空格，共 31 种。</text>
+</svg>

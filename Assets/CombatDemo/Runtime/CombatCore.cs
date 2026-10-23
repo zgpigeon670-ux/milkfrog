@@ -91,6 +91,7 @@ namespace Milkfrog.CombatDemo
         public event Action<float, float> DodgeInterval;
         // AI may select a parry opportunity, but cannot bypass the shared facing/Guard checks.
         public Func<bool> DeflectPolicy;
+        readonly System.Collections.Generic.Dictionary<int, HashSet<CombatCore>> hitGroups = new System.Collections.Generic.Dictionary<int, HashSet<CombatCore>>();
         readonly HashSet<CombatCore> hitTargets = new HashSet<CombatCore>();
         bool guardHeld, attackHeld;
         float sinceInteraction;
@@ -108,7 +109,7 @@ namespace Milkfrog.CombatDemo
             chargeElapsed=ReleasedCharge=0;
             ComboRemaining=0;
             ActiveAttack=lightDefinition!=null?lightDefinition.Snapshot(0):AttackSnapshot.Light(Tuning);
-            hitTargets.Clear();
+            hitTargets.Clear(); hitGroups.Clear();
             Health = Tuning.maxHealth;
             Posture = 0;
             Change(CombatState.Neutral);
@@ -203,7 +204,7 @@ namespace Milkfrog.CombatDemo
         void BeginAttack(AttackSnapshot attack,float credit)
         {
             ActiveAttack=attack.ScaledOffense(OffensiveMultiplier).ScaledHealthDamage(AttackBuffMultiplier * WeaponDamageMultiplier);
-            hitTargets.Clear();
+            hitTargets.Clear(); hitGroups.Clear();
             AttackId++;
             Change(CombatState.AttackStartup,attack.Startup);
             Remaining=Math.Max(0,Remaining-credit);
@@ -321,7 +322,7 @@ namespace Milkfrog.CombatDemo
             Remaining = Math.Max(0, duration);
             StateDuration = Remaining;
             DeflectRemaining = 0;
-            if (next != CombatState.AttackActive && next != CombatState.AttackStartup) hitTargets.Clear();
+            if (next != CombatState.AttackActive && next != CombatState.AttackStartup) { hitTargets.Clear(); hitGroups.Clear(); }
             if (previous == CombatState.AttackRecovery && (next == CombatState.Neutral || next == CombatState.Guard) && lightDefinition != null && lightDefinition.CanComboFrom && ActiveAttack.Kind == AttackKind.Light)
                 ComboRemaining = Math.Max(0, lightDefinition.comboWindow);
             else if (next != CombatState.Neutral && next != CombatState.Guard) ComboRemaining = 0;
@@ -329,10 +330,13 @@ namespace Milkfrog.CombatDemo
             if (previous != next) StateChanged?.Invoke(previous, next);
         }
 
-        public HitResult TryHit(CombatCore defender, bool defenderFacingAttacker)
+        public HitResult TryHit(CombatCore defender, bool defenderFacingAttacker, int hitGroup = 0)
         {
+            var targets = hitTargets;
+            if (hitGroup != 0 && !hitGroups.TryGetValue(hitGroup, out targets))
+                hitGroups[hitGroup] = targets = new HashSet<CombatCore>();
             if (State != CombatState.AttackActive || defender == null || defender == this ||
-                defender.State == CombatState.Dead || defender.IsInvulnerable || !hitTargets.Add(defender)) return HitResult.Ignore;
+                defender.State == CombatState.Dead || defender.IsInvulnerable || !targets.Add(defender)) return HitResult.Ignore;
             return ResolveHit(defender, defenderFacingAttacker);
         }
 

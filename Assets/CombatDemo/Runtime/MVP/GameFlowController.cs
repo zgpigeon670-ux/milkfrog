@@ -11,8 +11,12 @@ namespace Milkfrog.CombatDemo
         public bool mainMenu;
         public static string SaveDirectoryOverride;
         static PlayerSnapshot pending;
+        static int pendingReturnSlot = -1;
+        public bool IsTrial => world != null && world.bullTrial;
+        public bool CanStartTrial => !IsTrial && (mainMenu || (State == GameFlowState.Playing && (!Paused || pausedTrialEligible) && world.Director.State == EncounterState.Exploration && world.player.Core.State == CombatState.Neutral && world.feedback.Clock.Remaining <= 0));
         public GameFlowState State { get; private set; }
         bool paused;
+        bool pausedTrialEligible;
         public bool Paused
         {
             get => paused;
@@ -40,14 +44,17 @@ namespace Milkfrog.CombatDemo
                 for (int i = 0; i + 1 < args.Length; i++)
                     if (args[i] == "--mvp-save-dir") { SaveDirectoryOverride = args[i + 1]; break; }
             }
-            Store = new SaveService(SaveDirectoryOverride); menu = GetComponent<MvpMenuView>(); world = GetComponent<MvpWorld>();
+            menu = GetComponent<MvpMenuView>(); world = GetComponent<MvpWorld>();
+            Store = IsTrial ? SaveService.CreateMemory(BullTrialSession.Fresh()) : new SaveService(SaveDirectoryOverride);
             if (mainMenu) { State = GameFlowState.MainMenu; ShowHome(); }
             else
             {
                 State = GameFlowState.Playing;
-                PlayerSnapshot snapshot = pending; pending = null;
+                PlayerSnapshot snapshot = IsTrial ? BullTrialSession.Fresh() : pending; pending = null;
                 if (snapshot == null) Store.TryLoad(out snapshot);
-                world.Restore(snapshot); SetCursor(false); menu.Hide();
+                world.Restore(snapshot);
+                if (pendingReturnSlot >= 0 && !IsTrial) { world.Inventory.SelectQuickSlot(pendingReturnSlot); pendingReturnSlot = -1; }
+                SetCursor(false); menu.Hide();
                 if (snapshot == null) Save();
             }
         }
@@ -59,7 +66,23 @@ namespace Milkfrog.CombatDemo
         {
             SetCursor(true);
             menu.Show("MILKFROG", "A swordsman's trial\nExplore. Deflect. Survive.",
-                new MenuAction("Start Game / Continue", Continue), new MenuAction("New Game", NewGame), new MenuAction("Quit", Quit));
+                new MenuAction("Start Game / Continue", Continue), new MenuAction("New Game", NewGame), new MenuAction("黄牛试炼", StartBullTrial), new MenuAction("Quit", Quit));
+        }
+        public void StartBullTrial()
+        {
+            if (!CanStartTrial) return;
+            PlayerSnapshot source = null;
+            if (mainMenu) Store.TryLoad(out source); else source = world.Snapshot();
+            BullTrialSession.Begin(source,!mainMenu,world != null ? world.Inventory.ActiveQuickSlot : 0);
+            BeginLoad(BullTrialSession.SceneName);
+        }
+        public void ReturnFromTrial()
+        {
+            if (!IsTrial) return;
+            if (InventoryOpen) CloseInventory();
+            var value = BullTrialSession.Return(out int selected);
+            if (value != null) { pendingReturnSlot = selected; LoadLevel(value); }
+            else HomeWithoutSave();
         }
         void Continue()
         {
@@ -103,6 +126,7 @@ namespace Milkfrog.CombatDemo
             if (State != GameFlowState.Playing) return;
             if (InventoryOpen) { CloseInventory(); return; }
             if (Paused && ActiveBonfire != null) { ActiveBonfire = null; Paused = false; world.ClearInput(); world.BlockMenuAttack(); SetCursor(false); menu.Hide(); return; }
+            if (!Paused) pausedTrialEligible = world.Director.State == EncounterState.Exploration && world.player.Core.State == CombatState.Neutral && world.feedback.Clock.Remaining <= 0;
             Paused = !Paused; world.ClearInput(); SetCursor(Paused);
             if (!Paused) { world.BlockMenuAttack(); menu.Hide(); return; }
             ShowPause();
@@ -154,10 +178,11 @@ namespace Milkfrog.CombatDemo
         void ShowPause()
         {
             SetPage(ShowPause, TogglePause);
+            if (IsTrial) { menu.Show("黄牛试炼 · 暂停", "本次消耗与死亡不影响主线存档。", new MenuAction("继续挑战", TogglePause), new MenuAction("背包", OpenInventory), new MenuAction("再次挑战", Retry), new MenuAction("返回", ReturnFromTrial)); return; }
             menu.Show("PAUSED", world.CanSave ? "Safe exploration - saving is available." : "In combat / action: returning or quitting keeps the last safe save.",
                 new MenuAction("Resume", TogglePause), new MenuAction("Save", () => { Save(); ShowPauseMessage(); }, world.CanSave),
                 new MenuAction("背包", OpenInventory),
-                new MenuAction("任务 / 属性", ShowRecords), new MenuAction("Return to Home", ReturnHome), new MenuAction("Quit", Quit));
+                new MenuAction("任务 / 属性", ShowRecords), new MenuAction("黄牛试炼", StartBullTrial, CanStartTrial), new MenuAction("Return to Home", ReturnHome), new MenuAction("Quit", Quit));
         }
         void ShowRecords()
         {
@@ -252,6 +277,7 @@ namespace Milkfrog.CombatDemo
         { SetPage(ShowPauseMessage, ShowPause); menu.Show("SAVE", Message, new MenuAction("Back", ShowPause)); }
         public void ReturnHome()
         {
+            if (IsTrial) { ReturnFromTrial(); return; }
             if (world != null && world.CanSave && !Save())
             {
                 ShowDialog("SAVE FAILED", Message, pausedPage ?? ShowPause, new MenuAction("Retry", ReturnHome),
@@ -266,24 +292,26 @@ namespace Milkfrog.CombatDemo
         public void PlayerDied()
         {
             State = GameFlowState.PlayerDead; world.ClearInput(); SetCursor(true);
+            if (IsTrial) { menu.Show("试炼失败", "重试恢复入场配置、道具数量和全部生命。主线进度保持不变。", new MenuAction("再次挑战", Retry), new MenuAction("返回", ReturnFromTrial)); return; }
             menu.Show("DEATH", "在最近篝火复活，保留成长与经验。", new MenuAction("Retry", Retry), new MenuAction("Return to Home", ReturnHome));
         }
         public void Retry()
         {
+            if (IsTrial) { BeginLoad(BullTrialSession.SceneName); return; }
             var snapshot = world.DeathRespawnSnapshot();
             if (!Store.TrySave(snapshot)) Notify(Store.LastMessage);
             LoadLevel(snapshot);
         }
         public void Won()
         {
-            world.ClearInput(); bool saved = Save(); State = GameFlowState.Victory; SetCursor(true);
-            menu.Show("VICTORY", "The guardian has fallen.\n" + Message,
-                new MenuAction("Continue Exploring", ContinueExploring), new MenuAction("Return to Home", ReturnHome),
-                new MenuAction("重试保存", Won, !saved));
+            // Keep gameplay and presentation running after the boss falls.
+            if (IsTrial) { Notify("黄牛已倒下。按 Esc 可再次挑战或返回。"); return; }
+            Save();
         }
         public void ContinueExploring() { State = GameFlowState.Playing; world.ClearInput(); menu.Hide(); SetCursor(false); }
         void Quit()
         {
+            if (IsTrial) { Application.Quit(); return; }
             if (world != null && world.CanSave && !Save())
             {
                 ShowDialog("SAVE FAILED", Message, pausedPage ?? ShowPause, new MenuAction("Retry", Quit),

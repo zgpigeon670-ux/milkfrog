@@ -190,6 +190,12 @@ namespace Milkfrog.CombatDemo
                 return;
 
             float center = width * .5f;
+            if (data.compactPerilousWarning)
+            {
+                Fill(new Rect(center-96f,118f,192f,44f),new Color(.12f,.015f,.01f,.9f));
+                Fill(new Rect(center-96f,118f,192f,3f),new Color(1,.12f,.035f));
+                GUI.Label(new Rect(center-90f,122f,180f,36f),string.IsNullOrEmpty(data.perilousHint) ? "危 · 闪避" : data.perilousHint,perilousHintStyle); return;
+            }
             float top = height * .30f;
             float pulse = .82f + .18f * Mathf.Sin(Time.unscaledTime * 10f);
             Fill(new Rect(center - 116f, top, 232f, 142f), new Color(.10f, .015f, .012f, .78f));
@@ -436,6 +442,8 @@ namespace Milkfrog.CombatDemo
         public float charge;
         public bool charging;
         public bool perilousWarning;
+        public bool compactPerilousWarning;
+        public string perilousHint;
         public string encounter = "EXPLORATION";
         public string message = string.Empty;
         public string debug = string.Empty;

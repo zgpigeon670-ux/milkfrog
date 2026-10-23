@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c61f56678fa544ee9239abb70785f18a, type: 3}
+  m_Name: BullEnemy
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.EnemyDefinition
+  displayName: "\u9EC4\u725B\xB7\u8E0F\u5730"
+  tuning:
+    maxHealth: 600
+    maxPosture: 300
+    startup: 0.25
+    active: 0.1
+    recovery: 0.35
+    range: 2
+    attackHalfWidth: 0.65
+    guardAngle: 120
+    deflectWindow: 0.15
+    hitStun: 0.3
+    deflectedStun: 0.2
+    hitDamage: 10
+    hitPosture: 10
+    blockPosture: 20
+    deflectPosture: 30
+    brokenDuration: 3
+    postureRecoveryDelay: 2
+    postureRecoveryRate: 15
+    dodgeDuration: 0.38
+    dodgeMoveDuration: 0.24
+    dodgeDistance: 1.6
+    invulnerableStart: 0.08
+    invulnerableEnd: 0.16
+    prepareThreshold: 0.18
+    fullChargeTime: 0.8
+    recoveryCancel: 0.16
+    ignoreOrdinaryHitStun: 1
+  slash: {fileID: 0}
+  slow: {fileID: 0}
+  perilous: {fileID: 0}
+  attackPattern: 
+  randomAttacks: 0
+  slashWeight: 5
+  slowWeight: 3
+  perilousWeight: 2
+  speed: 2.2
+  wait: 1.35
+  counterDelay: 0.1
+  blocksBeforeDeflect: 2
+  alertRadius: 6
+  patrolRadius: 3
+  leashMargin: 12
+  patrolPause: 1
+  bossTriggerRadius: 11

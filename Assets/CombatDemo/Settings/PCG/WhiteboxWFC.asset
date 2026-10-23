@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba32a99955aea634e913f53a58681354, type: 3}
+  m_Name: WhiteboxWFC
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.PCG.WfcConfig
+  width: 10
+  height: 10
+  seed: 18
+  cellSize: 8
+  corridorWidth: 3
+  wallHeight: 3
+  maxBacktracks: 2048
+  maxAttempts: 32
+  modules:
+  - id: Empty
+    ports: 0
+    room: 0
+    weight: 4
+  - id: End_0
+    ports: 1
+    room: 0
+    weight: 0.8
+  - id: Room_End_0
+    ports: 1
+    room: 1
+    weight: 0.12
+  - id: End_1
+    ports: 2
+    room: 0
+    weight: 0.8
+  - id: Room_End_1
+    ports: 2
+    room: 1
+    weight: 0.12
+  - id: End_2
+    ports: 4
+    room: 0
+    weight: 0.8
+  - id: Room_End_2
+    ports: 4
+    room: 1
+    weight: 0.12
+  - id: End_3
+    ports: 8
+    room: 0
+    weight: 0.8
+  - id: Room_End_3
+    ports: 8
+    room: 1
+    weight: 0.12
+  - id: Straight_0
+    ports: 5
+    room: 0
+    weight: 1.5
+  - id: Room_Straight_0
+    ports: 5
+    room: 1
+    weight: 0.12
+  - id: Straight_1
+    ports: 10
+    room: 0
+    weight: 1.5
+  - id: Room_Straight_1
+    ports: 10
+    room: 1
+    weight: 0.12
+  - id: Corner_0
+    ports: 3
+    room: 0
+    weight: 1.2
+  - id: Room_Corner_0
+    ports: 3
+    room: 1
+    weight: 0.12
+  - id: Corner_1
+    ports: 6
+    room: 0
+    weight: 1.2
+  - id: Room_Corner_1
+    ports: 6
+    room: 1
+    weight: 0.12
+  - id: Corner_2
+    ports: 12
+    room: 0
+    weight: 1.2
+  - id: Room_Corner_2
+    ports: 12
+    room: 1
+    weight: 0.12
+  - id: Corner_3
+    ports: 9
+    room: 0
+    weight: 1.2
+  - id: Room_Corner_3
+    ports: 9
+    room: 1
+    weight: 0.12
+  - id: Tee_0
+    ports: 7
+    room: 0
+    weight: 0.25
+  - id: Room_Tee_0
+    ports: 7
+    room: 1
+    weight: 0.12
+  - id: Tee_1
+    ports: 14
+    room: 0
+    weight: 0.25
+  - id: Room_Tee_1
+    ports: 14
+    room: 1
+    weight: 0.12
+  - id: Tee_2
+    ports: 13
+    room: 0
+    weight: 0.25
+  - id: Room_Tee_2
+    ports: 13
+    room: 1
+    weight: 0.12
+  - id: Tee_3
+    ports: 11
+    room: 0
+    weight: 0.25
+  - id: Room_Tee_3
+    ports: 11
+    room: 1
+    weight: 0.12
+  - id: Cross_0
+    ports: 15
+    room: 0
+    weight: 0.05
+  - id: Room_Cross_0
+    ports: 15
+    room: 1
+    weight: 0.12

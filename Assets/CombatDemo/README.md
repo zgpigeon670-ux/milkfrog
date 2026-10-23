@@ -2,15 +2,17 @@
 
 Unity 6000.6.2f1 / URP / Input System。所有新增资产位于 `Assets/CombatDemo`。第四阶段将首页和 MVP 关卡加入构建场景列表，保留原始 SampleScene 与训练场，不修改项目输入设置。
 
-当前 Windows 构建位于 [MilkfrogMVP-Equipment](../../Builds/MilkfrogMVP-Equipment/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。最新装备背包、3D 角色预览、三槽消耗品与 v6 存档见 [装备系统验证报告](Validation/Equipment/Report.md)。当前角色动画与轨迹已完成修复；[动画修复记录](Validation/AnimationRepair/README.md)和[单槽消耗品记录](Validation/QuickConsumables/Report.md)保留为历史证据。此前 [Tab／BOSS 镜头](Validation/TabBossCamera/Report.md)、[背包](Validation/Inventory/Report.md)、[玩法完善](Validation/GameplayPolish/Report.md)、[交互与任务](Validation/WorldQuest/Report.md)及 [篝火快速传送](Validation/FastTravel/Report.md)保留为历史记录。
+当前 Windows 构建位于 [MilkfrogMVP-YellowBull-Slam](../../Builds/MilkfrogMVP-YellowBull-Slam/MilkfrogMVP.exe)，已削弱圆形头槌的落点追踪、范围和伤害，详见 [圆形头槌修正报告](Validation/BullSlamBalance/Report.md)。上轮误改直线冲撞的削弱已撤回；原版构建保留于 [MilkfrogMVP-YellowBull](../../Builds/MilkfrogMVP-YellowBull/MilkfrogMVP.exe)；主菜单和安全暂停菜单提供“黄牛试炼”，使用独立黄色牛模型与五种招式，挑战消耗不影响主线，详见 [黄牛试炼报告](Validation/YellowBull/Report.md)。上一版装备构建保留于 [MilkfrogMVP-Equipment](../../Builds/MilkfrogMVP-Equipment/MilkfrogMVP.exe)，也可直接在 Unity 中运行首页场景。最新装备背包、3D 角色预览、三槽消耗品与 v6 存档见 [装备系统验证报告](Validation/Equipment/Report.md)。当前角色动画与轨迹已完成修复；[动画修复记录](Validation/AnimationRepair/README.md)和[单槽消耗品记录](Validation/QuickConsumables/Report.md)保留为历史证据。此前 [Tab／BOSS 镜头](Validation/TabBossCamera/Report.md)、[背包](Validation/Inventory/Report.md)、[玩法完善](Validation/GameplayPolish/Report.md)、[交互与任务](Validation/WorldQuest/Report.md)及 [篝火快速传送](Validation/FastTravel/Report.md)保留为历史记录。
 
 ## MVP：从首页开始
 
-打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP-Equipment/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
+打开 `Scenes/MainMenu.unity` 并 Play，或运行项目 `Builds/MilkfrogMVP-YellowBull-Slam/MilkfrogMVP.exe`。开始游戏有有效存档时继续，无档时建立新游戏；新游戏按钮会确认覆盖已有存档。
 
 WASD 移动、鼠标转动自由过肩镜头、中键锁定／解锁最靠近准星的小怪。普通锁定只选择攻击目标，不强迫角色或镜头转向；挥刀提交时优先面向该目标。未锁定时依次选择攻击范围内的准星附近敌人、最近敌人或准星方向。Shift 垫步、空格跳跃、左键斩击／连击或按住蓄力、右键格挡／弹反。已进入防御时，普通攻击到达前会自动转向攻击者；红色“危”突刺不能格挡或弹反，需要闪避。脱战时靠近篝火按 E 休息并打开加点菜单，脱战按 C 或从暂停菜单查看属性。Esc 暂停，F2 调试。MVP 不使用训练场的 R／F1。
 
 平地从南向北依次布置三名巡逻小怪和训练守卫 BOSS。探索时每秒恢复 5 生命、20 架势；普通交战连续 10 秒无有效攻防或离开追击区域后结束。BOSS 在封印门开启后才允许于 8m 内触发，自动锁定并封闭场地，直到一方死亡。
+
+击败主线 BOSS 或黄牛后继续留在场景中，不自动打开胜利面板；角色、镜头与表现更新继续运行。主线仍结算奖励并保存，黄牛试炼可按 Esc 后选择“再次挑战”或“返回”。此行为已更新源码，旧构建需重新构建后生效。
 
 小怪和 BOSS 分别使用 `MobEnemy` / `BossEnemy` 类、`Prefabs/MVP` 下的 Prefab，以及 `Settings/MobEnemy.asset` / `BossEnemy.asset`。BOSS 使用独立快刀、慢刀、危突刺资产，默认按 5:3:2 权重随机出招；慢刀或危招后下一次主动出招必为快刀，弹反反击也是快刀。BOSS 默认生命 750、最大架势 350，普通受击不断招，但弹反、架势崩溃和死亡仍能打断。BOSS 战仍强制锁定攻击目标并保持角色朝向，镜头可用鼠标自由转动，不会自动拉回 BOSS；镜头避障和战斗距离取景保留。每个敌人的 stableId 必须唯一且不能随意改名，否则历史存档无法对应死亡记录。
 
@@ -46,7 +48,7 @@ Tab 打开／关闭背包，Esc 返回上一层，暂停菜单保留入口。左
 
 靠近目标并使其进入视野，在屏幕下方出现提示时按 E。篝火、钥匙和门共用入口：距离不超过 2.5m、高度差不超过 1.5m、无遮挡，按画面中心距离、玩家距离和稳定 ID 选择唯一目标。只有安全脱战且处于 Neutral 时可执行；暂停、死亡、顿帧期间不缓存 E。Esc →“任务 / 属性”→“任务进度”查看四步记录。
 
-v3 增加已拾取对象、关键物品、永久开门和任务进度。拾取／开门／点亮篝火先保存后生效，失败可重试；死亡、休息、传送不清除任务物品或重新关门。v1／v2 自动迁移，未通关旧档按已点亮篝火继续；已通关旧档视为已经完成试炼，补齐守门篝火、钥匙和门记录，不新增 BOSS 经验。保存失败的通关页提供“重试保存”。
+v3 增加已拾取对象、关键物品、永久开门和任务进度。拾取／开门／点亮篝火先保存后生效，失败可重试；死亡、休息、传送不清除任务物品或重新关门。v1／v2 自动迁移，未通关旧档按已点亮篝火继续；已通关旧档视为已经完成试炼，补齐守门篝火、钥匙和门记录，不新增 BOSS 经验。胜利保存失败时显示提示，可在 Esc 菜单中手动保存重试。
 
 `Settings/GuardianTrial.asset` 配置任务步骤；`GuardianKey`、`GuardianGate` Prefab 是可编辑占位物件。`Tools > Combat Demo > Upgrade MVP Quest` 仅补建缺失内容和引用，保留手工位置。持久化对象 stableId 不可重复、不可随意改名；构建检查会拒绝缺失／重复 ID 和无法解析的任务目标。篝火采用 `IInteractable`，后续交互可实现相同接口；世界事实由 `WorldStateService` 管理，任务由 `QuestProgressService` 计算。
 

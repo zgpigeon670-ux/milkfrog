@@ -10,7 +10,7 @@ namespace Milkfrog.CombatDemo
 {
     public sealed class MvpMenuView : MonoBehaviour
     {
-        private const int MaxActions = 6;
+        private const int MaxActions = 7;
         public void EnsureInputSystem() => EnsureEventSystem();
 
         private static readonly Color PanelColor = new Color32(17, 23, 31, 248);
@@ -168,8 +168,8 @@ namespace Milkfrog.CombatDemo
             GameObject buttonObject = CreateUiObject("Action " + (index + 1), parent, typeof(Image), typeof(Button));
             RectTransform buttonRect = buttonObject.GetComponent<RectTransform>();
             float listCenterY = -140f;
-            float rowHeight = 44f;
-            float rowSpacing = 6f;
+            float rowHeight = 38f;
+            float rowSpacing = 5f;
             float totalHeight = MaxActions * rowHeight + (MaxActions - 1) * rowSpacing;
             float firstCenterY = listCenterY + totalHeight * 0.5f - rowHeight * 0.5f;
             SetCenteredRect(buttonRect, new Vector2(720f, rowHeight),

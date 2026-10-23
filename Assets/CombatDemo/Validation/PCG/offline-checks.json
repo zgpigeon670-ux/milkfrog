@@ -1,0 +1,8 @@
+{
+  "runtime": ".NET 10.0.12",
+  "note": "Actual WfcConfig/WfcSolver source; Unity attribute/ScriptableObject shell only. No Unity physics or gameplay executed.",
+  "checks": 614,
+  "hybridPassed": 100,
+  "baselinePassed": 0,
+  "totalBacktracks": 586
+}

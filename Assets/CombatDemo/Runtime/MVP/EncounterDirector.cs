@@ -23,7 +23,7 @@ namespace Milkfrog.CombatDemo
                 {
                     if (EnemyController.FlatDistance(world.player.transform.position, enemy.Home) <= enemy.definition.bossTriggerRadius)
                     {
-                        if (world.BossUnlocked) { StartBoss((BossEnemy)enemy); return; }
+                        if (world.BossUnlocked) { StartBoss(enemy); return; }
                         world.Flow.Notify("封印未解除，请先点亮篝火、取得钥匙并开启封印门。");
                     }
                     continue;
@@ -64,7 +64,7 @@ namespace Milkfrog.CombatDemo
                 if (!enemy.IsBoss && (enemy.Actor.Core == hit.Attacker || enemy.Actor.Core == hit.Defender))
                 { Engage(enemy); QuietTime = 0; break; }
         }
-        void StartBoss(BossEnemy boss)
+        void StartBoss(EnemyController boss)
         {
             foreach (var enemy in world.enemies)
                 if (!enemy.IsBoss && enemy.Alive) { enemy.ReturnHome(true); enemy.Actor.AcceptsDamage = false; }

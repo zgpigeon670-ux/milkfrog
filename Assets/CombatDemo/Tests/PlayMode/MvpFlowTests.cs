@@ -428,11 +428,14 @@ namespace Milkfrog.CombatDemo.Tests
             world.Lock.Toggle(); world.Director.Tick(20); Assert.That(world.Lock.Target, Is.EqualTo(boss));
             Assert.That(world.Flow.Save(), Is.False);
             boss.Actor.Core.RestoreVitals(0,0); Advance(.01f);
-            Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.Victory)); Assert.That(world.arena.activeSelf, Is.False);
+            Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.Playing)); Assert.That(world.arena.activeSelf, Is.False);
+            Assert.That(world.Running, Is.True); Assert.That(world.GetComponent<MvpMenuView>().Visible, Is.False);
+            Assert.That(world.cameraRig.Suspended, Is.False);
             Assert.That(world.Lock.Target, Is.Null); Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True);
             Assert.That(saved.bossDefeated, Is.True); Assert.That(saved.defeatedEnemyIds, Does.Contain("boss-guardian"));
             Assert.That(saved.experience, Is.EqualTo(200));
-            world.Flow.ContinueExploring(); Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.Playing));
+            world.Flow.TogglePause(); Assert.That(world.GetComponent<MvpMenuView>().Visible, Is.True);
+            world.Flow.TogglePause(); Assert.That(world.Running, Is.True);
             var camp = world.FindBonfire(BonfireCheckpoint.BossApproachId);
             Place(world.player, camp.transform.position + Vector3.forward);
             Assert.That(world.TryRest(camp), Is.True);

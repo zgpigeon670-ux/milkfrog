@@ -58,9 +58,9 @@ namespace Milkfrog.CombatDemo.Tests
             var boss = world.enemies.First(x => x.IsBoss); Place(boss.Home + Vector3.back * 6); world.Director.Tick(.01f);
             Assert.That(world.Director.State, Is.EqualTo(EncounterState.BossCombat));
             boss.Actor.Core.RestoreVitals(0, 0); world.Simulate(.01f);
-            Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.Victory)); Assert.That(world.Flow.Store.TryLoad(out saved), Is.True);
+            Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.Playing)); Assert.That(world.Flow.Store.TryLoad(out saved), Is.True);
             Assert.That(saved.questProgress.completed, Is.True); Assert.That(saved.experience, Is.EqualTo(200));
-            world.Flow.ContinueExploring(); world.Restore(saved); Assert.That(boss.gameObject.activeSelf, Is.False); yield return null;
+            world.Restore(saved); Assert.That(boss.gameObject.activeSelf, Is.False); yield return null;
         }
         [UnityTest] public IEnumerator GateCannotBeBypassedAndEarlyKeyDoesNotSkipCamp()
         {
@@ -119,7 +119,8 @@ namespace Milkfrog.CombatDemo.Tests
             Unlock(); var boss = world.enemies.First(x => x.IsBoss); Place(boss.Home + Vector3.back * 6); world.Director.Tick(.01f);
             string path = Path.Combine(directory, "save.json"); File.Delete(path); Directory.CreateDirectory(path);
             boss.Actor.Core.RestoreVitals(0, 0); world.Simulate(.01f);
-            Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.Victory)); Assert.That(world.BossDefeated, Is.True);
+            Assert.That(world.Flow.State, Is.EqualTo(GameFlowState.Playing)); Assert.That(world.BossDefeated, Is.True);
+            Assert.That(world.GetComponent<MvpMenuView>().Visible, Is.False);
             Assert.That(world.Progression.Experience, Is.EqualTo(200)); Assert.That(world.Quests.Evaluate(world.Snapshot()).completed, Is.True);
             Assert.That(world.Flow.Store.TryLoad(out var old) && old.bossDefeated, Is.False);
             Directory.Delete(path); world.Flow.Won(); Assert.That(world.Flow.Store.TryLoad(out var saved), Is.True);

@@ -1,0 +1,9 @@
+{
+    "passed": true,
+    "moved": true,
+    "playerRendered": true,
+    "overviewRendered": true,
+    "scriptedProgression": true,
+    "enemies": 8,
+    "unity": "6000.6.2f1"
+}
