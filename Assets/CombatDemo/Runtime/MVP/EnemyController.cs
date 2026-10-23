@@ -13,6 +13,8 @@ namespace Milkfrog.CombatDemo
         public Vector3 Home { get; private set; }
         public bool SuppressProximity { get; private set; }
         public abstract bool IsBoss { get; }
+        public Transform lockAnchor;
+        public Vector3 LockPoint => lockAnchor != null ? lockAnchor.position : transform.position + Vector3.up * 1.35f;
         public bool Alive => Actor != null && Actor.Core.State != CombatState.Dead;
         public EnemyBrain Brain { get; private set; }
         protected MvpWorld world;
@@ -21,7 +23,7 @@ namespace Milkfrog.CombatDemo
         float pause;
         bool protectedReturn;
 
-        public void Initialize(MvpWorld owner)
+        public virtual void Initialize(MvpWorld owner)
         {
             world = owner; Home = transform.position;
             Actor = GetComponent<CombatActor>(); Actor.lightAttack = definition.slash;
@@ -48,7 +50,7 @@ namespace Milkfrog.CombatDemo
             float radius = definition.patrolRadius + definition.leashMargin;
             return FlatDistance(playerPosition, Home) > radius || FlatDistance(transform.position, Home) > radius;
         }
-        public void ResetForLoad()
+        public virtual void ResetForLoad()
         {
             gameObject.SetActive(true); Actor.Motor.enabled = false;
             transform.SetPositionAndRotation(Home, Quaternion.identity); Actor.Motor.enabled = true;
@@ -81,7 +83,7 @@ namespace Milkfrog.CombatDemo
             Activity = EnemyActivity.Dead; Actor.AcceptsDamage = false;
             Actor.Motor.enabled = false;
         }
-        public void Tick(float dt)
+        public virtual void Tick(float dt)
         {
             if (!Alive) { MarkDead(); return; }
             if (Activity == EnemyActivity.Combat) { Brain.Tick(dt); return; }

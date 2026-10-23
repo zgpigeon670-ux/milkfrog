@@ -227,7 +227,7 @@ namespace Milkfrog.CombatDemo.Editor
             try
             {
                 PlayerSettings.resizableWindow = true;
-                var result = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new[]{Home,Level,AnimatedDemoBuilder.ScenePath,CombatDemoBuilder.ScenePath},
+                var result = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new[]{Home,Level,AnimatedDemoBuilder.ScenePath,CombatDemoBuilder.ScenePath}.Concat(File.Exists(BullTrialAuthoring.ScenePath) ? new[]{BullTrialAuthoring.ScenePath} : Array.Empty<string>()).ToArray(),
                     locationPathName = path, target = BuildTarget.StandaloneWindows64, options = BuildOptions.Development });
                 if (result.summary.result != BuildResult.Succeeded) throw new InvalidOperationException("MVP build failed: "+result.summary.result);
                 File.Copy(Path.GetFullPath(Root + "/ThirdParty/NotoSansSC/OFL.txt"),

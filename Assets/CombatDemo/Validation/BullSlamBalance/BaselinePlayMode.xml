@@ -1,0 +1,1241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="165" result="Passed" total="165" passed="165" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:28:02Z" duration="15.0322105">
+  <test-suite type="TestSuite" id="1188" name="milkfrog" fullname="milkfrog" runstate="Runnable" testcasecount="165" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:28:02Z" duration="15.032211" total="165" passed="165" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1369" name="Milkfrog.CombatDemo.PlayTests.dll" fullname="E:/UNITY/PROJECTS/milkfrog/Builds/TabBossCameraValidation/Project/Library/ScriptAssemblies/Milkfrog.CombatDemo.PlayTests.dll" runstate="Runnable" testcasecount="165" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:28:02Z" duration="15.024960" total="165" passed="165" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="31344" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1370" name="Milkfrog" fullname="Milkfrog" runstate="Runnable" testcasecount="165" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:28:02Z" duration="15.023219" total="165" passed="165" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1371" name="CombatDemo" fullname="Milkfrog.CombatDemo" runstate="Runnable" testcasecount="165" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:28:02Z" duration="15.021729" total="165" passed="165" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1372" name="Tests" fullname="Milkfrog.CombatDemo.Tests" runstate="Runnable" testcasecount="165" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:28:02Z" duration="15.020205" total="165" passed="165" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1189" name="AnimatedSceneTests" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:27:48Z" duration="0.853708" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1194" name="CameraSphereCastKeepsCameraInFrontOfWall" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.CameraSphereCastKeepsCameraInFrontOfWall" methodname="CameraSphereCastKeepsCameraInFrontOfWall" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="144014155" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:27:47Z" duration="0.327517" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1191" name="FreezeIgnoresFreshInputsAndResetClearsAllFeedback" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FreezeIgnoresFreshInputsAndResetClearsAllFeedback" methodname="FreezeIgnoresFreshInputsAndResetClearsAllFeedback" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="1106945437" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:27:47Z" duration="0.073729" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1193" name="FreshGuardAfterExactFreezeBoundaryIsNotOverwritten" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FreshGuardAfterExactFreezeBoundaryIsNotOverwritten" methodname="FreshGuardAfterExactFreezeBoundaryIsNotOverwritten" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="1326509326" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:27:47Z" duration="0.046028" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1197" name="FullExchangeAt120Fps" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FullExchangeAt120Fps" methodname="FullExchangeAt120Fps" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="787798864" result="Passed" start-time="2026-10-16 05:27:47Z" end-time="2026-10-16 05:27:48Z" duration="0.085180" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1195" name="FullExchangeAt30Fps" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FullExchangeAt30Fps" methodname="FullExchangeAt30Fps" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="808265373" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.090645" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1196" name="FullExchangeAt60Fps" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.FullExchangeAt60Fps" methodname="FullExchangeAt60Fps" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="2145478785" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.085743" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1190" name="HumanoidClipsAnimateWithoutControllerOrRootDrift" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.HumanoidClipsAnimateWithoutControllerOrRootDrift" methodname="HumanoidClipsAnimateWithoutControllerOrRootDrift" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="1631059594" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.076581" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1192" name="InterruptedAttackCannotLeaveDamageOrTrail" fullname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests.InterruptedAttackCannotLeaveDamageOrTrail" methodname="InterruptedAttackCannotLeaveDamageOrTrail" classname="Milkfrog.CombatDemo.Tests.AnimatedSceneTests" runstate="Runnable" seed="671382049" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.056138" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1198" name="BladeContactTests" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.503485" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1207" name="BakedBladeAgreesWithRenderedWeaponAndOutgoingPoseIsRetained" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.BakedBladeAgreesWithRenderedWeaponAndOutgoingPoseIsRetained" methodname="BakedBladeAgreesWithRenderedWeaponAndOutgoingPoseIsRetained" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="369519975" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.056924" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1206" name="BladeContactUsesDefenderFacingForParry" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.BladeContactUsesDefenderFacingForParry" methodname="BladeContactUsesDefenderFacingForParry" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="798641205" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.042579" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1199" name="BlockedLightAndFollowupKeepTheirAttackPoseThroughRecovery" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.BlockedLightAndFollowupKeepTheirAttackPoseThroughRecovery" methodname="BlockedLightAndFollowupKeepTheirAttackPoseThroughRecovery" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="792307269" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.056063" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1201" name="CenteredBladeHitsOnlyWhenItReachesTheTarget" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.CenteredBladeHitsOnlyWhenItReachesTheTarget" methodname="CenteredBladeHitsOnlyWhenItReachesTheTarget" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="2038867513" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.047993" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1200" name="EnemyDeflectInterruptsAttackAndShowsDeflectedPoseAfterHitStop" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.EnemyDeflectInterruptsAttackAndShowsDeflectedPoseAfterHitStop" methodname="EnemyDeflectInterruptsAttackAndShowsDeflectedPoseAfterHitStop" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="810296636" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.057010" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1205" name="HeightAndRearFacingPreventInvalidExecution" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.HeightAndRearFacingPreventInvalidExecution" methodname="HeightAndRearFacingPreventInvalidExecution" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="924609269" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.046402" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1208" name="MovingGuardKeepsLegsAnimatedAndInterruptRemovesUpperMask" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.MovingGuardKeepsLegsAnimatedAndInterruptRemovesUpperMask" methodname="MovingGuardKeepsLegsAnimatedAndInterruptRemovesUpperMask" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1807287228" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.045315" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1203" name="OldBroadBoxCannotHitOutsideTheBladeReach" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.OldBroadBoxCannotHitOutsideTheBladeReach" methodname="OldBroadBoxCannotHitOutsideTheBladeReach" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1858422619" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.049606" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1202" name="SlowFrameSweepsAndMultipleCollidersDoNotDoubleHit" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.SlowFrameSweepsAndMultipleCollidersDoNotDoubleHit" methodname="SlowFrameSweepsAndMultipleCollidersDoNotDoubleHit" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1776612140" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.057025" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1204" name="WallBlocksBothDamageAndDeathblow" fullname="Milkfrog.CombatDemo.Tests.BladeContactTests.WallBlocksBothDamageAndDeathblow" methodname="WallBlocksBothDamageAndDeathblow" classname="Milkfrog.CombatDemo.Tests.BladeContactTests" runstate="Runnable" seed="1025070678" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:48Z" duration="0.041862" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1209" name="BullTrialTests" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:51Z" duration="2.671368" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1218" name="BrokenOrDeadCancelsTheAttackAndWarningImmediately" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.BrokenOrDeadCancelsTheAttackAndWarningImmediately" methodname="BrokenOrDeadCancelsTheAttackAndWarningImmediately" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1087227592" result="Passed" start-time="2026-10-16 05:27:48Z" end-time="2026-10-16 05:27:49Z" duration="0.187399" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1211" name="ChargeLocksDirectionAndSlamLocksLandingPoint" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.ChargeLocksDirectionAndSlamLocksLandingPoint" methodname="ChargeLocksDirectionAndSlamLocksLandingPoint" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="2029462894" result="Passed" start-time="2026-10-16 05:27:49Z" end-time="2026-10-16 05:27:49Z" duration="0.059413" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1212" name="ChargeSweepsSpaceAndStopsAtItsConfiguredDistance" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.ChargeSweepsSpaceAndStopsAtItsConfiguredDistance" methodname="ChargeSweepsSpaceAndStopsAtItsConfiguredDistance" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1369379537" result="Passed" start-time="2026-10-16 05:27:49Z" end-time="2026-10-16 05:27:49Z" duration="0.071713" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1219" name="ConsumptionAndVictoryDoNotChangeMainlineFilesOrAwardExperience" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.ConsumptionAndVictoryDoNotChangeMainlineFilesOrAwardExperience" methodname="ConsumptionAndVictoryDoNotChangeMainlineFilesOrAwardExperience" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1789035809" result="Passed" start-time="2026-10-16 05:27:49Z" end-time="2026-10-16 05:27:49Z" duration="0.121443" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1222" name="DodgeWindowAvoidsHornAndThirdIdenticalMoveIsRejected" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.DodgeWindowAvoidsHornAndThirdIdenticalMoveIsRejected" methodname="DodgeWindowAvoidsHornAndThirdIdenticalMoveIsRejected" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="931694333" result="Passed" start-time="2026-10-16 05:27:49Z" end-time="2026-10-16 05:27:49Z" duration="0.077838" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1216" name="DoubleWaveHitsOncePerRingAndJumpClearsTheWave" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.DoubleWaveHitsOncePerRingAndJumpClearsTheWave" methodname="DoubleWaveHitsOncePerRingAndJumpClearsTheWave" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1496112147" result="Passed" start-time="2026-10-16 05:27:49Z" end-time="2026-10-16 05:27:49Z" duration="0.079371" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1213" name="HornDeflectsButChargeIgnoresGuard" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.HornDeflectsButChargeIgnoresGuard" methodname="HornDeflectsButChargeIgnoresGuard" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="217215412" result="Passed" start-time="2026-10-16 05:27:49Z" end-time="2026-10-16 05:27:49Z" duration="0.078342" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1210" name="IndependentBossHasFullHealthModelNoSwordAndChestLock" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.IndependentBossHasFullHealthModelNoSwordAndChestLock" methodname="IndependentBossHasFullHealthModelNoSwordAndChestLock" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1293223708" result="Passed" start-time="2026-10-16 05:27:49Z" end-time="2026-10-16 05:27:49Z" duration="0.061053" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1226" name="LockedBullCameraRotatesAndSuspendsWithMenus" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.LockedBullCameraRotatesAndSuspendsWithMenus" methodname="LockedBullCameraRotatesAndSuspendsWithMenus" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="218962511" result="Passed" start-time="2026-10-16 05:27:49Z" end-time="2026-10-16 05:27:49Z" duration="0.108092" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1221" name="MainlinePauseEntryAndReturnPreserveLivePositionInventoryAndSelectedSlot" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.MainlinePauseEntryAndReturnPreserveLivePositionInventoryAndSelectedSlot" methodname="MainlinePauseEntryAndReturnPreserveLivePositionInventoryAndSelectedSlot" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="75145584" result="Passed" start-time="2026-10-16 05:27:49Z" end-time="2026-10-16 05:27:50Z" duration="0.337594" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1225" name="MainlinePauseSnapshotsEligibilityBeforeClearingGuardOrCharge" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.MainlinePauseSnapshotsEligibilityBeforeClearingGuardOrCharge" methodname="MainlinePauseSnapshotsEligibilityBeforeClearingGuardOrCharge" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="881123596" result="Passed" start-time="2026-10-16 05:27:50Z" end-time="2026-10-16 05:27:50Z" duration="0.156624" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1228" name="MainMenuWithMissingOrDamagedSaveUsesFallbackWithoutWriting" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.MainMenuWithMissingOrDamagedSaveUsesFallbackWithoutWriting" methodname="MainMenuWithMissingOrDamagedSaveUsesFallbackWithoutWriting" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1145678510" result="Passed" start-time="2026-10-16 05:27:50Z" end-time="2026-10-16 05:27:50Z" duration="0.181312" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1224" name="MainMenuWithoutAnySaveUsesFallbackAndCreatesNoDiskFiles" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.MainMenuWithoutAnySaveUsesFallbackAndCreatesNoDiskFiles" methodname="MainMenuWithoutAnySaveUsesFallbackAndCreatesNoDiskFiles" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="2012551887" result="Passed" start-time="2026-10-16 05:27:50Z" end-time="2026-10-16 05:27:50Z" duration="0.159376" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1217" name="PausingAndInventoryFreezeBossPoseWarningAndAttack" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.PausingAndInventoryFreezeBossPoseWarningAndAttack" methodname="PausingAndInventoryFreezeBossPoseWarningAndAttack" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1072339205" result="Passed" start-time="2026-10-16 05:27:50Z" end-time="2026-10-16 05:27:51Z" duration="0.557272" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1223" name="PhaseWaitsUntilAttackCompletesAndRoarRemainsVulnerable" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.PhaseWaitsUntilAttackCompletesAndRoarRemainsVulnerable" methodname="PhaseWaitsUntilAttackCompletesAndRoarRemainsVulnerable" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1092037292" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.103087" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1227" name="PlayerBakedSwordTraceCanActuallyDamageTheLargeBull" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.PlayerBakedSwordTraceCanActuallyDamageTheLargeBull" methodname="PlayerBakedSwordTraceCanActuallyDamageTheLargeBull" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1676177673" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.071415" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1214" name="RearKickRequiresRearPositionAndHonorsCooldown" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.RearKickRequiresRearPositionAndHonorsCooldown" methodname="RearKickRequiresRearPositionAndHonorsCooldown" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="545186266" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.082676" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1220" name="RetryLoadsFullResourcesAndEntryInventory" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.RetryLoadsFullResourcesAndEntryInventory" methodname="RetryLoadsFullResourcesAndEntryInventory" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="758539500" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.112961" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1215" name="RoarIsOnceAndDoubleChargeHasSeparateStartup" fullname="Milkfrog.CombatDemo.Tests.BullTrialTests.RoarIsOnceAndDoubleChargeHasSeparateStartup" methodname="RoarIsOnceAndDoubleChargeHasSeparateStartup" classname="Milkfrog.CombatDemo.Tests.BullTrialTests" runstate="Runnable" seed="1089542452" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.059444" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1229" name="CombatFeelSceneTests" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.360667" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1231" name="PerilousDeflectFailsAndDodgeInvulnerabilityAvoidsIt" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.PerilousDeflectFailsAndDodgeInvulnerabilityAvoidsIt" methodname="PerilousDeflectFailsAndDodgeInvulnerabilityAvoidsIt" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" seed="2096065947" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.155295" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1232" name="RecoveryGuardCancelAndFollowupAreAvailable" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.RecoveryGuardCancelAndFollowupAreAvailable" methodname="RecoveryGuardCancelAndFollowupAreAvailable" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" seed="613560990" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.053096" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1230" name="RhythmCyclesSlashSlowAndPerilous" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.RhythmCyclesSlashSlowAndPerilous" methodname="RhythmCyclesSlashSlowAndPerilous" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" seed="801185164" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.102596" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1233" name="TabTogglesLockAndCameraUsesEnemyHeading" fullname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests.TabTogglesLockAndCameraUsesEnemyHeading" methodname="TabTogglesLockAndCameraUsesEnemyHeading" classname="Milkfrog.CombatDemo.Tests.CombatFeelSceneTests" runstate="Runnable" seed="1224661277" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.047814" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1234" name="CombatPresentationTests" fullname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" classname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:52Z" duration="0.142455" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1236" name="CameraFollowsPlayersBackAfterTurningAndReset" fullname="Milkfrog.CombatDemo.Tests.CombatPresentationTests.CameraFollowsPlayersBackAfterTurningAndReset" methodname="CameraFollowsPlayersBackAfterTurningAndReset" classname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" runstate="Runnable" seed="1690495959" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.042913" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1235" name="EssentialBarsSurviveDiagnosticsToggle" fullname="Milkfrog.CombatDemo.Tests.CombatPresentationTests.EssentialBarsSurviveDiagnosticsToggle" methodname="EssentialBarsSurviveDiagnosticsToggle" classname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" runstate="Runnable" seed="1807400220" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:51Z" duration="0.041931" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1237" name="PerfectDeflectFlashesAttackerAndResetClearsShader" fullname="Milkfrog.CombatDemo.Tests.CombatPresentationTests.PerfectDeflectFlashesAttackerAndResetClearsShader" methodname="PerfectDeflectFlashesAttackerAndResetClearsShader" classname="Milkfrog.CombatDemo.Tests.CombatPresentationTests" runstate="Runnable" seed="1447192237" result="Passed" start-time="2026-10-16 05:27:51Z" end-time="2026-10-16 05:27:52Z" duration="0.056670" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1238" name="CombatSceneTests" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.354325" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1242" name="EarlyGuardBlocksLateGuardDeflectsAndPlayerCanDie" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.EarlyGuardBlocksLateGuardDeflectsAndPlayerCanDie" methodname="EarlyGuardBlocksLateGuardDeflectsAndPlayerCanDie" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="365086835" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.058240" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1239" name="FullExchangeBreakDeathblowAndRepeatedReset" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.FullExchangeBreakDeathblowAndRepeatedReset" methodname="FullExchangeBreakDeathblowAndRepeatedReset" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="812362962" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.040117" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1243" name="ModeSwitchClearsPendingCounterAndResetsPositions" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.ModeSwitchClearsPendingCounterAndResetsPositions" methodname="ModeSwitchClearsPendingCounterAndResetsPositions" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="1012494032" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.037660" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1241" name="MovementRespectsActorCollisionAndArenaFloor" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.MovementRespectsActorCollisionAndArenaFloor" methodname="MovementRespectsActorCollisionAndArenaFloor" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="701939465" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.037740" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1245" name="NewInputSystemBindingsReadKeyboardAndMouse" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.NewInputSystemBindingsReadKeyboardAndMouse" methodname="NewInputSystemBindingsReadKeyboardAndMouse" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="677880317" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.094946" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1240" name="PhysicsDetectionDeduplicatesMultipleCollidersAndCancelsInterruptedAttack" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.PhysicsDetectionDeduplicatesMultipleCollidersAndCancelsInterruptedAttack" methodname="PhysicsDetectionDeduplicatesMultipleCollidersAndCancelsInterruptedAttack" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="1125476936" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.036932" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+              <test-case id="1244" name="SustainedGuardCanBreakPlayerAndRecoverWithoutEnemyDeathblow" fullname="Milkfrog.CombatDemo.Tests.CombatSceneTests.SustainedGuardCanBreakPlayerAndRecoverWithoutEnemyDeathblow" methodname="SustainedGuardCanBreakPlayerAndRecoverWithoutEnemyDeathblow" classname="Milkfrog.CombatDemo.Tests.CombatSceneTests" runstate="Runnable" seed="1144366883" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.046939" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[CombatDemo] ENEMY Neutral -> Guard
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1246" name="DirectionalMotionTests" fullname="Milkfrog.CombatDemo.Tests.DirectionalMotionTests" classname="Milkfrog.CombatDemo.Tests.DirectionalMotionTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.133357" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1247" name="AuthoredDirectionsDriveLegsWithoutRotatingTheModel" fullname="Milkfrog.CombatDemo.Tests.DirectionalMotionTests.AuthoredDirectionsDriveLegsWithoutRotatingTheModel" methodname="AuthoredDirectionsDriveLegsWithoutRotatingTheModel" classname="Milkfrog.CombatDemo.Tests.DirectionalMotionTests" runstate="Runnable" seed="546623813" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.132827" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1248" name="EquipmentFlowTests" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:54Z" duration="1.629649" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1252" name="AllFourGroundGearPickupsHaveOneTimeSavedOwnership" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.AllFourGroundGearPickupsHaveOneTimeSavedOwnership" methodname="AllFourGroundGearPickupsHaveOneTimeSavedOwnership" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="1702016188" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.122146" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1254" name="ArmorAndWeaponDefenseApplyToActualSceneHitsAndBlocks" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.ArmorAndWeaponDefenseApplyToActualSceneHitsAndBlocks" methodname="ArmorAndWeaponDefenseApplyToActualSceneHitsAndBlocks" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="51424196" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.116187" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1261" name="CombatBindingWritesRetainTheSafePositionAndResources" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.CombatBindingWritesRetainTheSafePositionAndResources" methodname="CombatBindingWritesRetainTheSafePositionAndResources" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="1628897559" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.101033" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1250" name="CombatGuardActionsAndHitStopCannotGainEquipmentEligibilityFromInputCleanup" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.CombatGuardActionsAndHitStopCannotGainEquipmentEligibilityFromInputCleanup" methodname="CombatGuardActionsAndHitStopCannotGainEquipmentEligibilityFromInputCleanup" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="1912458693" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:52Z" duration="0.092332" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1260" name="DeathRestTravelAndReloadPreserveEquipmentAndAllBindings" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.DeathRestTravelAndReloadPreserveEquipmentAndAllBindings" methodname="DeathRestTravelAndReloadPreserveEquipmentAndAllBindings" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="1247108220" result="Passed" start-time="2026-10-16 05:27:52Z" end-time="2026-10-16 05:27:53Z" duration="0.213337" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1249" name="EquipAndRemovePreserveResourcesAndShowRealArmorParts" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.EquipAndRemovePreserveResourcesAndShowRealArmorParts" methodname="EquipAndRemovePreserveResourcesAndShowRealArmorParts" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="592783430" result="Passed" start-time="2026-10-16 05:27:53Z" end-time="2026-10-16 05:27:53Z" duration="0.123188" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1253" name="EquippedMovementAndShoesChangeActualHorizontalDisplacement" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.EquippedMovementAndShoesChangeActualHorizontalDisplacement" methodname="EquippedMovementAndShoesChangeActualHorizontalDisplacement" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="369220989" result="Passed" start-time="2026-10-16 05:27:53Z" end-time="2026-10-16 05:27:53Z" duration="0.134259" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1251" name="FailedSaveDoesNotChangeEquipmentAppearanceStatsOrQuickBindings" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.FailedSaveDoesNotChangeEquipmentAppearanceStatsOrQuickBindings" methodname="FailedSaveDoesNotChangeEquipmentAppearanceStatsOrQuickBindings" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="811472732" result="Passed" start-time="2026-10-16 05:27:53Z" end-time="2026-10-16 05:27:53Z" duration="0.078867" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1257" name="MenuHeldNumericKeysNeedReleaseBeforeTheyCanChangeTheSlot" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.MenuHeldNumericKeysNeedReleaseBeforeTheyCanChangeTheSlot" methodname="MenuHeldNumericKeysNeedReleaseBeforeTheyCanChangeTheSlot" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="373507627" result="Passed" start-time="2026-10-16 05:27:53Z" end-time="2026-10-16 05:27:53Z" duration="0.095811" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1255" name="NumericSlotsSelectAndSameFrameQUsesTheNewSlotOnlyOnce" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.NumericSlotsSelectAndSameFrameQUsesTheNewSlotOnlyOnce" methodname="NumericSlotsSelectAndSameFrameQUsesTheNewSlotOnlyOnce" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="1171059514" result="Passed" start-time="2026-10-16 05:27:53Z" end-time="2026-10-16 05:27:53Z" duration="0.102372" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1259" name="PreviewAnimatesAndRotatesIndependentlyAndReleasesEveryTime" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.PreviewAnimatesAndRotatesIndependentlyAndReleasesEveryTime" methodname="PreviewAnimatesAndRotatesIndependentlyAndReleasesEveryTime" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="1941437118" result="Passed" start-time="2026-10-16 05:27:53Z" end-time="2026-10-16 05:27:53Z" duration="0.138970" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1262" name="RealKeyboardNumericBindingsAndQOperateTheThreeSlots" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.RealKeyboardNumericBindingsAndQOperateTheThreeSlots" methodname="RealKeyboardNumericBindingsAndQOperateTheThreeSlots" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="1592646970" result="Passed" start-time="2026-10-16 05:27:53Z" end-time="2026-10-16 05:27:53Z" duration="0.111014" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1258" name="SlotButtonsMoveAndClearBindingsWithoutChangingTheInventory" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.SlotButtonsMoveAndClearBindingsWithoutChangingTheInventory" methodname="SlotButtonsMoveAndClearBindingsWithoutChangingTheInventory" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="209401315" result="Passed" start-time="2026-10-16 05:27:53Z" end-time="2026-10-16 05:27:54Z" duration="0.101567" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1256" name="SlotSelectionWorksDuringAttackAndHitStopWithoutUsingOrBufferingQ" fullname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests.SlotSelectionWorksDuringAttackAndHitStopWithoutUsingOrBufferingQ" methodname="SlotSelectionWorksDuringAttackAndHitStopWithoutUsingOrBufferingQ" classname="Milkfrog.CombatDemo.Tests.EquipmentFlowTests" runstate="Runnable" seed="764170956" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.093876" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1263" name="InventoryFlowTests" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" testcasecount="25" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:56Z" duration="2.206231" total="25" passed="25" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1265" name="AttributeReturnRefreshesVitalsAndPreservesItsOriginalParent" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.AttributeReturnRefreshesVitalsAndPreservesItsOriginalParent" methodname="AttributeReturnRefreshesVitalsAndPreservesItsOriginalParent" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1787374441" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.092976" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1276" name="BothConsumablesApplyAndZeroPostureDoesNotConsume" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.BothConsumablesApplyAndZeroPostureDoesNotConsume" methodname="BothConsumablesApplyAndZeroPostureDoesNotConsume" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1511060501" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.090934" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1277" name="CombatUseOnlyUpdatesInventoryInTheSafeSave" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.CombatUseOnlyUpdatesInventoryInTheSafeSave" methodname="CombatUseOnlyUpdatesInventoryInTheSafeSave" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1494815306" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.094381" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1286" name="DirectionNavigationAndSubmitOperateTheEditableGridAndUseButton" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.DirectionNavigationAndSubmitOperateTheEditableGridAndUseButton" methodname="DirectionNavigationAndSubmitOperateTheEditableGridAndUseButton" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1282263595" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.098938" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1280" name="EnemyPlayerAnimationAndCameraStayFrozenWhileInventoryIsOpen" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.EnemyPlayerAnimationAndCameraStayFrozenWhileInventoryIsOpen" methodname="EnemyPlayerAnimationAndCameraStayFrozenWhileInventoryIsOpen" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="220930257" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.087172" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1282" name="GateChecksInventoryInsteadOfHistoricalAcquisitionFacts" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.GateChecksInventoryInsteadOfHistoricalAcquisitionFacts" methodname="GateChecksInventoryInsteadOfHistoricalAcquisitionFacts" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1988083409" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.065177" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1266" name="InventoryReturnsToFastTravelAndThenBonfire" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.InventoryReturnsToFastTravelAndThenBonfire" methodname="InventoryReturnsToFastTravelAndThenBonfire" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="943330646" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.074264" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1264" name="InventoryReturnsToQuestAndEscapeNavigatesOneLayerAtATime" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.InventoryReturnsToQuestAndEscapeNavigatesOneLayerAtATime" methodname="InventoryReturnsToQuestAndEscapeNavigatesOneLayerAtATime" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1112905644" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.063219" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1281" name="KeyIsShownAndOpeningGateDoesNotConsumeIt" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.KeyIsShownAndOpeningGateDoesNotConsumeIt" methodname="KeyIsShownAndOpeningGateDoesNotConsumeIt" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1547024435" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.095381" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1285" name="MenuMouseClickCannotAttackAfterClosingAndTabAndEscapeAreBound" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.MenuMouseClickCannotAttackAfterClosingAndTabAndEscapeAreBound" methodname="MenuMouseClickCannotAttackAfterClosingAndTabAndEscapeAreBound" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="465161015" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:54Z" duration="0.075656" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1269" name="MissingInventoryReferencesLeaveFlowResumable" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.MissingInventoryReferencesLeaveFlowResumable" methodname="MissingInventoryReferencesLeaveFlowResumable" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="868613964" result="Passed" start-time="2026-10-16 05:27:54Z" end-time="2026-10-16 05:27:55Z" duration="0.063609" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1279" name="OpeningDuringAttackOrChargeCannotUseOrAdvanceTheAction" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.OpeningDuringAttackOrChargeCannotUseOrAdvanceTheAction" methodname="OpeningDuringAttackOrChargeCannotUseOrAdvanceTheAction" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1958525376" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.083508" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1267" name="PauseAndItsInventoryKeepTheCameraFrozenUntilResume" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.PauseAndItsInventoryKeepTheCameraFrozenUntilResume" methodname="PauseAndItsInventoryKeepTheCameraFrozenUntilResume" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="75100690" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.065770" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1284" name="PauseMenuAndBonfireReturnKeepTheCorrectParentMenu" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.PauseMenuAndBonfireReturnKeepTheCorrectParentMenu" methodname="PauseMenuAndBonfireReturnKeepTheCorrectParentMenu" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1229499038" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.085569" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1274" name="PickupFailureLeavesCountAndWorldObjectUntouched" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.PickupFailureLeavesCountAndWorldObjectUntouched" methodname="PickupFailureLeavesCountAndWorldObjectUntouched" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1493044264" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.070068" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1273" name="PickupsStackPersistAndCannotBeCollectedTwice" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.PickupsStackPersistAndCannotBeCollectedTwice" methodname="PickupsStackPersistAndCannotBeCollectedTwice" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="671958659" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.079054" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1270" name="PressingDuringAnActionCannotBufferAnAttackUntilRecovery" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.PressingDuringAnActionCannotBufferAnAttackUntilRecovery" methodname="PressingDuringAnActionCannotBufferAnAttackUntilRecovery" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1395058935" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.060733" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1271" name="PressingDuringHitStopCannotBufferAnAttack" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.PressingDuringHitStopCannotBufferAnAttack" methodname="PressingDuringHitStopCannotBufferAnAttack" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1380821743" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.062213" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1268" name="QuantityRefreshReusesTilesAndKeepsUsableButtonFocus" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.QuantityRefreshReusesTilesAndKeepsUsableButtonFocus" methodname="QuantityRefreshReusesTilesAndKeepsUsableButtonFocus" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1185400750" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.120534" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1272" name="ReleaseAndFreshPressInTheSameFrameDoNotRequireAnExtraIdleFrame" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.ReleaseAndFreshPressInTheSameFrameDoNotRequireAnExtraIdleFrame" methodname="ReleaseAndFreshPressInTheSameFrameDoNotRequireAnExtraIdleFrame" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="1411747967" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.062531" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1283" name="RestTravelDeathAndRewardWritesPreserveConsumedCounts" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.RestTravelDeathAndRewardWritesPreserveConsumedCounts" methodname="RestTravelDeathAndRewardWritesPreserveConsumedCounts" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="188952659" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:55Z" duration="0.124853" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1288" name="ReturnThroughHomeRestoresItemsAndOneInventoryView" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.ReturnThroughHomeRestoresItemsAndOneInventoryView" methodname="ReturnThroughHomeRestoresItemsAndOneInventoryView" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="925987909" result="Passed" start-time="2026-10-16 05:27:55Z" end-time="2026-10-16 05:27:56Z" duration="0.184639" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1287" name="UnlimitedItemsScrollAndEmptyCategoryHasUsableNavigation" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.UnlimitedItemsScrollAndEmptyCategoryHasUsableNavigation" methodname="UnlimitedItemsScrollAndEmptyCategoryHasUsableNavigation" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="583495110" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.093459" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1275" name="UseClampsVitalsAndEmptyCountsDisappearFromGrid" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.UseClampsVitalsAndEmptyCountsDisappearFromGrid" methodname="UseClampsVitalsAndEmptyCountsDisappearFromGrid" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="627951065" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.114353" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1278" name="UseFailureDoesNotConsumeOrHeal" fullname="Milkfrog.CombatDemo.Tests.InventoryFlowTests.UseFailureDoesNotConsumeOrHeal" methodname="UseFailureDoesNotConsumeOrHeal" classname="Milkfrog.CombatDemo.Tests.InventoryFlowTests" runstate="Runnable" seed="2100093358" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.091165" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1289" name="MilkfrogPlayerAnimationTests" fullname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests" classname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.051245" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1290" name="ActualSwordMatchesEachBakedTraceAtThirtySixtyAndOneTwentyFps" fullname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests.ActualSwordMatchesEachBakedTraceAtThirtySixtyAndOneTwentyFps" methodname="ActualSwordMatchesEachBakedTraceAtThirtySixtyAndOneTwentyFps" classname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests" runstate="Runnable" seed="864875643" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.015043" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1293" name="ChargeDodgeAndResetUseCorrectPoseAndClearTrail" fullname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests.ChargeDodgeAndResetUseCorrectPoseAndClearTrail" methodname="ChargeDodgeAndResetUseCorrectPoseAndClearTrail" classname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests" runstate="Runnable" seed="757181072" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.005325" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1294" name="DodgeInterruptsTheDeathblowVisualImmediately" fullname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests.DodgeInterruptsTheDeathblowVisualImmediately" methodname="DodgeInterruptsTheDeathblowVisualImmediately" classname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests" runstate="Runnable" seed="1047452287" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.003699" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1291" name="EachAttackHitsOnceAndWallOcclusionPreventsDamage" fullname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests.EachAttackHitsOnceAndWallOcclusionPreventsDamage" methodname="EachAttackHitsOnceAndWallOcclusionPreventsDamage" classname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests" runstate="Runnable" seed="1177289774" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.018573" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1292" name="GenericGuardMasksOnlyUpperBodyAndLegsKeepMoving" fullname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests.GenericGuardMasksOnlyUpperBodyAndLegsKeepMoving" methodname="GenericGuardMasksOnlyUpperBodyAndLegsKeepMoving" classname="Milkfrog.CombatDemo.Tests.MilkfrogPlayerAnimationTests" runstate="Runnable" seed="1001056467" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.006144" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1295" name="MvpBossCombatTests" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.293643" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1297" name="DeflectInterruptsBossAndBossCounterattackIsSlashRecordedForNextSelection" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests.DeflectInterruptsBossAndBossCounterattackIsSlashRecordedForNextSelection" methodname="DeflectInterruptsBossAndBossCounterattackIsSlashRecordedForNextSelection" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" seed="1717433496" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.069899" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1296" name="OrdinaryPlayerHitsDamageBossWithoutCancellingStartupActiveOrRecovery" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests.OrdinaryPlayerHitsDamageBossWithoutCancellingStartupActiveOrRecovery" methodname="OrdinaryPlayerHitsDamageBossWithoutCancellingStartupActiveOrRecovery" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" seed="949083640" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.084892" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1298" name="PlayerParryStillInterruptsArmoredBossAttack" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests.PlayerParryStillInterruptsArmoredBossAttack" methodname="PlayerParryStillInterruptsArmoredBossAttack" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" seed="64534426" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.073101" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1299" name="PostureBreakAndDeathStillOverrideBossHitResistance" fullname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests.PostureBreakAndDeathStillOverrideBossHitResistance" methodname="PostureBreakAndDeathStillOverrideBossHitResistance" classname="Milkfrog.CombatDemo.Tests.MvpBossCombatTests" runstate="Runnable" seed="253457775" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.064508" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1300" name="MvpFlowTests" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" testcasecount="34" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:59Z" duration="2.843386" total="34" passed="34" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1325" name="AttackSelectionUsesLockThenReticleThenNearestThenCameraRay" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.AttackSelectionUsesLockThenReticleThenNearestThenCameraRay" methodname="AttackSelectionUsesLockThenReticleThenNearestThenCameraRay" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1438798549" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.064893" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1302" name="BonfireRestSwitchesCheckpointHealsAndResetsReturningMobs" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BonfireRestSwitchesCheckpointHealsAndResetsReturningMobs" methodname="BonfireRestSwitchesCheckpointHealsAndResetsReturningMobs" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="313640018" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.080873" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1308" name="BonfireUpgradeConsumesExperienceAndUpdatesPlayerCaps" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BonfireUpgradeConsumesExperienceAndUpdatesPlayerCaps" methodname="BonfireUpgradeConsumesExperienceAndUpdatesPlayerCaps" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1888831790" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:56Z" duration="0.096107" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1322" name="BossBoundaryBlocksEscapeAndSimultaneousDeathIsFailure" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossBoundaryBlocksEscapeAndSimultaneousDeathIsFailure" methodname="BossBoundaryBlocksEscapeAndSimultaneousDeathIsFailure" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="391553627" result="Passed" start-time="2026-10-16 05:27:56Z" end-time="2026-10-16 05:27:57Z" duration="0.076919" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1331" name="BossDoesNotRerollWhileWaitingForItsAttackCommit" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossDoesNotRerollWhileWaitingForItsAttackCommit" methodname="BossDoesNotRerollWhileWaitingForItsAttackCommit" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1586612739" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.063563" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1318" name="BossForcesLockCannotDisengageAndVictoryPersists" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossForcesLockCannotDisengageAndVictoryPersists" methodname="BossForcesLockCannotDisengageAndVictoryPersists" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1019484418" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.093165" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1333" name="BossPerilousBladeHitsThroughGuardButRespectsDodgeInvulnerability" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossPerilousBladeHitsThroughGuardButRespectsDodgeInvulnerability" methodname="BossPerilousBladeHitsThroughGuardButRespectsDodgeInvulnerability" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1241042927" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.071916" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1330" name="BossUsesReproducibleWeightedAttacksAndWarningTracksPerilousStartup" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.BossUsesReproducibleWeightedAttacksAndWarningTracksPerilousStartup" methodname="BossUsesReproducibleWeightedAttacksAndWarningTracksPerilousStartup" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="2123996302" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.071227" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1327" name="ChargeReleaseReaimsAndKeepsBladeForwardAligned" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.ChargeReleaseReaimsAndKeepsBladeForwardAligned" methodname="ChargeReleaseReaimsAndKeepsBladeForwardAligned" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="320103528" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.069806" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1310" name="CombatMobRewardUpdatesSafeSaveWithoutSavingCombatPosition" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.CombatMobRewardUpdatesSafeSaveWithoutSavingCombatPosition" methodname="CombatMobRewardUpdatesSafeSaveWithoutSavingCombatPosition" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1230388979" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.076505" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1315" name="FactionsRejectEnemyDamageAndHitFeedbackIsDeliveredOnce" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FactionsRejectEnemyDamageAndHitFeedbackIsDeliveredOnce" methodname="FactionsRejectEnemyDamageAndHitFeedbackIsDeliveredOnce" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="81655811" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.075448" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1307" name="FailedBonfireSaveDoesNotActivateOrApplyRest" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FailedBonfireSaveDoesNotActivateOrApplyRest" methodname="FailedBonfireSaveDoesNotActivateOrApplyRest" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="258387133" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.067434" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1304" name="FailedFastTravelSaveDoesNotMoveOrChangeCheckpoint" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FailedFastTravelSaveDoesNotMoveOrChangeCheckpoint" methodname="FailedFastTravelSaveDoesNotMoveOrChangeCheckpoint" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="2113809546" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.075493" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1309" name="FailedUpgradeSaveKeepsExperienceAndAttributes" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FailedUpgradeSaveKeepsExperienceAndAttributes" methodname="FailedUpgradeSaveKeepsExperienceAndAttributes" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="554422730" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.075428" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1303" name="FastTravelUsesOnlyUnlockedBonfiresAndMakesDestinationRespawnPoint" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FastTravelUsesOnlyUnlockedBonfiresAndMakesDestinationRespawnPoint" methodname="FastTravelUsesOnlyUnlockedBonfiresAndMakesDestinationRespawnPoint" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="497694368" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.089818" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1328" name="FollowupAndExecutionUseSelectedDirection" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FollowupAndExecutionUseSelectedDirection" methodname="FollowupAndExecutionUseSelectedDirection" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1526325535" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.073155" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1301" name="FreshStartHasThreeMobsBossAndSafeSave" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.FreshStartHasThreeMobsBossAndSafeSave" methodname="FreshStartHasThreeMobsBossAndSafeSave" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="422893145" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:57Z" duration="0.065488" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1329" name="GuardTurnsTowardEachMobButBreakAndPerilousStillHit" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.GuardTurnsTowardEachMobButBreakAndPerilousStillHit" methodname="GuardTurnsTowardEachMobButBreakAndPerilousStillHit" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="4107122" result="Passed" start-time="2026-10-16 05:27:57Z" end-time="2026-10-16 05:27:58Z" duration="0.086392" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1334" name="HomeContinueNewGameConfirmationAndRepeatedSceneChanges" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.HomeContinueNewGameConfirmationAndRepeatedSceneChanges" methodname="HomeContinueNewGameConfirmationAndRepeatedSceneChanges" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1378535776" result="Passed" start-time="2026-10-16 05:27:58Z" end-time="2026-10-16 05:27:58Z" duration="0.303315" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1314" name="InteractionResetsTimerAndLeashCancelsAttack" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.InteractionResetsTimerAndLeashCancelsAttack" methodname="InteractionResetsTimerAndLeashCancelsAttack" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="647590617" result="Passed" start-time="2026-10-16 05:27:58Z" end-time="2026-10-16 05:27:58Z" duration="0.061984" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1316" name="LockSelectsScreenCenterAndUnlocksWithoutEndingCombat" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.LockSelectsScreenCenterAndUnlocksWithoutEndingCombat" methodname="LockSelectsScreenCenterAndUnlocksWithoutEndingCombat" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="765066929" result="Passed" start-time="2026-10-16 05:27:58Z" end-time="2026-10-16 05:27:58Z" duration="0.062960" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1320" name="MiddleMouseBindingAndFreezeReleaseDoNotQueueAttack" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.MiddleMouseBindingAndFreezeReleaseDoNotQueueAttack" methodname="MiddleMouseBindingAndFreezeReleaseDoNotQueueAttack" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1123881801" result="Passed" start-time="2026-10-16 05:27:58Z" end-time="2026-10-16 05:27:58Z" duration="0.074070" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1324" name="MobLockDoesNotSteerMovementOrCameraButAimsCommittedAttack" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.MobLockDoesNotSteerMovementOrCameraButAimsCommittedAttack" methodname="MobLockDoesNotSteerMovementOrCameraButAimsCommittedAttack" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1024129871" result="Passed" start-time="2026-10-16 05:27:58Z" end-time="2026-10-16 05:27:58Z" duration="0.063091" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1312" name="MultipleParticipantsAndSingleDeathDoNotStopWorld" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.MultipleParticipantsAndSingleDeathDoNotStopWorld" methodname="MultipleParticipantsAndSingleDeathDoNotStopWorld" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="316016525" result="Passed" start-time="2026-10-16 05:27:58Z" end-time="2026-10-16 05:27:58Z" duration="0.072834" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1321" name="OcclusionDiscardsCandidatesAndBreaksLockAfterOneSecond" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.OcclusionDiscardsCandidatesAndBreaksLockAfterOneSecond" methodname="OcclusionDiscardsCandidatesAndBreaksLockAfterOneSecond" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="169800466" result="Passed" start-time="2026-10-16 05:27:58Z" end-time="2026-10-16 05:27:58Z" duration="0.061140" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1332" name="OverShoulderCameraAvoidsWallAndBossLockAllowsMouseOrbit" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.OverShoulderCameraAvoidsWallAndBossLockAllowsMouseOrbit" methodname="OverShoulderCameraAvoidsWallAndBossLockAllowsMouseOrbit" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1672795103" result="Passed" start-time="2026-10-16 05:27:58Z" end-time="2026-10-16 05:27:58Z" duration="0.067985" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1319" name="PlayerDeathKeepsSafeSaveAndRetryLoadsIt" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.PlayerDeathKeepsSafeSaveAndRetryLoadsIt" methodname="PlayerDeathKeepsSafeSaveAndRetryLoadsIt" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="2110044395" result="Passed" start-time="2026-10-16 05:27:58Z" end-time="2026-10-16 05:27:59Z" duration="0.150085" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1311" name="RecoveryIsFrameRateIndependentAndPauseFreezesIt" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.RecoveryIsFrameRateIndependentAndPauseFreezesIt" methodname="RecoveryIsFrameRateIndependentAndPauseFreezesIt" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1847783297" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.139952" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1306" name="RestIsRejectedDuringBossCombatEvenAtBonfireRange" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.RestIsRejectedDuringBossCombatEvenAtBonfireRange" methodname="RestIsRejectedDuringBossCombatEvenAtBonfireRange" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="312399827" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.064862" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1305" name="RestIsRejectedDuringCombatOrWhilePlayerIsNotNeutral" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.RestIsRejectedDuringCombatOrWhilePlayerIsNotNeutral" methodname="RestIsRejectedDuringCombatOrWhilePlayerIsNotNeutral" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1914249506" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.062043" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1317" name="SaveRestoresResourcesAndDefeatedEnemiesButClearsTransientActions" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.SaveRestoresResourcesAndDefeatedEnemiesButClearsTransientActions" methodname="SaveRestoresResourcesAndDefeatedEnemiesButClearsTransientActions" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1218867638" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.072548" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1326" name="SideLockedSlashUsesTurnedBladeAndActuallyConnects" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.SideLockedSlashUsesTurnedBladeAndActuallyConnects" methodname="SideLockedSlashUsesTurnedBladeAndActuallyConnects" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="1133049515" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.074028" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1323" name="TimeoutAndFlowAreConsistentAcrossThirtySixtyAndOneTwenty" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.TimeoutAndFlowAreConsistentAcrossThirtySixtyAndOneTwenty" methodname="TimeoutAndFlowAreConsistentAcrossThirtySixtyAndOneTwenty" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="859783030" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.066911" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1313" name="TimeoutRearmsOnlyAfterLeavingAndReturning" fullname="Milkfrog.CombatDemo.Tests.MvpFlowTests.TimeoutRearmsOnlyAfterLeavingAndReturning" methodname="TimeoutRearmsOnlyAfterLeavingAndReturning" classname="Milkfrog.CombatDemo.Tests.MvpFlowTests" runstate="Runnable" seed="861857865" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.064071" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1335" name="PhaseThreeTests" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.445373" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1340" name="ChargedThrustCannotDamageThroughAWall" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.ChargedThrustCannotDamageThroughAWall" methodname="ChargedThrustCannotDamageThroughAWall" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="1103880237" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.059034" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1339" name="DodgeCannotPassThroughEnemyAndHitInterruptsMovement" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.DodgeCannotPassThroughEnemyAndHitInterruptsMovement" methodname="DodgeCannotPassThroughEnemyAndHitInterruptsMovement" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="197191700" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.053317" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1337" name="DodgeDistanceDirectionAndWallCollision" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.DodgeDistanceDirectionAndWallCollision" methodname="DodgeDistanceDirectionAndWallCollision" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="1322853363" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.071312" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1338" name="SnapshotPriorityFreezeReleaseFocusAndResetDoNotQueueAttacks" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.SnapshotPriorityFreezeReleaseFocusAndResetDoNotQueueAttacks" methodname="SnapshotPriorityFreezeReleaseFocusAndResetDoNotQueueAttacks" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="2026128485" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.063193" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1342" name="TapSlashesHoldThrustsAndShiftDodgesWhileSpaceJumps" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.TapSlashesHoldThrustsAndShiftDodgesWhileSpaceJumps" methodname="TapSlashesHoldThrustsAndShiftDodgesWhileSpaceJumps" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="1002029847" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.058569" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1336" name="ThrustFollowsItsOwnBladeAndHitsOnceAtAllFrameRates" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.ThrustFollowsItsOwnBladeAndHitsOnceAtAllFrameRates" methodname="ThrustFollowsItsOwnBladeAndHitsOnceAtAllFrameRates" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="454699618" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.083728" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1341" name="ThrustVisualMatchesBakedTraceAndResetClearsTrail" fullname="Milkfrog.CombatDemo.Tests.PhaseThreeTests.ThrustVisualMatchesBakedTraceAndResetClearsTrail" methodname="ThrustVisualMatchesBakedTraceAndResetClearsTrail" classname="Milkfrog.CombatDemo.Tests.PhaseThreeTests" runstate="Runnable" seed="1692189768" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:27:59Z" duration="0.054028" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1343" name="QuestFlowTests" fullname="Milkfrog.CombatDemo.Tests.QuestFlowTests" classname="Milkfrog.CombatDemo.Tests.QuestFlowTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:28:00Z" duration="0.864027" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1350" name="BossSaveFailureCanBeRetriedWithoutAwardingExperienceAgain" fullname="Milkfrog.CombatDemo.Tests.QuestFlowTests.BossSaveFailureCanBeRetriedWithoutAwardingExperienceAgain" methodname="BossSaveFailureCanBeRetriedWithoutAwardingExperienceAgain" classname="Milkfrog.CombatDemo.Tests.QuestFlowTests" runstate="Runnable" seed="953103565" result="Passed" start-time="2026-10-16 05:27:59Z" end-time="2026-10-16 05:28:00Z" duration="0.136737" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1344" name="CompleteQuestUsesInteractionsAndPersistsAcrossRestTravelDeathAndReload" fullname="Milkfrog.CombatDemo.Tests.QuestFlowTests.CompleteQuestUsesInteractionsAndPersistsAcrossRestTravelDeathAndReload" methodname="CompleteQuestUsesInteractionsAndPersistsAcrossRestTravelDeathAndReload" classname="Milkfrog.CombatDemo.Tests.QuestFlowTests" runstate="Runnable" seed="253639074" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:00Z" duration="0.128680" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1349" name="FocusSortsByScreenThenDistanceThenIdAndNeverExecutesANewFocusSilently" fullname="Milkfrog.CombatDemo.Tests.QuestFlowTests.FocusSortsByScreenThenDistanceThenIdAndNeverExecutesANewFocusSilently" methodname="FocusSortsByScreenThenDistanceThenIdAndNeverExecutesANewFocusSilently" classname="Milkfrog.CombatDemo.Tests.QuestFlowTests" runstate="Runnable" seed="150864914" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:00Z" duration="0.064529" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1345" name="GateCannotBeBypassedAndEarlyKeyDoesNotSkipCamp" fullname="Milkfrog.CombatDemo.Tests.QuestFlowTests.GateCannotBeBypassedAndEarlyKeyDoesNotSkipCamp" methodname="GateCannotBeBypassedAndEarlyKeyDoesNotSkipCamp" classname="Milkfrog.CombatDemo.Tests.QuestFlowTests" runstate="Runnable" seed="1679326867" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:00Z" duration="0.074462" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1351" name="ReloadThroughHomePreservesWorldAndCreatesSingleInteractionSession" fullname="Milkfrog.CombatDemo.Tests.QuestFlowTests.ReloadThroughHomePreservesWorldAndCreatesSingleInteractionSession" methodname="ReloadThroughHomePreservesWorldAndCreatesSingleInteractionSession" classname="Milkfrog.CombatDemo.Tests.QuestFlowTests" runstate="Runnable" seed="978280200" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:00Z" duration="0.214025" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1347" name="RevalidatesRangeHeightOcclusionAndCurrentState" fullname="Milkfrog.CombatDemo.Tests.QuestFlowTests.RevalidatesRangeHeightOcclusionAndCurrentState" methodname="RevalidatesRangeHeightOcclusionAndCurrentState" classname="Milkfrog.CombatDemo.Tests.QuestFlowTests" runstate="Runnable" seed="1218109692" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:00Z" duration="0.066564" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1348" name="RewardWritesKeepKeyAndDoorProgress" fullname="Milkfrog.CombatDemo.Tests.QuestFlowTests.RewardWritesKeepKeyAndDoorProgress" methodname="RewardWritesKeepKeyAndDoorProgress" classname="Milkfrog.CombatDemo.Tests.QuestFlowTests" runstate="Runnable" seed="969726966" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:00Z" duration="0.097128" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1346" name="SaveFailureLeavesKeyAndDoorAndQuestUntouched" fullname="Milkfrog.CombatDemo.Tests.QuestFlowTests.SaveFailureLeavesKeyAndDoorAndQuestUntouched" methodname="SaveFailureLeavesKeyAndDoorAndQuestUntouched" classname="Milkfrog.CombatDemo.Tests.QuestFlowTests" runstate="Runnable" seed="192951033" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:00Z" duration="0.079582" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1352" name="QuickConsumableFlowTests" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:02Z" duration="1.662811" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1358" name="ActionAndHitStopPressesAreDiscardedInsteadOfQueued" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.ActionAndHitStopPressesAreDiscardedInsteadOfQueued" methodname="ActionAndHitStopPressesAreDiscardedInsteadOfQueued" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="656440011" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:00Z" duration="0.101115" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1364" name="BuffFreezesInInventoryAndHitStopAndClearsOnRest" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.BuffFreezesInInventoryAndHitStopAndClearsOnRest" methodname="BuffFreezesInInventoryAndHitStopAndClearsOnRest" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="575200816" result="Passed" start-time="2026-10-16 05:28:00Z" end-time="2026-10-16 05:28:01Z" duration="0.117939" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1355" name="CalmingQuickUsePreservesGuardAndZeroPostureDoesNotConsume" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.CalmingQuickUsePreservesGuardAndZeroPostureDoesNotConsume" methodname="CalmingQuickUsePreservesGuardAndZeroPostureDoesNotConsume" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="103145858" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:01Z" duration="0.093859" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1365" name="CombatConsumptionPreservesSafeVitalsPositionAndEquippedSelection" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.CombatConsumptionPreservesSafeVitalsPositionAndEquippedSelection" methodname="CombatConsumptionPreservesSafeVitalsPositionAndEquippedSelection" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1954009939" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:01Z" duration="0.100353" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1359" name="DodgeWinsOverQuickUseAndSuccessfulQuickUseWinsOverAttack" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.DodgeWinsOverQuickUseAndSuccessfulQuickUseWinsOverAttack" methodname="DodgeWinsOverQuickUseAndSuccessfulQuickUseWinsOverAttack" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="8373383" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:01Z" duration="0.089536" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1357" name="EmptySlotAndDepletedOrUnknownItemsDoNotConsumeOrAutoSwitch" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.EmptySlotAndDepletedOrUnknownItemsDoNotConsumeOrAutoSwitch" methodname="EmptySlotAndDepletedOrUnknownItemsDoNotConsumeOrAutoSwitch" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1110026963" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:01Z" duration="0.109932" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1353" name="EquipUseAndUnequipButtonsPersistAndMarkTheGrid" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.EquipUseAndUnequipButtonsPersistAndMarkTheGrid" methodname="EquipUseAndUnequipButtonsPersistAndMarkTheGrid" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1301748553" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:01Z" duration="0.089364" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1360" name="EveryForbiddenStateRejectsQIncludingSameFrameGuardCancellation" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.EveryForbiddenStateRejectsQIncludingSameFrameGuardCancellation" methodname="EveryForbiddenStateRejectsQIncludingSameFrameGuardCancellation" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="881468704" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:01Z" duration="0.092286" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1366" name="FailedWriteRollsBackBothEquipmentAndEffects" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.FailedWriteRollsBackBothEquipmentAndEffects" methodname="FailedWriteRollsBackBothEquipmentAndEffects" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="809181367" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:01Z" duration="0.083803" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1354" name="HealingQuickUseIsImmediateDoesNotRepeatAndFullHealthDoesNotConsume" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.HealingQuickUseIsImmediateDoesNotRepeatAndFullHealthDoesNotConsume" methodname="HealingQuickUseIsImmediateDoesNotRepeatAndFullHealthDoesNotConsume" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1896183599" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:01Z" duration="0.108724" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1363" name="MenuCloseRequiresReleasingAndPressingQAgain" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.MenuCloseRequiresReleasingAndPressingQAgain" methodname="MenuCloseRequiresReleasingAndPressingQAgain" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1092521208" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:01Z" duration="0.093883" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1368" name="QBindingPressHoldReleaseAndTabMenusUseTheRealInputMap" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.QBindingPressHoldReleaseAndTabMenusUseTheRealInputMap" methodname="QBindingPressHoldReleaseAndTabMenusUseTheRealInputMap" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1788567803" result="Passed" start-time="2026-10-16 05:28:01Z" end-time="2026-10-16 05:28:02Z" duration="0.114054" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1362" name="ReloadingTheLevelKeepsSavedSlotAndQuantityWithoutTheTransientBuff" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.ReloadingTheLevelKeepsSavedSlotAndQuantityWithoutTheTransientBuff" methodname="ReloadingTheLevelKeepsSavedSlotAndQuantityWithoutTheTransientBuff" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1732309254" result="Passed" start-time="2026-10-16 05:28:02Z" end-time="2026-10-16 05:28:02Z" duration="0.150005" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1367" name="RestoreDeathAndFastTravelKeepQuantityAndSelectionButClearBuff" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.RestoreDeathAndFastTravelKeepQuantityAndSelectionButClearBuff" methodname="RestoreDeathAndFastTravelKeepQuantityAndSelectionButClearBuff" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1849754992" result="Passed" start-time="2026-10-16 05:28:02Z" end-time="2026-10-16 05:28:02Z" duration="0.121024" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1361" name="TonicGroundPickupIsOneTimeAndFailedSaveLeavesItVisible" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.TonicGroundPickupIsOneTimeAndFailedSaveLeavesItVisible" methodname="TonicGroundPickupIsOneTimeAndFailedSaveLeavesItVisible" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="1292408849" result="Passed" start-time="2026-10-16 05:28:02Z" end-time="2026-10-16 05:28:02Z" duration="0.070316" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1356" name="TonicRefreshAndReplacingTheSlotDoNotStackOrRemoveBuff" fullname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests.TonicRefreshAndReplacingTheSlotDoNotStackOrRemoveBuff" methodname="TonicRefreshAndReplacingTheSlotDoNotStackOrRemoveBuff" classname="Milkfrog.CombatDemo.Tests.QuickConsumableFlowTests" runstate="Runnable" seed="762422449" result="Passed" start-time="2026-10-16 05:28:02Z" end-time="2026-10-16 05:28:02Z" duration="0.122289" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/pigeon/AppData/LocalLow/DefaultCompany/milkfrog\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="620" viewBox="0 0 1440 620">
+<rect width="1440" height="620" fill="#0e1a24"/>
+<text x="40" y="60" fill="#e0e9eb" font-size="34" font-family="Microsoft YaHei,sans-serif">100 个固定种子 / UNITY EDITOR BENCHMARK</text>
+<text x="40" y="103" fill="#91a6b2" font-size="20" font-family="Microsoft YaHei,sans-serif">种子 0–99；每种模式最多 32 次尝试；耗时仅计求解，不包含几何实例化与渲染。</text>
+<text x="45" y="210" fill="#e0e9eb" font-size="25" font-family="Microsoft YaHei,sans-serif">主通路＋WFC＋连通约束</text>
+<rect x="465" y="190" width="600" height="32" fill="#233744"/>
+<rect x="465" y="190" width="600" height="32" fill="#52c78a"/>
+<text x="1100" y="208" fill="#e0e9eb" font-size="23" font-family="Microsoft YaHei,sans-serif">100/100 整图通过</text>
+<text x="465" y="267" fill="#91a6b2" font-size="21" font-family="Microsoft YaHei,sans-serif">局部解成功 100/100  ·  每个种子平均累计求解 3.20 ms</text>
+<text x="45" y="390" fill="#e0e9eb" font-size="25" font-family="Microsoft YaHei,sans-serif">取消主通路与连通约束</text>
+<rect x="465" y="370" width="600" height="32" fill="#233744"/>
+<rect x="465" y="370" width="0" height="32" fill="#52c78a"/>
+<text x="1100" y="388" fill="#e0e9eb" font-size="23" font-family="Microsoft YaHei,sans-serif">0/100 整图通过</text>
+<text x="465" y="447" fill="#91a6b2" font-size="21" font-family="Microsoft YaHei,sans-serif">局部解成功 100/100  ·  每个种子平均累计求解 59.39 ms</text>
+<text x="45" y="562" fill="#e0e9eb" font-size="22" font-family="Microsoft YaHei,sans-serif">0/100 仅说明本模块集和验收标准下的结果，不能推导 WFC 无法生成可玩关卡。</text>
+</svg>

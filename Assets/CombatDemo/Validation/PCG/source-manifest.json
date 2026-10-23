@@ -1,0 +1,25 @@
+{
+  "unity": "6000.6.2f1",
+  "baselineDirtyFilesUnchanged": 14,
+  "windowsPlayerMatchesOfflineSeed18": true,
+  "files": {
+    "Assets/CombatDemo/Editor/PcgAuthoring.cs": "4fb39465ba2e7df5f3df7121bd994ec3f09a163633614fb876c2cf26f473fa95",
+    "Assets/CombatDemo/Editor/PcgCapture.cs": "222f7fa2cfb68f122e4b9b54e51960360b353d185bad2c8c5988530f294f469f",
+    "Assets/CombatDemo/Runtime/PCG/PcgDemo.cs": "c5497b38ce86fa6f9e459eb82e98610a8509e612ff4cd0d8b5f977e1ec41b50a",
+    "Assets/CombatDemo/Runtime/PCG/PcgGeometry.cs": "977a9448c610a51c3538a55825db5537341518e5fe7b882ab5f47a9c0da73117",
+    "Assets/CombatDemo/Runtime/PCG/PcgSmokeProbe.cs": "f3b884f6c36f9826a4bf15becd9d42f9109c1a95e5d6f7f399bc6e4789eb182e",
+    "Assets/CombatDemo/Runtime/PCG/WfcConfig.cs": "d63764006b4d4cc17410848a0749c2c39b85e251c7544447c72c40ebd3a23e7a",
+    "Assets/CombatDemo/Runtime/PCG/WfcSolver.cs": "f1aa5657b295b55521f2ff2a79c18971b53a675cfb58df11e828674c9d481798",
+    "Assets/CombatDemo/Scenes/PCG_Whitebox.unity": "d7a0c7312cc6cc5f59aa7b5d9589457d4fd8ce698538b203679aa8466de2aa91",
+    "Assets/CombatDemo/Settings/PCG/Encounter.mat": "07f1adc9c7937769b427dbe8121624a4355edbffaa494ff41dd8e8577a3d9b30",
+    "Assets/CombatDemo/Settings/PCG/Exit.mat": "00f6437d610027633f0931a1738ca2b5d5444882bc2e19a52bf1127f3f6f4384",
+    "Assets/CombatDemo/Settings/PCG/Floor.mat": "d9f891fc2616825e53e7c7abefc1f34e231e3ea631e5b35d4a6e5bb8007badaa",
+    "Assets/CombatDemo/Settings/PCG/Start.mat": "788786d8f7df833ab492414aaa74521f0035ca3e8424386ae8ac61d4270685e5",
+    "Assets/CombatDemo/Settings/PCG/Wall.mat": "245cd919edb261260abaaacf82717ec589b475ef4b126af52948e74214eac398",
+    "Assets/CombatDemo/Settings/PCG/WhiteboxWFC.asset": "ef01f96ee27b390741a6294a1856f22f8d40f17c1b82447f725fd794e7e33ae4",
+    "Assets/CombatDemo/Tests/EditMode/WfcTests.cs": "529c55c8d26658b34e4ed0988ed11eb6688268f5a0e8dba6b918580786e48584",
+    "Assets/CombatDemo/Tests/PlayMode/PcgPlayTests.cs": "52f40594d61f499674c4d1e3054833cc1449e5f68128108cd8c0a30447910fef",
+    "Builds/Milkfrog-PCG/MilkfrogPCG.exe": "6833a3b986da4acf7ef8b009bae7136a01be3734071d9ddc57b3dd115830536a",
+    "Builds/Milkfrog-PCG/MilkfrogPCG_Data/Managed/Milkfrog.CombatDemo.dll": "628a202a1ee6ef7dfceca8b0ea2459d632c40c7ec10ed9ad455c3238548b2c78"
+  }
+}

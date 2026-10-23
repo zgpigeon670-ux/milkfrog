@@ -31,7 +31,7 @@ namespace Milkfrog.CombatDemo
         {
             Target = target; obscured = 0; world.player.Target = target.Actor;
             // Boss locks widen framing, while mouse input still owns the camera heading.
-            world.cameraRig.enemy = target.IsBoss ? target.transform : null;
+            world.cameraRig.enemy = target.IsBoss ? (target.lockAnchor != null ? target.lockAnchor : target.transform) : null;
             world.cameraRig.lockOn = target.IsBoss;
         }
         public void Clear()

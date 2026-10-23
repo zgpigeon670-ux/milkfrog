@@ -7,6 +7,7 @@ namespace Milkfrog.CombatDemo
 {
     public sealed class MvpWorld : MonoBehaviour
     {
+        public bool bullTrial;
         public CombatDemoSettings settings;
         public CombatActor player;
         public EnemyController[] enemies;
@@ -26,7 +27,7 @@ namespace Milkfrog.CombatDemo
         public InteractionController Interactions { get; private set; }
         WorldInteractable[] worldObjects;
         bool ownsQuest;
-        public bool BossUnlocked => WorldState.IsDoorOpen(WorldStateService.GateId);
+        public bool BossUnlocked => bullTrial || WorldState.IsDoorOpen(WorldStateService.GateId);
         public string InteractionBlockReason => !Running ? "当前无法交互" :
             feedback.Clock.Remaining > 0 ? "请稍候" : Director.State != EncounterState.Exploration ? "战斗中无法交互" :
             player.Core.State != CombatState.Neutral ? "请先结束当前动作" : null;
@@ -59,7 +60,7 @@ namespace Milkfrog.CombatDemo
         void Awake()
         {
             Flow = GetComponent<GameFlowController>();
-            if (quest == null) { quest = ScriptableObject.CreateInstance<QuestDefinition>(); ownsQuest = true; }
+            if (quest == null) { quest = ScriptableObject.CreateInstance<QuestDefinition>(); if (bullTrial) { quest.stableId = "bull-trial"; quest.steps = Array.Empty<QuestStep>(); } ownsQuest = true; }
             Quests = new QuestProgressService(quest);
             WorldState.Changed += OnWorldChanged;
             worldObjects = FindObjectsByType<WorldInteractable>();
@@ -78,6 +79,7 @@ namespace Milkfrog.CombatDemo
             feedback.actors = new List<CombatActor>(actors.Values).ToArray();
             feedback.ResolveActor = core => actors.TryGetValue(core, out var actor) ? actor : null;
             cameraRig.freeOrbit = true; cameraRig.lockOn = false; cameraRig.enemy = null; cameraRig.pitch = 8; cameraRig.orbitDistance = 2.7f; cameraRig.orbitShoulder = new Vector3(.45f, .05f, 0);
+            if (bullTrial) { cameraRig.orbitDistance = 4.5f; cameraRig.pitch = 14; }
             hud = GetComponent<MvpHud>();
             if (hud != null)
             {
@@ -134,9 +136,10 @@ namespace Milkfrog.CombatDemo
                 if (Defeated.Contains(enemy.stableId) || (enemy.IsBoss && BossDefeated))
                 { enemy.Actor.Core.RestoreVitals(0, 0); enemy.MarkDead(); enemy.gameObject.SetActive(false); }
             if (arena != null) arena.SetActive(false);
-            Lock.Clear(); cameraRig.yaw = player.transform.eulerAngles.y; cameraRig.pitch = 8; cameraRig.ResetImpulse();
+            Lock.Clear(); cameraRig.yaw = player.transform.eulerAngles.y; cameraRig.pitch = bullTrial ? 14 : 8; cameraRig.ResetImpulse();
             ClearInput(); needsRelease = itemNeedsRelease = false; feedback.ResetFeedback();
             foreach (var animation in animations) if (animation.gameObject.activeInHierarchy) animation.ResetVisuals();
+            foreach (var enemy in enemies) if (enemy is BullBossEnemy bull) bull.ResetPresentation();
             ApplyWorldObjects(); Physics.SyncTransforms(); Interactions.Refresh(); hud?.Refresh();
         }
         bool InBossTrigger(Vector3 position)
@@ -448,7 +451,7 @@ namespace Milkfrog.CombatDemo
         public void BlockMenuAttack() { menuAttackNeedsRelease = true; }
         void OnApplicationFocus(bool focused)
         {
-            if (!focused) { ClearInput(); if (Flow != null && Running) Flow.TogglePause(); }
+            if (!focused) { if (Flow != null && Running) Flow.TogglePause(); else ClearInput(); }
         }
         Vector3 MoveDirection()
         {
@@ -585,17 +588,18 @@ namespace Milkfrog.CombatDemo
                 foreach (var enemy in enemies) if (enemy.gameObject.activeInHierarchy) enemy.Actor.Core.Tick(step);
                 // Sample every simulation slice so a blocked swing cannot skip its active/recovery pose.
                 foreach (var animation in animations) if (animation.gameObject.activeInHierarchy) animation.AdvanceVisual(step);
+                foreach (var enemy in enemies) if (enemy is BullBossEnemy bull && enemy.gameObject.activeInHierarchy) bull.AdvancePresentation(step);
                 if (player.Core.State == CombatState.Dead) { Flow.PlayerDied(); break; }
                 foreach (var enemy in enemies)
                 {
                     if (!enemy.Alive && Defeated.Add(enemy.stableId))
                     {
                         enemy.MarkDead();
-                        Progression.Grant(enemy.IsBoss ? 200 : 20);
+                        if (!bullTrial) Progression.Grant(enemy.IsBoss ? 200 : 20);
                         if (enemy.IsBoss)
                         {
-                            BossDefeated = true; WorldState.Apply(WorldEventKind.BossDefeated, enemy.stableId); Director.FinishBoss();
-                            PersistCombatRewards();
+                            BossDefeated = true; if (!bullTrial) WorldState.Apply(WorldEventKind.BossDefeated, enemy.stableId); Director.FinishBoss();
+                            if (!bullTrial) PersistCombatRewards();
                             player.Core.RestoreVitals(player.Core.Health, player.Core.Posture);
                             Flow.Won(); break;
                         }
@@ -642,7 +646,7 @@ namespace Milkfrog.CombatDemo
 
             var data = new MvpHudData { visible = Flow.State == GameFlowState.Playing && !Flow.Paused,
                 health = core.Health, maxHealth = core.Tuning.maxHealth, posture = core.Posture, maxPosture = core.Tuning.maxPosture,
-                charge = core.ChargeRatio, charging = core.IsPreparing, camera = gameplayCamera,
+                charge = core.ChargeRatio, charging = core.IsPreparing, camera = gameplayCamera, compactPerilousWarning = bullTrial,
                 level = Progression.Level, experience = Progression.Experience, nextLevelCost = Progression.NextCost,
                 vitality = Progression.Vitality, resolve = Progression.Resolve, power = Progression.Power,
                 attackMultiplier = Progression.AttackMultiplier,
@@ -655,7 +659,7 @@ namespace Milkfrog.CombatDemo
                 attackBuffMultiplier = core.AttackBuffMultiplier, attackBuffRemaining = core.AttackBuffRemaining,
                 attackBuffDuration = core.AttackBuffDuration,
                 bonfirePrompt = Interactions?.Prompt,
-                objective = Quests.Objective(Snapshot()),
+                objective = bullTrial ? "黄牛试炼 · 侧闪冲撞 / 躲避红色预警\n角击、后蹬可弹反 · 震波可跳越" : Quests.Objective(Snapshot()),
                 encounter = Director.State.ToString().ToUpperInvariant(), message = Flow.Message,
                 debug = $"{core.State} | Enemies: {Director.Count} | Disengage: {Director.Remaining:F1}s | Contacts: {ContactCount} | Aim: {AimDecision}" };
             for (int i = 0; i < 3; i++)
@@ -663,7 +667,7 @@ namespace Milkfrog.CombatDemo
                 string id = Inventory.QuickItem(i); var item = FindItem(id);
                 data.quickSlots[i] = new QuickSlotHudData { id = id, name = item?.displayName, icon = item?.icon, count = Inventory.Quantity(id), usable = ItemUseBlockReason(item,ItemUseContext.QuickSlot) == null };
             }
-            if (Lock.Target != null) data.lockPoint = Lock.Target.transform.position + Vector3.up * 1.35f;
+            if (Lock.Target != null) data.lockPoint = Lock.Target.LockPoint;
             var bars = new List<MvpEnemyBar>();
             foreach (var enemy in enemies)
             {
@@ -673,6 +677,7 @@ namespace Milkfrog.CombatDemo
                 {
                     if (Director.State == EncounterState.BossCombat)
                     {
+                        data.perilousHint = (enemy as BullBossEnemy)?.SlamHint;
                         data.bossName = enemy.definition.displayName; data.bossHealth = c.Health;
                         data.bossMaxHealth = c.Tuning.maxHealth; data.bossPosture = c.Posture;
                         data.bossMaxPosture = c.Tuning.maxPosture;

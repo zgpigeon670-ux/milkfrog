@@ -34,6 +34,12 @@ namespace Milkfrog.CombatDemo
         private const string SaveFileName = "save.json";
         private const string BackupFileName = "save.backup.json";
 
+        public bool IsMemory { get; private set; }
+        PlayerSnapshot memory;
+        public static SaveService CreateMemory(PlayerSnapshot seed = null)
+        { var store = new SaveService(); store.IsMemory = true; store.memory = Clone(seed); return store; }
+        public static PlayerSnapshot Clone(PlayerSnapshot value) => value == null ? null : JsonUtility.FromJson<PlayerSnapshot>(JsonUtility.ToJson(value));
+
         private readonly string _savePath;
         private readonly string _backupPath;
 
@@ -54,12 +60,13 @@ namespace Milkfrog.CombatDemo
 
         public bool HasSave
         {
-            get { return File.Exists(_savePath) || File.Exists(_backupPath); }
+            get { return IsMemory ? memory != null : File.Exists(_savePath) || File.Exists(_backupPath); }
         }
 
         public bool TryLoad(out PlayerSnapshot snapshot)
         {
             snapshot = null;
+            if (IsMemory) { snapshot = Clone(memory); LastMessage = snapshot == null ? "No challenge snapshot." : "Loaded challenge snapshot."; return snapshot != null; }
 
             SnapshotReadResult primary = ReadSnapshot(_savePath);
             if (primary.status == SnapshotReadStatus.Valid)
@@ -110,6 +117,7 @@ namespace Milkfrog.CombatDemo
                 return false;
             }
 
+            if (IsMemory) { memory = Clone(snapshot); LastMessage = "Saved challenge snapshot in memory."; return true; }
             try
             {
                 Directory.CreateDirectory(DirectoryPath);

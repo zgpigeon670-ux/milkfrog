@@ -5,6 +5,7 @@ namespace Milkfrog.CombatDemo
     [RequireComponent(typeof(CharacterController))]
     public sealed class CombatActor : MonoBehaviour
     {
+        public ICombatHitSampler HitSampler { get; set; }
         public bool isPlayer;
         public bool enforceFactions;
         // Used by the MVP player only. Training actors retain directional guard rules.
@@ -183,6 +184,17 @@ namespace Milkfrog.CombatDemo
             return false;
         }
 
+        public HitResult ResolveCustomHit(CombatActor other, Vector3 point, int hitGroup = 0)
+        {
+            if (other == null || !other.AcceptsDamage || other == this || other.Core == null ||
+                (enforceFactions && isPlayer == other.isPlayer) || !HasLineOfSight(other, point)) return HitResult.Ignore;
+            LastContactPoint = point; HasContactPoint = true;
+            Vector3 incoming = BodyPosition - other.BodyPosition; incoming.y = 0;
+            if (other.autoFaceGuardAttacks && other.Core.State == CombatState.Guard && Core.ActiveAttack.Response != AttackResponse.DodgeOnly && incoming.sqrMagnitude > .000001f)
+                other.transform.rotation = Quaternion.LookRotation(incoming);
+            return Core.TryHit(other.Core, IsInFront(other.transform.forward, incoming, other.Core.Tuning.guardAngle), hitGroup);
+        }
+
         bool ValidTarget(CombatActor other, Vector3 forward)
         {
             if (other == null || other == this || other.Core == null || other.Core.State == CombatState.Dead || !other.AcceptsDamage) return false;
@@ -234,6 +246,7 @@ namespace Milkfrog.CombatDemo
 
         void SampleAttack()
         {
+            if (HitSampler != null) { HitSampler.Sample(Core.StateProgress, Core.StateProgress); return; }
             if (CurrentTrace != null && CurrentAttackDefinition != null && TraceMatches(CurrentAttackDefinition)) return;
             var tuning = Core.Tuning;
             Vector3 center = BodyPosition + Vector3.up + AttackForward * (tuning.range * .5f);
@@ -246,6 +259,7 @@ namespace Milkfrog.CombatDemo
 
         void SweepBlade(float from, float to)
         {
+            if (HitSampler != null) { HitSampler.Sample(from, to); return; }
             var bladeTrace=CurrentTrace;
             if (bladeTrace == null || !bladeTrace.IsValid) return;
             if(CurrentAttackDefinition!=null && !TraceMatches(CurrentAttackDefinition))return;

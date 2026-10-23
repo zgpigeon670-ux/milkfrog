@@ -76,6 +76,13 @@ namespace Milkfrog.CombatDemo.Editor
                 if (ids.TryGetValue(id, out var previous)) throw new BuildFailedException("Duplicate stable ID " + id + ": " + previous + " / " + component.name);
                 ids.Add(id, component.name);
             }
+            if (world.bullTrial)
+            {
+                var bulls = components.OfType<BullBossEnemy>().ToArray();
+                if (bulls.Length != 1 || bulls[0].bull == null || !bulls[0].bull.IsValid || bulls[0].presentation == null || bulls[0].presentation.animator == null || bulls[0].lockAnchor == null)
+                    throw new BuildFailedException("Invalid independent bull trial configuration.");
+                return;
+            }
             if (world.quest == null || world.quest.steps == null || world.quest.steps.Length == 0 || string.IsNullOrWhiteSpace(world.quest.stableId))
                 throw new BuildFailedException("MVP quest definition is missing or empty.");
             var steps = new HashSet<string>();

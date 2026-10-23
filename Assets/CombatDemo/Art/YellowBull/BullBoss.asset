@@ -1,0 +1,153 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d8aa0e4c89b4194dbf9b1e04b7d911a, type: 3}
+  m_Name: BullBoss
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.BullBossDefinition
+  moves:
+  - kind: 0
+    clip: {fileID: 1930376915796427137, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+    attack:
+      kind: 0
+      response: 0
+      startup: 0.7
+      active: 0.18
+      recovery: 0.8
+      damage: 18
+      maxDamage: 18
+      posture: 22
+      maxPosture: 22
+      block: 26
+      maxBlock: 26
+      deflectPosture: 30
+      cancelWindow: 0
+      CanComboFrom: 0
+      comboWindow: 0.18
+    range: 3
+    halfWidth: 1
+    lockBeforeImpact: 0.25
+    moveSpeed: 0
+    cooldown: 0
+    jumpClearance: 0.55
+    halfAngle: 65
+  - kind: 1
+    clip: {fileID: 7139716818690349469, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+    attack:
+      kind: 0
+      response: 0
+      startup: 0.65
+      active: 0.16
+      recovery: 0.9
+      damage: 20
+      maxDamage: 20
+      posture: 26
+      maxPosture: 26
+      block: 32
+      maxBlock: 32
+      deflectPosture: 30
+      cancelWindow: 0
+      CanComboFrom: 0
+      comboWindow: 0.18
+    range: 2.8
+    halfWidth: 1
+    lockBeforeImpact: 0.25
+    moveSpeed: 0
+    cooldown: 6
+    jumpClearance: 0.55
+    halfAngle: 55
+  - kind: 2
+    clip: {fileID: -1178350911214331930, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+    attack:
+      kind: 4
+      response: 1
+      startup: 1
+      active: 1
+      recovery: 1.5
+      damage: 30
+      maxDamage: 30
+      posture: 32
+      maxPosture: 32
+      block: 0
+      maxBlock: 0
+      deflectPosture: 30
+      cancelWindow: 0
+      CanComboFrom: 0
+      comboWindow: 0.18
+    range: 10
+    halfWidth: 0.85
+    lockBeforeImpact: 0.25
+    moveSpeed: 10
+    cooldown: 0
+    jumpClearance: 0.55
+    halfAngle: 65
+  - kind: 3
+    clip: {fileID: 4210652568044403519, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+    attack:
+      kind: 4
+      response: 1
+      startup: 1.4
+      active: 0.18
+      recovery: 1.8
+      damage: 22
+      maxDamage: 22
+      posture: 24
+      maxPosture: 24
+      block: 0
+      maxBlock: 0
+      deflectPosture: 30
+      cancelWindow: 0
+      CanComboFrom: 0
+      comboWindow: 0.18
+    range: 1.8
+    halfWidth: 1
+    lockBeforeImpact: 0.8
+    moveSpeed: 0
+    cooldown: 0
+    jumpClearance: 0.55
+    halfAngle: 65
+  - kind: 4
+    clip: {fileID: -7178713999231449035, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+    attack:
+      kind: 4
+      response: 1
+      startup: 1
+      active: 1.3333334
+      recovery: 1.2
+      damage: 22
+      maxDamage: 22
+      posture: 25
+      maxPosture: 25
+      block: 0
+      maxBlock: 0
+      deflectPosture: 30
+      cancelWindow: 0
+      CanComboFrom: 0
+      comboWindow: 0.18
+    range: 8
+    halfWidth: 0.14
+    lockBeforeImpact: 0.25
+    moveSpeed: 0
+    cooldown: 0
+    jumpClearance: 0.55
+    halfAngle: 65
+  idle: {fileID: -956980624400386150, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+  walk: {fileID: 6541113654217644072, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+  hit: {fileID: -2508635173948483781, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+  death: {fileID: -3278702293095230917, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+  broken: {fileID: 5783911298049641311, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+  roar: {fileID: 3226932039782396398, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+  speed: 2.2
+  turnSpeed: 120
+  decisionDelay: 0.35
+  arenaRadius: 18
+  phaseHealthRatio: 0.5
+  roarDuration: 1.2
+  waveRepeatGap: 0.65

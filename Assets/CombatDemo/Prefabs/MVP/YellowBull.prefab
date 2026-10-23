@@ -1,0 +1,247 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2944069109010414044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1561976836301087744}
+  - component: {fileID: 6399517514161225561}
+  - component: {fileID: 1884688686027282559}
+  - component: {fileID: 9154403996833600481}
+  - component: {fileID: 9061180542403780889}
+  m_Layer: 0
+  m_Name: YellowBull
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1561976836301087744
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944069109010414044}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7353657187857121067}
+  - {fileID: 332817446438407663}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &6399517514161225561
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944069109010414044}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 3.6
+  m_Radius: 0.78
+  m_SlopeLimit: 45
+  m_StepOffset: 0.25
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.8, z: 0}
+--- !u!114 &1884688686027282559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944069109010414044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21479675121ed54dbeac7039b306ef3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.CombatActor
+  isPlayer: 0
+  enforceFactions: 0
+  autoFaceGuardAttacks: 0
+  bladeTrace: {fileID: 0}
+  lightAttack: {fileID: 0}
+  thrustAttack: {fileID: 0}
+  followupAttack: {fileID: 0}
+  slowAttack: {fileID: 0}
+  perilousAttack: {fileID: 0}
+  combatMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  maxTargetHeightDifference: 0.9
+--- !u!114 &9154403996833600481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944069109010414044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa2d66113cf77a41ae7a60e2f99e0bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.BullBossEnemy
+  stableId: boss-yellow-bull
+  definition: {fileID: 11400000, guid: 2ac53e0984bd6704f8efd43a520b16fa, type: 2}
+  lockAnchor: {fileID: 332817446438407663}
+  bull: {fileID: 11400000, guid: 22b28db4ae2999f459bdd44b52090386, type: 2}
+  presentation: {fileID: 9061180542403780889}
+  arenaCenter: {x: 0, y: 0, z: 0}
+--- !u!114 &9061180542403780889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944069109010414044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fe9741db2fd595449711b1a6c54ba94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Milkfrog.CombatDemo::Milkfrog.CombatDemo.BullPresentation
+  animator: {fileID: 3525575877369095505}
+  warningMaterial: {fileID: 2100000, guid: ce4f99bf32b3a7f4f8e66eff76a0f630, type: 2}
+--- !u!1 &7140606182897429023
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 332817446438407663}
+  m_Layer: 0
+  m_Name: Chest Lock Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &332817446438407663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7140606182897429023}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1561976836301087744}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &7027807008380541120
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1561976836301087744}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6409537665188990772, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 19616557a57d625458b0a2e043668a5b, type: 2}
+    - target: {fileID: -6409537665188990772, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3d884c98422e5c947815299fa4abe9eb, type: 2}
+    - target: {fileID: -6409537665188990772, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: abb4f690aec1c1d498f008475b64a0ef, type: 2}
+    - target: {fileID: -6409537665188990772, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: 'm_Materials.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5fcf16100e265b24a9196285d54355aa, type: 2}
+    - target: {fileID: -6409537665188990772, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: 'm_Materials.Array.data[4]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b76a2773e15e6c94dae59c9e0b54342d, type: 2}
+    - target: {fileID: -6409537665188990772, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: 'm_Materials.Array.data[5]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 53fb58b0e8cfdc34ea5b869cf4aa9b5a, type: 2}
+    - target: {fileID: -6409537665188990772, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: 'm_Materials.Array.data[6]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 633d77d020b4b53449bea5f4cb003f13, type: 2}
+    - target: {fileID: 919132149155446097, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+      propertyPath: m_Name
+      value: YellowBull
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+--- !u!95 &3525575877369095505 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+  m_PrefabInstance: {fileID: 7027807008380541120}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7353657187857121067 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ce9c516a9ed692646affa66ba96d20cd, type: 3}
+  m_PrefabInstance: {fileID: 7027807008380541120}
+  m_PrefabAsset: {fileID: 0}
